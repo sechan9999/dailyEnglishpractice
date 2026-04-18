@@ -615,6 +615,226 @@ const DAYS = [
     pron: `• <strong>"theorem"</strong> → THEE-uh-rum (not "THEER-um"; 3 syllables)\n• <strong>"frequentist"</strong> → FREE-kwun-tist (stress on FREE)\n• <strong>"Bayesian"</strong> → BAY-zhun (stress on BAY; the -sian sounds like "-zhun")\n\n💡 End strong: "Understanding the CLT lets me justify statistical tests in A/B experiments regardless of the underlying data distribution."`,
     prompt: `An interviewer asks: "What is the difference between a confidence interval and a prediction interval?" Answer in under 90 seconds with a concrete example.`,
     promptKo: `"신뢰 구간과 예측 구간의 차이가 무엇인가요?" 구체적인 예시를 들어 90초 이내에 답해보세요.`
+  },
+  {
+    day: 16,
+    topic: "Python Memory Management & the GIL",
+    topicKo: "파이썬 메모리 관리와 GIL",
+    question: "How does Python manage memory, and what is the Global Interpreter Lock (GIL)?",
+    questionKo: "파이썬의 메모리 관리 방식과 GIL(전역 인터프리터 락)이 무엇인지 설명해 주세요.",
+    answer: [
+      { h: `Python uses <strong>automatic memory management</strong> through <strong>reference counting</strong> plus a <strong>cyclic garbage collector</strong>. Every object has a reference count; when it reaches zero the memory is freed immediately. The cyclic GC handles reference cycles (e.g., A → B → A) that reference counting alone cannot free.` },
+      { h: `The <strong>Global Interpreter Lock (GIL)</strong> is a mutex that allows only <strong>one thread</strong> to execute Python bytecode at a time. This means CPU-bound threads do NOT run in true parallel even on multi-core machines.` },
+      { h: `<strong>Practical implications:</strong><br>• <strong>I/O-bound tasks</strong> (network calls, file reads) — use <code>threading</code>; GIL is released during I/O waits<br>• <strong>CPU-bound tasks</strong> (number crunching) — use <code>multiprocessing</code> (separate processes, each with its own GIL) or <code>concurrent.futures.ProcessPoolExecutor</code><br>• NumPy/SciPy release the GIL internally, so multi-threaded NumPy code can be parallel` },
+      { h: `<strong>Memory tips:</strong> Use <code>__slots__</code> to reduce per-object overhead, <code>del</code> to drop references early, and <code>sys.getsizeof()</code> to inspect object size. For large data, prefer NumPy arrays over Python lists (contiguous memory, no per-element overhead).` }
+    ],
+    vocab: [
+      { term:"Reference counting", ipa:"/ˈref.ər.əns ˈkaʊn.tɪŋ/", ko:"참조 카운팅", def:"Tracking how many references point to an object; free when count hits zero." },
+      { term:"Cyclic garbage collector", ipa:"/ˈsaɪ.klɪk ˈɡɑr.bɪdʒ kəˈlek.tər/", ko:"순환 참조 가비지 컬렉터", def:"Detects and frees reference cycles that reference counting cannot handle." },
+      { term:"Global Interpreter Lock", ipa:"/ˈɡloʊ.bəl ɪnˈtɜr.prɪ.tər lɒk/", ko:"전역 인터프리터 락", def:"Mutex ensuring only one thread executes Python bytecode at a time." },
+      { term:"Multiprocessing", ipa:"/ˌmʌl.tiˈproʊ.ses.ɪŋ/", ko:"멀티프로세싱", def:"Running tasks in separate OS processes to bypass the GIL for CPU-bound work." },
+    ],
+    pron: `• <strong>"interpreter"</strong> → in-TER-pruh-ter (stress on TER; 4 syllables)\n• <strong>"mutex"</strong> → MYOO-teks (rhymes with "few checks")\n• <strong>"cyclic"</strong> → SY-klik (not "SIK-lik")\n\n💡 Interview line: "For CPU-bound tasks I reach for multiprocessing; for I/O-bound tasks threading is sufficient because the GIL is released during I/O."`,
+    prompt: `Explain to an interviewer why Python threads don't speed up a CPU-bound loop, and what you'd use instead. Give a one-sentence code example.`,
+    promptKo: `파이썬 스레드가 CPU 집약적인 루프를 빠르게 하지 못하는 이유와 대안을 면접관에게 설명해 보세요. 한 줄 코드 예시도 포함하세요.`
+  },
+  {
+    day: 17,
+    topic: "NumPy Broadcasting & Pandas Data Wrangling",
+    topicKo: "NumPy 브로드캐스팅과 Pandas 데이터 처리",
+    question: "Explain NumPy broadcasting and the difference between loc, iloc, and at in Pandas.",
+    questionKo: "NumPy 브로드캐스팅을 설명하고, Pandas의 loc, iloc, at의 차이를 말해 주세요.",
+    answer: [
+      { h: `<strong>NumPy Broadcasting</strong> lets operations work on arrays of different shapes without copying data. Rule: dimensions are compared from the right; a dimension of 1 is stretched to match the other. Example: <code>A(3,1) + B(1,4)</code> → result is <code>(3,4)</code> — no explicit loop needed.` },
+      { h: `<strong>Pandas selection methods:</strong><br>• <code>df.loc[row_label, col_label]</code> — label-based; inclusive on both ends<br>• <code>df.iloc[row_idx, col_idx]</code> — integer position-based; exclusive end (like Python slicing)<br>• <code>df.at[row_label, col_label]</code> — fast scalar access by label (single cell only)<br>• <code>df.iat[row_idx, col_idx]</code> — fast scalar access by integer position` },
+      { h: `<strong>Handling missing data:</strong><br>• <code>df.isna().sum()</code> — count nulls per column<br>• <code>df.dropna()</code> — remove rows/columns with NaN<br>• <code>df.fillna(value)</code> — fill with a constant, mean, or forward-fill (<code>method='ffill'</code>)<br>• <code>df.interpolate()</code> — interpolate numeric series` },
+      { h: `<strong>Performance tip:</strong> Avoid row-by-row loops. Use vectorized operations, <code>df.apply()</code> for column-wise ops, and <code>groupby().agg()</code> for grouped aggregations. For very large data, consider <code>pandas.eval()</code> or switch to Polars/Dask.` }
+    ],
+    vocab: [
+      { term:"Broadcasting", ipa:"/ˈbrɔːd.kɑːs.tɪŋ/", ko:"브로드캐스팅", def:"NumPy's rule for operating on arrays with different but compatible shapes." },
+      { term:"loc", ipa:"/lɒk/", ko:"레이블 기반 인덱싱", def:"Pandas label-based indexer; both endpoints inclusive." },
+      { term:"iloc", ipa:"/aɪˈlɒk/", ko:"정수 위치 기반 인덱싱", def:"Pandas integer-position indexer; end position is exclusive." },
+      { term:"Vectorization", ipa:"/ˌvek.tər.aɪˈzeɪ.ʃən/", ko:"벡터화", def:"Applying operations to entire arrays at once without Python loops." },
+    ],
+    pron: `• <strong>"vectorization"</strong> → vek-tuh-rye-ZAY-shun (stress on ZAY)\n• <strong>"interpolate"</strong> → in-TER-puh-layt (stress on TER)\n• <strong>"iloc"</strong> → say "eye-lock" in interviews, not "ih-lock"\n\n💡 Quick win: "I use iloc for positional slicing and loc for label-based access, and I always double-check which is needed to avoid off-by-one bugs."`,
+    prompt: `Describe a real data cleaning pipeline you'd run on a messy CSV: missing values, duplicates, wrong dtypes. Walk the interviewer through each step using Pandas.`,
+    promptKo: `지저분한 CSV 파일을 정리하는 파이프라인을 설명해 보세요. 결측값, 중복, 잘못된 데이터 타입을 Pandas로 처리하는 각 단계를 말해 주세요.`
+  },
+  {
+    day: 18,
+    topic: "Python Best Practices — Generators & Context Managers",
+    topicKo: "파이썬 모범 사례 — 제너레이터와 컨텍스트 매니저",
+    question: "What are Python generators and context managers, and when would you use each?",
+    questionKo: "파이썬 제너레이터와 컨텍스트 매니저가 무엇이며 각각 언제 사용하나요?",
+    answer: [
+      { h: `A <strong>generator</strong> is a function that uses <code>yield</code> to produce values one at a time, pausing between each. It is <strong>lazy</strong>: values are computed on demand rather than stored in memory. Perfect for large sequences (log files, streaming data, infinite series).` },
+      { h: `<code>generator_expression = (x**2 for x in range(10**9))</code> — processes a billion items without allocating a billion-item list. Use <code>next(gen)</code> or a <code>for</code> loop to consume.` },
+      { h: `A <strong>context manager</strong> uses <code>__enter__</code> and <code>__exit__</code> (or the <code>@contextmanager</code> decorator) to wrap setup/teardown around a block. The <code>with</code> statement guarantees cleanup even if an exception occurs.<br><br>Common uses: file handles (<code>with open(...) as f</code>), database transactions, lock acquisition, timing blocks, temporary directories.` },
+      { h: `<strong>Python pitfalls to mention in interviews:</strong><br>• Mutable default arguments: <code>def f(lst=[])</code> — the list is shared across calls<br>• Late binding closures: lambdas in a loop all capture the same variable<br>• Integer caching: Python caches <code>-5</code> to <code>256</code>, so <code>is</code> works unexpectedly outside that range<br>• <code>is</code> vs <code>==</code>: <code>is</code> checks identity, <code>==</code> checks value` }
+    ],
+    vocab: [
+      { term:"Generator", ipa:"/ˈdʒen.ər.eɪ.tər/", ko:"제너레이터", def:"A function using yield to lazily produce a sequence of values." },
+      { term:"Context manager", ipa:"/ˈkɒn.tekst ˈmæn.ɪ.dʒər/", ko:"컨텍스트 매니저", def:"Object that manages resource setup/teardown via the with statement." },
+      { term:"Lazy evaluation", ipa:"/ˈleɪ.zi ɪˌvæl.juˈeɪ.ʃən/", ko:"지연 평가", def:"Deferring computation until the result is actually needed." },
+      { term:"Mutable default argument", ipa:"/ˈmjuː.tə.bəl dɪˈfɔːlt ˈɑːɡ.jʊ.mənt/", ko:"가변 기본 인수", def:"Common Python bug: a mutable object as a default is shared across all calls." },
+    ],
+    pron: `• <strong>"generator"</strong> → JEN-uh-ray-ter (stress on JEN)\n• <strong>"yield"</strong> → yeeld (rhymes with "field")\n• <strong>"mutable"</strong> → MYOO-tuh-bul (not "mew-TAY-bul")\n\n💡 Show depth: "I use generators for memory-efficient pipelines and context managers wherever I need guaranteed cleanup — both make code safer and more Pythonic."`,
+    prompt: `Write out loud a generator that reads a 10 GB log file line-by-line and filters lines containing "ERROR". Then explain why a list comprehension would fail here.`,
+    promptKo: `10GB 로그 파일을 한 줄씩 읽으며 "ERROR"가 포함된 줄만 필터링하는 제너레이터를 말로 설명해 보세요. 리스트 컴프리헨션이 왜 실패하는지도 설명하세요.`
+  },
+  {
+    day: 19,
+    topic: "End-to-End ML Pipeline & Feature Selection",
+    topicKo: "엔드투엔드 ML 파이프라인과 피처 선택",
+    question: "Walk me through a complete machine learning pipeline from raw data to production model.",
+    questionKo: "원시 데이터에서 프로덕션 모델까지 완전한 머신러닝 파이프라인을 설명해 주세요.",
+    answer: [
+      { h: `<strong>1. Data Ingestion & EDA</strong><br>Collect data, check shape/dtypes, plot distributions, identify nulls/outliers, compute correlations. Tools: Pandas, Seaborn, Pandas Profiling.` },
+      { h: `<strong>2. Preprocessing</strong><br>• Impute missing values (median for skewed data, mean for symmetric)<br>• Encode categoricals (OneHot for low-cardinality, Target encoding for high-cardinality)<br>• Scale numerics (StandardScaler for linear models; tree models don't need it)<br>• Handle class imbalance: SMOTE, class_weight='balanced', or cost-sensitive loss` },
+      { h: `<strong>3. Feature Selection</strong><br>• Filter methods: correlation, chi-squared, mutual information<br>• Wrapper methods: Recursive Feature Elimination (RFE)<br>• Embedded methods: LASSO regularization, tree feature importance<br>• Dimensionality reduction: PCA (linear), UMAP/t-SNE (non-linear, visualization only)` },
+      { h: `<strong>4. Modeling & Evaluation</strong><br>Split: train/validation/test (never leak test data). Cross-validate. Choose metric aligned with business goal (AUC-ROC, F1, RMSE). Tune hyperparameters with Optuna or GridSearchCV.<br><br><strong>5. Production</strong><br>Wrap pipeline in sklearn Pipeline, serialize with joblib/ONNX, monitor drift with EvidentlyAI or Grafana.` }
+    ],
+    vocab: [
+      { term:"Feature engineering", ipa:"/ˈfiː.tʃər ˌen.dʒɪˈnɪər.ɪŋ/", ko:"피처 엔지니어링", def:"Creating or transforming input variables to improve model performance." },
+      { term:"SMOTE", ipa:"/smoʊt/", ko:"합성 소수 오버샘플링 기법", def:"Synthetic Minority Over-sampling Technique for imbalanced datasets." },
+      { term:"Recursive Feature Elimination", ipa:"/rɪˈkɜr.sɪv ˈfiː.tʃər ˌel.ɪˈmɪ.neɪ.ʃən/", ko:"재귀적 피처 제거", def:"Iteratively removes least important features based on model weights." },
+      { term:"Data leakage", ipa:"/ˈdeɪ.tə ˈliː.kɪdʒ/", ko:"데이터 누출", def:"When test/future information leaks into training, inflating model performance." },
+    ],
+    pron: `• <strong>"pipeline"</strong> → PYP-lyne (stress on PYP; two syllables)\n• <strong>"impute"</strong> → im-PYOOT (stress on PYOOT)\n• <strong>"recursive"</strong> → reh-KUR-siv (stress on KUR)\n\n💡 Structure answer as: data → clean → feature → model → evaluate → deploy. Shows systems thinking.`,
+    prompt: `An interviewer gives you a churn prediction task with 80% non-churners. Describe your full pipeline: how you'd handle imbalance, which metric you'd optimize, and why.`,
+    promptKo: `80% 비이탈 고객인 이탈 예측 과제가 주어졌습니다. 불균형 처리, 최적화할 지표, 그 이유를 포함한 전체 파이프라인을 설명해 보세요.`
+  },
+  {
+    day: 20,
+    topic: "LLMs, Transformers & Retrieval-Augmented Generation",
+    topicKo: "LLM, 트랜스포머 및 RAG",
+    question: "Explain how Transformers work and describe the RAG (Retrieval-Augmented Generation) architecture.",
+    questionKo: "트랜스포머의 작동 원리와 RAG(검색 증강 생성) 아키텍처를 설명해 주세요.",
+    answer: [
+      { h: `<strong>Transformer core:</strong> The <strong>self-attention</strong> mechanism lets every token attend to every other token in the sequence simultaneously, giving global context. Each token is projected to Query (Q), Key (K), Value (V) vectors; attention score = softmax(QKᵀ / √d_k) × V. <strong>Multi-head attention</strong> runs this in parallel across multiple subspaces to capture diverse relationships.` },
+      { h: `<strong>Architecture layers:</strong> Embedding → Positional Encoding → N × (Multi-Head Attention → Feed-Forward → LayerNorm with residuals) → Output head. Encoder-only (BERT, classification), Decoder-only (GPT, generation), Encoder-Decoder (T5, translation/summarization).` },
+      { h: `<strong>RAG Architecture:</strong><br>1. <strong>Offline:</strong> Chunk documents → embed with a bi-encoder → store in a vector database (FAISS, Pinecone, Weaviate)<br>2. <strong>Online:</strong> Query → embed query → ANN search (top-k chunks) → inject chunks into LLM context → LLM generates answer grounded in retrieved evidence<br><br>RAG reduces hallucinations, keeps knowledge up-to-date without retraining, and makes sources auditable.` },
+      { h: `<strong>Fine-tuning vs RAG:</strong> RAG is preferred when knowledge must be frequently updated or domain data is too large for context. Fine-tuning is better when you need the model to learn a new style, format, or reasoning pattern that retrieval can't easily provide.` }
+    ],
+    vocab: [
+      { term:"Self-attention", ipa:"/self əˈten.ʃən/", ko:"셀프 어텐션", def:"Mechanism where each token weighs all other tokens to build contextual representations." },
+      { term:"Embedding", ipa:"/ɪmˈbed.ɪŋ/", ko:"임베딩", def:"Dense vector representation of text in a continuous semantic space." },
+      { term:"Vector database", ipa:"/ˈvek.tər ˈdeɪ.tə.beɪs/", ko:"벡터 데이터베이스", def:"Database optimized for storing and querying dense vectors via approximate nearest-neighbor search." },
+      { term:"Hallucination", ipa:"/həˌluː.sɪˈneɪ.ʃən/", ko:"환각 (LLM)", def:"When an LLM generates confident but factually incorrect or fabricated content." },
+    ],
+    pron: `• <strong>"transformer"</strong> → trans-FOR-mer (stress on FOR)\n• <strong>"retrieval"</strong> → rih-TREE-vul (stress on TREE; 3 syllables)\n• <strong>"augmented"</strong> → awg-MEN-tid (stress on MEN)\n\n💡 Power phrase: "RAG gives LLMs a fresh, auditable knowledge base without the cost of retraining."`,
+    prompt: `Compare RAG vs fine-tuning to an interviewer. When would you choose each? Give one concrete use-case for each approach.`,
+    promptKo: `RAG와 파인튜닝을 비교해 면접관에게 설명해 보세요. 각각 어떤 상황에서 선택하겠습니까? 구체적인 사용 사례를 하나씩 드세요.`
+  },
+  {
+    day: 21,
+    topic: "Coding — Arrays & Hash Maps",
+    topicKo: "코딩 — 배열과 해시맵",
+    question: "Solve Two Sum and Group Anagrams. Explain the hash map technique behind each.",
+    questionKo: "Two Sum과 Group Anagrams를 풀고 각각의 해시맵 기법을 설명해 주세요.",
+    answer: [
+      { h: `<strong>Two Sum</strong> (LeetCode #1): Given array <code>nums</code> and <code>target</code>, return indices of two numbers that sum to target.<br><br>Brute force O(n²). <strong>Optimal O(n):</strong> use a hash map storing <code>{ complement: index }</code>.<br><code>seen = {}; for i, n in enumerate(nums): if n in seen: return [seen[n], i]; seen[target-n] = i</code>` },
+      { h: `<strong>Contains Duplicate</strong> (LeetCode #217): Return True if any value appears twice.<br><code>return len(nums) != len(set(nums))</code> — O(n) time, O(n) space. One-liner using set.` },
+      { h: `<strong>Group Anagrams</strong> (LeetCode #49): Group strings that are anagrams of each other.<br><strong>Key insight:</strong> Anagrams have the same sorted character sequence.<br><code>from collections import defaultdict; d = defaultdict(list); [d[tuple(sorted(s))].append(s) for s in strs]; return list(d.values())</code><br>O(n·k·log k) where k = max string length.` },
+      { h: `<strong>Top K Frequent Elements</strong> (LeetCode #347): Use <code>Counter</code> + <code>heapq.nlargest</code>.<br><code>from collections import Counter; import heapq; return heapq.nlargest(k, Counter(nums).keys(), key=Counter(nums).get)</code><br>Even better: bucket sort O(n) using frequency as index.` }
+    ],
+    vocab: [
+      { term:"Hash map", ipa:"/hæʃ mæp/", ko:"해시맵", def:"Data structure with O(1) average lookup, insert, delete via hash function." },
+      { term:"Two-pointer", ipa:"/tuː ˈpɔɪn.tər/", ko:"투 포인터", def:"Technique using two indices moving toward each other to reduce time complexity." },
+      { term:"Complement", ipa:"/ˈkɒm.plɪ.mənt/", ko:"보수 (합산)", def:"The value needed alongside the current element to reach a target sum." },
+      { term:"Anagram", ipa:"/ˈæn.ə.ɡræm/", ko:"애너그램", def:"A word formed by rearranging all letters of another word." },
+    ],
+    pron: `• <strong>"enumerate"</strong> → ih-NYOO-muh-rayt (stress on NYOO)\n• <strong>"anagram"</strong> → AN-uh-gram (stress on AN)\n• <strong>"defaultdict"</strong> → say each part: "default dict"\n\n💡 Interview tip: Always state the brute-force complexity first, then explain your optimization with the hash map.`,
+    prompt: `Walk an interviewer through solving Two Sum step by step: state the problem, brute force, the hash map insight, and final complexity. Time yourself — aim for 90 seconds.`,
+    promptKo: `Two Sum을 면접관에게 단계별로 설명해 보세요: 문제 정의, 브루트포스, 해시맵 아이디어, 최종 복잡도. 90초를 목표로 타이머를 재며 연습하세요.`
+  },
+  {
+    day: 22,
+    topic: "Coding — String Manipulation",
+    topicKo: "코딩 — 문자열 조작",
+    question: "Solve Valid Anagram and Longest Common Prefix. What string techniques do they use?",
+    questionKo: "Valid Anagram과 Longest Common Prefix를 풀고 사용하는 문자열 기법을 설명해 주세요.",
+    answer: [
+      { h: `<strong>Valid Anagram</strong> (LeetCode #242): Check if two strings use the same characters with the same frequency.<br><strong>Method 1:</strong> <code>return sorted(s) == sorted(t)</code> — O(n log n)<br><strong>Method 2 (optimal):</strong> <code>from collections import Counter; return Counter(s) == Counter(t)</code> — O(n)<br><strong>Method 3 (no library):</strong> frequency array of 26 ints, +1 for s, -1 for t, check all zero.` },
+      { h: `<strong>Reverse String</strong> (LeetCode #344): In-place reversal using two pointers.<br><code>l, r = 0, len(s)-1; while l < r: s[l], s[r] = s[r], s[l]; l += 1; r -= 1</code><br>O(n) time, O(1) space. In Python: <code>s.reverse()</code> or <code>s[::-1]</code> but those aren't in-place on immutable strings.` },
+      { h: `<strong>Longest Common Prefix</strong> (LeetCode #14): Find the longest string that is a prefix of all strings in an array.<br><strong>Vertical scanning:</strong> Compare character by character across all strings at each position.<br><code>for i, c in enumerate(strs[0]):\n  if any(i >= len(s) or s[i] != c for s in strs[1:]):\n    return strs[0][:i]\nreturn strs[0]</code>` },
+      { h: `<strong>Key string patterns:</strong><br>• Sliding window: maximum substring without repeating characters<br>• Two pointers: palindrome check, reverse<br>• Frequency map (Counter): anagram, permutation checks<br>• Sort-based grouping: group anagrams<br>• Trie: autocomplete, longest common prefix (for large datasets)` }
+    ],
+    vocab: [
+      { term:"Palindrome", ipa:"/ˈpæl.ɪn.droʊm/", ko:"팰린드롬", def:"A string that reads the same forwards and backwards (e.g., 'racecar')." },
+      { term:"Prefix", ipa:"/ˈpriː.fɪks/", ko:"접두사", def:"A substring at the start of a string." },
+      { term:"Sliding window", ipa:"/ˈslaɪ.dɪŋ ˈwɪn.doʊ/", ko:"슬라이딩 윈도우", def:"Technique using a moving range to reduce O(n²) substring problems to O(n)." },
+      { term:"Trie", ipa:"/traɪ/", ko:"트라이 (접두사 트리)", def:"Tree data structure where each node represents one character; efficient for prefix queries." },
+    ],
+    pron: `• <strong>"palindrome"</strong> → PAL-in-drohm (stress on PAL)\n• <strong>"prefix"</strong> → PREE-fiks (stress on PREE)\n• <strong>"trie"</strong> → rhymes with "try" (comes from re-TRIE-val)\n\n💡 Counter trick: When you see "same characters" or "permutation" in a problem, Counter or frequency array is almost always the right tool.`,
+    prompt: `An interviewer asks: "Without using any built-in sort or Counter, how would you check if two strings are anagrams?" Walk through your reasoning and code out loud.`,
+    promptKo: `"내장 sort나 Counter 없이 두 문자열이 애너그램인지 확인하려면 어떻게 하겠습니까?" 추론 과정과 코드를 소리 내어 설명해 보세요.`
+  },
+  {
+    day: 23,
+    topic: "Coding — Trees & Graph Traversal",
+    topicKo: "코딩 — 트리와 그래프 탐색",
+    question: "Solve Maximum Depth of Binary Tree, Invert Binary Tree, and Number of Islands.",
+    questionKo: "이진 트리의 최대 깊이, 이진 트리 뒤집기, 섬의 개수 문제를 풀어보세요.",
+    answer: [
+      { h: `<strong>Maximum Depth of Binary Tree</strong> (LeetCode #104):<br>Classic DFS recursion: <code>def maxDepth(root): return 0 if not root else 1 + max(maxDepth(root.left), maxDepth(root.right))</code><br>O(n) time — visits every node once. O(h) space for call stack (h = height).` },
+      { h: `<strong>Invert Binary Tree</strong> (LeetCode #226):<br><code>def invertTree(root):\n  if not root: return None\n  root.left, root.right = invertTree(root.right), invertTree(root.left)\n  return root</code><br>Swap children at every node recursively. Also doable iteratively with a queue (BFS).` },
+      { h: `<strong>Number of Islands</strong> (LeetCode #200): 2D grid of '1' (land) and '0' (water).<br><strong>DFS flood-fill approach:</strong> Iterate every cell; when you find '1', increment count and DFS to mark all connected '1's as visited (set to '0' or '#').<br><code>def dfs(r,c):\n  if r<0 or c<0 or r>=len(grid) or c>=len(grid[0]) or grid[r][c]!='1': return\n  grid[r][c]='0'\n  [dfs(r+dr,c+dc) for dr,dc in [(-1,0),(1,0),(0,-1),(0,1)]]</code>` },
+      { h: `<strong>BFS vs DFS on trees/graphs:</strong><br>• <strong>DFS</strong> (stack/recursion): path finding, cycle detection, topological sort<br>• <strong>BFS</strong> (queue): shortest path in unweighted graphs, level-order traversal<br>Remember: for shortest path always think BFS first; for exhaustive search think DFS.` }
+    ],
+    vocab: [
+      { term:"Depth-First Search", ipa:"/depθ fɜrst sɜrtʃ/", ko:"깊이 우선 탐색", def:"Traversal that explores as deep as possible before backtracking." },
+      { term:"Breadth-First Search", ipa:"/bredθ fɜrst sɜrtʃ/", ko:"너비 우선 탐색", def:"Traversal that explores all nodes at the current depth before going deeper." },
+      { term:"Flood fill", ipa:"/flʌd fɪl/", ko:"플러드 필", def:"DFS/BFS technique to mark all connected cells in a grid." },
+      { term:"Call stack", ipa:"/kɔːl stæk/", ko:"콜 스택", def:"Stack of function invocations; deep recursion can cause stack overflow." },
+    ],
+    pron: `• <strong>"recursive"</strong> → reh-KUR-siv (stress on KUR)\n• <strong>"traversal"</strong> → truh-VER-sul (stress on VER; 3 syllables)\n• <strong>"topological"</strong> → top-uh-LOJ-ih-kul (stress on LOJ)\n\n💡 Pattern recognition: "Grid + connected regions" → think DFS/BFS flood fill. "Tree + any computation" → think DFS recursion with base case.`,
+    prompt: `Explain the Number of Islands approach to an interviewer: why you use DFS, how you avoid revisiting nodes, and what the time/space complexity is.`,
+    promptKo: `섬의 개수 문제를 면접관에게 설명해 보세요: DFS를 쓰는 이유, 노드를 다시 방문하지 않는 방법, 그리고 시간/공간 복잡도를 말해 주세요.`
+  },
+  {
+    day: 24,
+    topic: "Coding — Binary Search Patterns",
+    topicKo: "코딩 — 이진 탐색 패턴",
+    question: "Explain the binary search template and solve Search Insert Position, First Bad Version, and Find Minimum in Rotated Sorted Array.",
+    questionKo: "이진 탐색 템플릿을 설명하고 세 가지 변형 문제를 풀어보세요.",
+    answer: [
+      { h: `<strong>Binary Search template</strong> (never get it wrong again):<br><code>l, r = 0, len(nums)-1\nwhile l <= r:\n  mid = l + (r-l)//2  # avoids integer overflow\n  if nums[mid] == target: return mid\n  elif nums[mid] < target: l = mid+1\n  else: r = mid-1\nreturn -1</code><br>O(log n) time, O(1) space.` },
+      { h: `<strong>Search Insert Position</strong> (LeetCode #35): Return index to insert target in sorted array.<br>Run binary search; when loop ends, <code>l</code> is the insertion point. <code>return l</code> — this works because l is always the leftmost index where target should go.` },
+      { h: `<strong>First Bad Version</strong> (LeetCode #278): Minimize calls to <code>isBadVersion(mid)</code>.<br><code>while l < r: mid = l + (r-l)//2; l = mid+1 if not isBadVersion(mid) else r = mid; return l</code><br>Key: use <code>l < r</code> (not <=) and collapse to left boundary.` },
+      { h: `<strong>Find Min in Rotated Sorted Array</strong> (LeetCode #153):<br>Compare <code>nums[mid]</code> with <code>nums[r]</code>. If <code>nums[mid] > nums[r]</code>, minimum is in right half; otherwise in left half (including mid).<br><code>while l < r:\n  mid = l + (r-l)//2\n  if nums[mid] > nums[r]: l = mid+1\n  else: r = mid\nreturn nums[l]</code>` }
+    ],
+    vocab: [
+      { term:"Binary search", ipa:"/ˈbaɪ.nər.i sɜrtʃ/", ko:"이진 탐색", def:"Algorithm halving the search space each iteration; requires sorted input." },
+      { term:"Rotated sorted array", ipa:"/roʊˈteɪ.tɪd ˈsɔːr.tɪd əˈreɪ/", ko:"회전된 정렬 배열", def:"A sorted array that has been shifted at a pivot point." },
+      { term:"Integer overflow", ipa:"/ˈɪn.tɪ.dʒər ˈoʊ.vər.floʊ/", ko:"정수 오버플로우", def:"Bug when (l+r)//2 exceeds max int in some languages; l+(r-l)//2 is safe." },
+      { term:"Left boundary", ipa:"/left ˈbaʊnd.ər.i/", ko:"왼쪽 경계", def:"The smallest valid index satisfying a condition; found by collapsing r to mid." },
+    ],
+    pron: `• <strong>"binary"</strong> → BY-nuh-ree (stress on BY; 3 syllables)\n• <strong>"rotated"</strong> → ROH-tay-tid (stress on ROH)\n• <strong>"insertion"</strong> → in-SUR-shun (stress on SUR)\n\n💡 Always use <code>l + (r-l)//2</code> for mid — prevents overflow and signals interview awareness even though Python has arbitrary precision integers.`,
+    prompt: `An interviewer gives you a sorted array rotated at an unknown pivot. Walk through your binary search approach out loud, explaining why you compare mid to the rightmost element.`,
+    promptKo: `알 수 없는 피벗에서 회전된 정렬 배열이 주어졌습니다. mid를 가장 오른쪽 요소와 비교하는 이유를 포함해 이진 탐색 접근 방식을 소리 내어 설명해 보세요.`
+  },
+  {
+    day: 25,
+    topic: "Coding — Dynamic Programming",
+    topicKo: "코딩 — 동적 프로그래밍",
+    question: "Solve Climbing Stairs, House Robber, and Maximum Subarray (Kadane's Algorithm).",
+    questionKo: "계단 오르기, 집 털기, 최대 부분 배열합(Kadane 알고리즘)을 풀어보세요.",
+    answer: [
+      { h: `<strong>Dynamic Programming (DP)</strong> solves problems by breaking them into overlapping subproblems and storing results (memoization = top-down; tabulation = bottom-up). Key insight: identify the recurrence relation.` },
+      { h: `<strong>Climbing Stairs</strong> (LeetCode #70): n steps, can climb 1 or 2 at a time.<br>Recurrence: <code>dp[i] = dp[i-1] + dp[i-2]</code> (Fibonacci!)<br>Space-optimized: <code>a, b = 1, 1; for _ in range(2, n+1): a, b = b, a+b; return b</code>` },
+      { h: `<strong>House Robber</strong> (LeetCode #198): Adjacent houses can't both be robbed.<br>Recurrence: <code>dp[i] = max(dp[i-1], dp[i-2] + nums[i])</code><br>Space-optimized: <code>prev2, prev1 = 0, 0; for n in nums: prev2, prev1 = prev1, max(prev1, prev2+n); return prev1</code>` },
+      { h: `<strong>Maximum Subarray — Kadane's Algorithm</strong> (LeetCode #53): Find contiguous subarray with the largest sum.<br>Key idea: at each position decide to extend the current subarray or start fresh.<br><code>max_sum = cur = nums[0]; for n in nums[1:]: cur = max(n, cur+n); max_sum = max(max_sum, cur); return max_sum</code><br>O(n) time, O(1) space. Classic "local max vs restart" DP.` }
+    ],
+    vocab: [
+      { term:"Dynamic programming", ipa:"/daɪˈnæm.ɪk ˈproʊ.ɡræm.ɪŋ/", ko:"동적 프로그래밍", def:"Optimization technique storing subproblem results to avoid recomputation." },
+      { term:"Memoization", ipa:"/ˌmem.ə.aɪˈzeɪ.ʃən/", ko:"메모이제이션", def:"Top-down DP: cache results of recursive calls to avoid repeated work." },
+      { term:"Recurrence relation", ipa:"/rɪˈkɜr.əns rɪˈleɪ.ʃən/", ko:"점화식", def:"Equation expressing dp[i] in terms of smaller subproblems." },
+      { term:"Kadane's algorithm", ipa:"/kæˈdɑːnz ˈæl.ɡə.rɪ.ðəm/", ko:"카데인 알고리즘", def:"O(n) algorithm for maximum subarray by tracking current and global max." },
+    ],
+    pron: `• <strong>"dynamic"</strong> → dy-NAM-ik (stress on NAM)\n• <strong>"memoization"</strong> → mem-oh-eye-ZAY-shun (stress on ZAY; not "mem-or-ize-AY-shun")\n• <strong>"Kadane"</strong> → kuh-DAHN (named after Joseph Kadane)\n\n💡 DP interview template: (1) define subproblem, (2) write recurrence, (3) identify base cases, (4) choose bottom-up or top-down, (5) optimize space.`,
+    prompt: `Explain Kadane's algorithm to an interviewer from scratch: what problem it solves, the key decision at each step, and why it's O(n). Walk through a small example array like [-2, 1, -3, 4, -1, 2, 1, -5, 4].`,
+    promptKo: `Kadane 알고리즘을 처음부터 설명해 보세요: 어떤 문제를 풀고, 각 단계의 핵심 결정이 무엇이며, 왜 O(n)인지. [-2, 1, -3, 4, -1, 2, 1, -5, 4] 예시 배열을 사용하세요.`
   }
 ];
 
