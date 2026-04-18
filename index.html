@@ -5,329 +5,236 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily English Practice</title>
 <style>
-/* ── CSS Variables (light/dark) ───────────────────────── */
 :root {
-  --bg: #ffffff;
-  --bg2: #f8f9fa;
-  --surface: #ffffff;
-  --border: #e2e8f0;
-  --primary: #2563eb;
-  --primary-fg: #ffffff;
-  --primary-hover: #1d4ed8;
-  --muted-bg: #f1f5f9;
-  --muted: #64748b;
-  --text: #0f172a;
-  --text2: #334155;
-  --accent: #7c3aed;
-  --green: #16a34a;
-  --green-bg: #f0fdf4;
-  --green-border: #bbf7d0;
-  --yellow: #d97706;
-  --yellow-bg: #fffbeb;
-  --yellow-border: #fde68a;
-  --blue-bg: #eff6ff;
-  --blue-border: #bfdbfe;
-  --radius: 12px;
-  --shadow: 0 1px 3px rgba(0,0,0,.07), 0 1px 2px rgba(0,0,0,.06);
-  --shadow-md: 0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+  --bg:#fff;--surface:#fff;--border:#e2e8f0;--primary:#2563eb;--primary-h:#1d4ed8;
+  --muted-bg:#f1f5f9;--muted:#64748b;--text:#0f172a;--text2:#334155;--accent:#7c3aed;
+  --green:#16a34a;--green-bg:#f0fdf4;--green-b:#bbf7d0;
+  --yellow:#d97706;--yellow-bg:#fffbeb;--yellow-b:#fde68a;
+  --blue-bg:#eff6ff;--blue-b:#bfdbfe;--radius:12px;
+  --shadow:0 1px 3px rgba(0,0,0,.07),0 1px 2px rgba(0,0,0,.06);
 }
-[data-theme="dark"] {
-  --bg: #0f172a;
-  --bg2: #1e293b;
-  --surface: #1e293b;
-  --border: #334155;
-  --primary: #3b82f6;
-  --primary-fg: #ffffff;
-  --primary-hover: #2563eb;
-  --muted-bg: #1e293b;
-  --muted: #94a3b8;
-  --text: #f1f5f9;
-  --text2: #cbd5e1;
-  --accent: #a78bfa;
-  --green: #4ade80;
-  --green-bg: #052e16;
-  --green-border: #166534;
-  --yellow: #fbbf24;
-  --yellow-bg: #1c1208;
-  --yellow-border: #92400e;
-  --blue-bg: #0c1a2e;
-  --blue-border: #1e3a5f;
-  --shadow: 0 1px 3px rgba(0,0,0,.3);
-  --shadow-md: 0 4px 6px rgba(0,0,0,.3);
+[data-theme="dark"]{
+  --bg:#0f172a;--surface:#1e293b;--border:#334155;--primary:#3b82f6;--primary-h:#2563eb;
+  --muted-bg:#1e293b;--muted:#94a3b8;--text:#f1f5f9;--text2:#cbd5e1;--accent:#a78bfa;
+  --green:#4ade80;--green-bg:#052e16;--green-b:#166534;
+  --yellow:#fbbf24;--yellow-bg:#1c1208;--yellow-b:#92400e;
+  --blue-bg:#0c1a2e;--blue-b:#1e3a5f;--shadow:0 1px 3px rgba(0,0,0,.3);
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;font-size:15px;line-height:1.6;transition:background .2s,color .2s}
+a{color:var(--primary);text-decoration:none}
+button{cursor:pointer;font-family:inherit}
 
-/* ── Reset ────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; font-size: 15px; line-height: 1.6; transition: background .2s, color .2s; }
-a { color: var(--primary); text-decoration: none; }
-button { cursor: pointer; font-family: inherit; }
+/* Header */
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:background .2s}
+[data-theme="dark"] header{background:rgba(15,23,42,.92)}
+.header-inner{max-width:1100px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:17px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--primary);display:inline-block}
+nav{display:flex;align-items:center;gap:4px}
+.nav-link{padding:6px 14px;border-radius:8px;font-size:14px;font-weight:500;color:var(--muted);transition:color .15s,background .15s;border:none;background:none}
+.nav-link:hover{color:var(--text);background:var(--muted-bg)}
+.nav-link.active{color:var(--primary);background:var(--blue-bg)}
+.theme-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);display:flex;align-items:center;justify-content:center;font-size:16px;margin-left:8px;transition:background .15s}
+.theme-btn:hover{background:var(--muted-bg)}
 
-/* ── Header ───────────────────────────────────────────── */
-header {
-  position: sticky; top: 0; z-index: 50;
-  background: rgba(255,255,255,.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  transition: background .2s;
-}
-[data-theme="dark"] header { background: rgba(15,23,42,.92); }
+/* Main */
+main{flex:1;max-width:1100px;margin:0 auto;width:100%;padding:32px 24px}
 
-.header-inner {
-  max-width: 1100px; margin: 0 auto;
-  padding: 0 24px; height: 60px;
-  display: flex; align-items: center; justify-content: space-between;
-}
+/* Hero */
+.hero{text-align:center;padding:48px 0 40px}
+.hero h1{font-size:clamp(24px,5vw,42px);font-weight:800;line-height:1.2;margin-bottom:12px}
+.hero h1 span{color:var(--primary)}
+.hero p{font-size:17px;color:var(--muted);max-width:560px;margin:0 auto 28px}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{padding:11px 28px;background:var(--primary);color:#fff;border:none;border-radius:9px;font-size:14px;font-weight:600;transition:background .15s,transform .1s}
+.btn-primary:hover{background:var(--primary-h);transform:translateY(-1px)}
+.btn-outline{padding:11px 28px;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;transition:background .15s}
+.btn-outline:hover{background:var(--muted-bg)}
 
-.logo { font-size: 17px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
-.logo-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); display: inline-block; }
+/* Feature cards */
+.features{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:48px}
+.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+.feature-icon{font-size:28px;margin-bottom:10px}
+.feature-card h3{font-size:15px;font-weight:700;margin-bottom:4px}
+.feature-card p{font-size:13px;color:var(--muted);line-height:1.6}
 
-nav { display: flex; align-items: center; gap: 4px; }
-.nav-link {
-  padding: 6px 14px; border-radius: 8px; font-size: 14px; font-weight: 500;
-  color: var(--muted); transition: color .15s, background .15s; border: none; background: none;
-}
-.nav-link:hover { color: var(--text); background: var(--muted-bg); }
-.nav-link.active { color: var(--primary); background: var(--blue-bg); }
+/* Section */
+.section-title{font-size:22px;font-weight:700;margin-bottom:20px}
+.section-sub{font-size:14px;color:var(--muted);margin-top:4px;margin-bottom:20px}
 
-.theme-btn {
-  width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--border);
-  background: var(--surface); color: var(--text); display: flex; align-items: center; justify-content: center;
-  font-size: 16px; margin-left: 8px; transition: background .15s;
-}
-.theme-btn:hover { background: var(--muted-bg); }
+/* Pages */
+.page{display:none}
+.page.active{display:block}
 
-/* ── Main ─────────────────────────────────────────────── */
-main { flex: 1; max-width: 1100px; margin: 0 auto; width: 100%; padding: 32px 24px; }
+/* Day strip */
+.day-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-bottom:24px}
+.day-chip{flex-shrink:0;padding:7px 16px;border-radius:99px;border:1.5px solid var(--border);font-size:13px;font-weight:600;color:var(--muted);background:var(--surface);transition:all .15s}
+.day-chip:hover:not(.locked){border-color:var(--primary);color:var(--primary)}
+.day-chip.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.day-chip.done{border-color:var(--green);color:var(--green);background:var(--green-bg)}
+.day-chip.done.active{background:var(--green);color:#fff}
+.day-chip.locked{opacity:.35;cursor:not-allowed}
 
-/* ── Hero ─────────────────────────────────────────────── */
-.hero { text-align: center; padding: 48px 0 40px; }
-.hero h1 { font-size: clamp(24px, 5vw, 42px); font-weight: 800; line-height: 1.2; color: var(--text); margin-bottom: 12px; }
-.hero h1 span { color: var(--primary); }
-.hero p { font-size: 17px; color: var(--muted); max-width: 560px; margin: 0 auto 28px; }
-.hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-.btn-primary { padding: 11px 28px; background: var(--primary); color: #fff; border: none; border-radius: 9px; font-size: 14px; font-weight: 600; transition: background .15s, transform .1s; }
-.btn-primary:hover { background: var(--primary-hover); transform: translateY(-1px); }
-.btn-outline { padding: 11px 28px; background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 9px; font-size: 14px; font-weight: 600; transition: background .15s; }
-.btn-outline:hover { background: var(--muted-bg); }
-
-/* ── Feature grid ─────────────────────────────────────── */
-.features { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; margin-bottom: 48px; }
-.feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
-.feature-icon { font-size: 28px; margin-bottom: 10px; }
-.feature-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-.feature-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-/* ── Section title ────────────────────────────────────── */
-.section-title { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
-.section-sub { font-size: 14px; color: var(--muted); margin-top: 4px; margin-bottom: 20px; }
-
-/* ── Page views ───────────────────────────────────────── */
-.page { display: none; }
-.page.active { display: block; }
-
-/* ── Day selector strip ───────────────────────────────── */
-.day-strip { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 24px; }
-.day-chip {
-  flex-shrink: 0; padding: 7px 16px; border-radius: 99px; border: 1.5px solid var(--border);
-  font-size: 13px; font-weight: 600; color: var(--muted); background: var(--surface);
-  transition: all .15s;
-}
-.day-chip:hover:not(.locked) { border-color: var(--primary); color: var(--primary); }
-.day-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-.day-chip.done { border-color: var(--green); color: var(--green); background: var(--green-bg); }
-.day-chip.done.active { background: var(--green); color: #fff; }
-.day-chip.locked { opacity: .35; cursor: not-allowed; }
-
-/* ── Practice layout ──────────────────────────────────── */
-.practice-layout { display: grid; grid-template-columns: 1fr; gap: 16px; }
-
-/* ── Card ─────────────────────────────────────────────── */
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 24px; box-shadow: var(--shadow); }
-.card-label { font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+/* Card */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-bottom:16px;box-shadow:var(--shadow)}
+.card-label{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
 
 /* Question card */
-.question-card { border-left: 4px solid var(--primary); background: var(--blue-bg); border-color: var(--blue-border); border-left-color: var(--primary); }
-.question-card .card-label { color: var(--primary); }
-.question-text { font-size: 20px; font-weight: 700; line-height: 1.4; }
-.question-ko { font-size: 14px; color: var(--muted); margin-top: 6px; }
+.question-card{border-left:4px solid var(--primary);background:var(--blue-bg);border-color:var(--blue-b);border-left-color:var(--primary)}
+.question-card .card-label{color:var(--primary)}
+.question-text{font-size:20px;font-weight:700;line-height:1.4}
+.question-ko{font-size:14px;color:var(--muted);margin-top:6px}
 
 /* Answer */
-.answer-body { font-size: 15px; line-height: 1.8; color: var(--text2); }
-.answer-body strong { color: var(--text); font-weight: 700; }
-.answer-body ul, .answer-body ol { padding-left: 20px; margin: 8px 0; }
-.answer-body li { margin-bottom: 6px; }
-.answer-body p { margin-bottom: 10px; }
+.answer-body{font-size:15px;line-height:1.8;color:var(--text2)}
+.answer-body strong{color:var(--text);font-weight:700}
+.answer-body ul,.answer-body ol{padding-left:20px;margin:8px 0}
+.answer-body li{margin-bottom:6px}
+.answer-body p{margin-bottom:10px}
 
-/* Vocab grid */
-.vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
-.vocab-card { background: var(--muted-bg); border: 1px solid var(--border); border-radius: 9px; padding: 14px; }
-.vocab-card .term { font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 2px; }
-.vocab-card .ipa { font-size: 12px; color: var(--accent); font-style: italic; margin-bottom: 4px; }
-.vocab-card .def-ko { font-size: 12px; color: var(--muted); margin-bottom: 3px; }
-.vocab-card .def-en { font-size: 12px; color: var(--text2); line-height: 1.5; }
+/* Vocab */
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.vocab-card{background:var(--muted-bg);border:1px solid var(--border);border-radius:9px;padding:14px}
+.vocab-card .term{font-size:14px;font-weight:700;color:var(--primary);margin-bottom:2px}
+.vocab-card .ipa{font-size:12px;color:var(--accent);font-style:italic;margin-bottom:4px}
+.vocab-card .def-ko{font-size:12px;color:var(--muted);margin-bottom:3px}
+.vocab-card .def-en{font-size:12px;color:var(--text2);line-height:1.5}
 
 /* Pronunciation card */
-.pronunc-card { border-left: 4px solid var(--yellow); background: var(--yellow-bg); border-color: var(--yellow-border); border-left-color: var(--yellow); }
-.pronunc-card .card-label { color: var(--yellow); }
+.pronunc-card{border-left:4px solid var(--yellow);background:var(--yellow-bg);border-color:var(--yellow-b);border-left-color:var(--yellow)}
+.pronunc-card .card-label{color:var(--yellow)}
 
-/* Practice prompt card */
-.prompt-card { border-left: 4px solid var(--green); background: var(--green-bg); border-color: var(--green-border); border-left-color: var(--green); }
-.prompt-card .card-label { color: var(--green); }
+/* Practice prompt */
+.prompt-card{border-left:4px solid var(--green);background:var(--green-bg);border-color:var(--green-b);border-left-color:var(--green)}
+.prompt-card .card-label{color:var(--green)}
 
 /* Timer */
-.timer-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
-.timer-display { font-size: 30px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--green); letter-spacing: 2px; min-width: 72px; }
-.timer-start { padding: 8px 20px; background: var(--green); color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 700; transition: opacity .15s; }
-.timer-start:hover { opacity: .85; }
-.timer-reset { padding: 8px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 13px; color: var(--muted); font-weight: 600; transition: background .15s; }
-.timer-reset:hover { background: var(--muted-bg); }
+.timer-row{display:flex;align-items:center;gap:12px;margin-top:16px}
+.timer-display{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--green);letter-spacing:2px;min-width:72px}
+.timer-start{padding:8px 20px;background:var(--green);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700}
+.timer-start:hover{opacity:.85}
+.timer-reset{padding:8px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:13px;color:var(--muted);font-weight:600}
+.timer-reset:hover{background:var(--muted-bg)}
 
-/* Mark done button */
-.done-btn { padding: 9px 22px; border-radius: 9px; font-size: 14px; font-weight: 700; border: none; transition: all .15s; }
-.done-btn.pending { background: var(--primary); color: #fff; }
-.done-btn.pending:hover { background: var(--primary-hover); }
-.done-btn.done { background: var(--green-bg); color: var(--green); border: 1.5px solid var(--green-border); }
+/* Done btn */
+.done-btn{padding:9px 22px;border-radius:9px;font-size:14px;font-weight:700;border:none;transition:all .15s}
+.done-btn.pending{background:var(--primary);color:#fff}
+.done-btn.pending:hover{background:var(--primary-h)}
+.done-btn.done{background:var(--green-bg);color:var(--green);border:1.5px solid var(--green-b)}
 
-/* Top bar of practice view */
-.practice-topbar { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 12px; }
-.practice-topbar .info h2 { font-size: 20px; font-weight: 800; }
-.practice-topbar .info p { font-size: 13px; color: var(--muted); margin-top: 2px; }
-.topbar-right { display: flex; align-items: center; gap: 10px; }
-.nav-arrow { padding: 7px 14px; border: 1px solid var(--border); background: var(--surface); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--text2); transition: background .15s; }
-.nav-arrow:hover:not(:disabled) { background: var(--muted-bg); }
-.nav-arrow:disabled { opacity: .3; cursor: not-allowed; }
+/* Practice topbar */
+.practice-topbar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px}
+.practice-topbar .info h2{font-size:20px;font-weight:800}
+.practice-topbar .info p{font-size:13px;color:var(--muted);margin-top:2px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.nav-arrow{padding:7px 14px;border:1px solid var(--border);background:var(--surface);border-radius:8px;font-size:13px;font-weight:600;color:var(--text2);transition:background .15s}
+.nav-arrow:hover:not(:disabled){background:var(--muted-bg)}
+.nav-arrow:disabled{opacity:.3;cursor:not-allowed}
 
-/* ── Progress page ────────────────────────────────────── */
-.progress-header { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
-.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; flex: 1; min-width: 150px; box-shadow: var(--shadow); }
-.stat-num { font-size: 36px; font-weight: 800; color: var(--primary); }
-.stat-label { font-size: 13px; color: var(--muted); margin-top: 2px; }
-.progress-bar-wrap { margin-bottom: 24px; }
-.progress-bar-labels { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-bottom: 8px; }
-.progress-bar { height: 10px; background: var(--muted-bg); border-radius: 99px; overflow: hidden; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 99px; transition: width .5s ease; }
-.curriculum-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
-.curriculum-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; box-shadow: var(--shadow); cursor: pointer; transition: border-color .15s, transform .1s; }
-.curriculum-card:hover:not(.locked) { border-color: var(--primary); transform: translateY(-1px); }
-.curriculum-card.locked { opacity: .4; cursor: default; }
-.curriculum-card.done .badge { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
-.badge { width: 36px; height: 36px; border-radius: 50%; border: 1.5px solid var(--border); background: var(--muted-bg); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 800; color: var(--muted); flex-shrink: 0; }
-.curriculum-card .c-info { flex: 1; min-width: 0; }
-.curriculum-card .c-day { font-size: 11px; color: var(--muted); }
-.curriculum-card .c-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Progress */
+.progress-header{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;flex:1;min-width:140px;box-shadow:var(--shadow)}
+.stat-num{font-size:36px;font-weight:800;color:var(--primary)}
+.stat-label{font-size:13px;color:var(--muted);margin-top:2px}
+.progress-bar-wrap{margin-bottom:24px}
+.progress-bar-labels{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:8px}
+.progress-bar{height:10px;background:var(--muted-bg);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));border-radius:99px;transition:width .5s ease}
+.curriculum-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.curriculum-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);cursor:pointer;transition:border-color .15s,transform .1s}
+.curriculum-card:hover:not(.locked){border-color:var(--primary);transform:translateY(-1px)}
+.curriculum-card.locked{opacity:.4;cursor:default}
+.curriculum-card.done .badge{background:var(--green-bg);border-color:var(--green-b);color:var(--green)}
+.badge{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);background:var(--muted-bg);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--muted);flex-shrink:0}
+.c-info{flex:1;min-width:0}
+.c-day{font-size:11px;color:var(--muted)}
+.c-title{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* ── Telegram page ────────────────────────────────────── */
-.tg-setup { max-width: 680px; }
-.tg-step { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; margin-bottom: 14px; box-shadow: var(--shadow); display: flex; gap: 16px; }
-.tg-num { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: #fff; font-size: 14px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.tg-step h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-.tg-step p, .tg-step li { font-size: 14px; color: var(--text2); line-height: 1.7; }
-.tg-step ul { padding-left: 18px; }
-.code-block { background: var(--muted-bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; font-family: 'Consolas', monospace; font-size: 13px; color: var(--text); margin-top: 10px; white-space: pre; overflow-x: auto; }
-.copy-btn { margin-top: 8px; padding: 6px 14px; font-size: 12px; font-weight: 600; background: var(--muted-bg); border: 1px solid var(--border); border-radius: 6px; color: var(--muted); transition: background .15s; }
-.copy-btn:hover { background: var(--border); }
-.tg-note { background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: 10px; padding: 14px 18px; font-size: 14px; color: var(--text2); margin-bottom: 20px; }
-.tg-note strong { color: var(--primary); }
+/* Telegram */
+.tg-setup{max-width:680px}
+.tg-step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:14px;box-shadow:var(--shadow);display:flex;gap:16px}
+.tg-num{width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tg-step h3{font-size:15px;font-weight:700;margin-bottom:6px}
+.tg-step p,.tg-step li{font-size:14px;color:var(--text2);line-height:1.7}
+.tg-step ul{padding-left:18px}
+.code-block{background:var(--muted-bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-family:'Consolas',monospace;font-size:13px;color:var(--text);margin-top:10px;white-space:pre;overflow-x:auto}
+.copy-btn{margin-top:8px;padding:6px 14px;font-size:12px;font-weight:600;background:var(--muted-bg);border:1px solid var(--border);border-radius:6px;color:var(--muted);transition:background .15s}
+.copy-btn:hover{background:var(--border)}
+.tg-note{background:var(--blue-bg);border:1px solid var(--blue-b);border-radius:10px;padding:14px 18px;font-size:14px;color:var(--text2);margin-bottom:20px}
+.tg-note strong{color:var(--primary)}
 
-/* ── Footer ───────────────────────────────────────────── */
-footer { border-top: 1px solid var(--border); background: var(--bg); }
-footer .inner { max-width: 1100px; margin: 0 auto; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 13px; color: var(--muted); }
+/* Footer */
+footer{border-top:1px solid var(--border);background:var(--bg)}
+footer .inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:13px;color:var(--muted)}
 
-/* ── Scrollbar ────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
 
-/* ── Responsive ───────────────────────────────────────── */
-@media (max-width: 640px) {
-  .header-inner { padding: 0 16px; }
-  main { padding: 20px 16px; }
-  nav .nav-link span { display: none; }
-  .hero { padding: 28px 0 24px; }
-  .practice-topbar { flex-direction: column; }
+@media(max-width:640px){
+  .header-inner{padding:0 16px}
+  main{padding:20px 16px}
+  .hero{padding:28px 0 24px}
+  .practice-topbar{flex-direction:column}
+  nav .nav-link span{display:none}
 }
 </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
 <header>
   <div class="header-inner">
     <div class="logo"><span class="logo-dot"></span> Daily English Practice</div>
     <nav>
-      <button class="nav-link active" onclick="showPage('home')" id="nav-home"><span>홈</span></button>
-      <button class="nav-link" onclick="showPage('today')" id="nav-today"><span>오늘의 학습</span></button>
-      <button class="nav-link" onclick="showPage('progress')" id="nav-progress"><span>진행현황</span></button>
-      <button class="nav-link" onclick="showPage('telegram')" id="nav-telegram"><span>텔레그램</span></button>
-      <button class="theme-btn" onclick="toggleTheme()" title="테마 변경" id="theme-icon">🌙</button>
+      <button class="nav-link active" id="nav-home" onclick="showPage('home')"><span>홈</span></button>
+      <button class="nav-link" id="nav-today" onclick="showPage('today')"><span>오늘의 학습</span></button>
+      <button class="nav-link" id="nav-progress" onclick="showPage('progress')"><span>진행현황</span></button>
+      <button class="nav-link" id="nav-telegram" onclick="showPage('telegram')"><span>텔레그램</span></button>
+      <button class="theme-btn" id="theme-icon" onclick="toggleTheme()" title="테마 변경">🌙</button>
     </nav>
   </div>
 </header>
 
-<!-- ── MAIN ── -->
 <main>
-
-  <!-- HOME PAGE -->
+  <!-- HOME -->
   <div class="page active" id="page-home">
     <div class="hero">
       <h1>영어 인터뷰 준비를<br><span>매일 10분</span>으로</h1>
-      <p>영어 인터뷰에 필요한 핵심 표현을 단계별로 학습하세요. 누구나 쉽게 시작할 수 있고, 매일 아침 텔레그램으로 오늘의 학습을 받아보세요.</p>
+      <p>영어 면접에 필요한 핵심 표현을 단계별로 학습하세요. 누구나 쉽게 시작할 수 있고, 매일 아침 텔레그램으로 오늘의 학습을 받아보세요.</p>
       <div class="hero-btns">
         <button class="btn-primary" onclick="showPage('today')">오늘의 학습 시작하기</button>
         <button class="btn-outline" onclick="showPage('telegram')">텔레그램 구독하기</button>
       </div>
     </div>
-
-    <div style="margin-bottom:16px">
-      <div class="section-title" style="text-align:center;margin-bottom:24px">주요 기능</div>
-    </div>
+    <div style="margin-bottom:16px"><div class="section-title" style="text-align:center;margin-bottom:24px">주요 기능</div></div>
     <div class="features">
-      <div class="feature-card">
-        <div class="feature-icon">📖</div>
-        <h3>단계별 학습 커리큘럼</h3>
-        <p>ML 기초부터 심화까지 15일 체계적 커리큘럼. 모범 답변과 핵심 어휘를 함께 제공합니다.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🗣️</div>
-        <h3>발음 & 스피킹 연습</h3>
-        <p>전문 용어의 정확한 발음 기호(IPA)와 강세 표시. 타이머로 실제 면접처럼 연습하세요.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">📱</div>
-        <h3>텔레그램 매일 알림</h3>
-        <p>매일 아침 8시, 오늘의 학습 내용을 텔레그램으로 받아보세요. 설치 안내를 따라 간단하게 구독하세요.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">✅</div>
-        <h3>학습 진행 추적</h3>
-        <p>완료한 날을 체크하며 나의 진행률을 확인하세요. 브라우저에 자동 저장됩니다.</p>
-      </div>
+      <div class="feature-card"><div class="feature-icon">📖</div><h3>15일 체계적 커리큘럼</h3><p>기초부터 심화까지 단계별 학습. 모범 답변과 핵심 어휘를 함께 제공합니다.</p></div>
+      <div class="feature-card"><div class="feature-icon">🗣️</div><h3>발음 &amp; 스피킹 연습</h3><p>전문 용어의 정확한 발음 기호(IPA)와 강세 표시. 타이머로 실제 면접처럼 연습하세요.</p></div>
+      <div class="feature-card"><div class="feature-icon">📱</div><h3>텔레그램 매일 알림</h3><p>매일 아침 8시, 오늘의 학습 내용을 텔레그램으로 받아보세요.</p></div>
+      <div class="feature-card"><div class="feature-icon">✅</div><h3>학습 진행 추적</h3><p>완료한 날을 체크하며 나의 진행률을 확인하세요. 브라우저에 자동 저장됩니다.</p></div>
     </div>
-
-    <!-- Sample vocab preview -->
-    <div style="background:var(--muted-bg);border-radius:var(--radius);padding:28px 24px;margin-top:8px;">
+    <div style="background:var(--muted-bg);border-radius:var(--radius);padding:28px 24px">
       <div class="section-title" style="margin-bottom:6px">학습 미리보기</div>
-      <p class="section-sub">Day 1 · Bias-Variance Tradeoff의 핵심 어휘</p>
+      <p class="section-sub">Day 1 핵심 어휘</p>
       <div class="vocab-grid">
-        <div class="vocab-card"><div class="term">Overfitting</div><div class="ipa">/ˌoʊvərˈfɪtɪŋ/</div><div class="def-ko">과적합</div><div class="def-en">Model learns training data noise and fails on new data.</div></div>
-        <div class="vocab-card"><div class="term">Underfitting</div><div class="ipa">/ˌʌndərˈfɪtɪŋ/</div><div class="def-ko">과소적합</div><div class="def-en">Model too simple to capture underlying data patterns.</div></div>
-        <div class="vocab-card"><div class="term">Bias</div><div class="ipa">/ˈbaɪ.əs/</div><div class="def-ko">편향</div><div class="def-en">Error from wrong assumptions in the learning algorithm.</div></div>
-        <div class="vocab-card"><div class="term">Variance</div><div class="ipa">/ˈveər.i.əns/</div><div class="def-ko">분산</div><div class="def-en">Sensitivity to small fluctuations in training data.</div></div>
+        <div class="vocab-card"><div class="term">Overfitting</div><div class="ipa">/ˌoʊvərˈfɪtɪŋ/</div><div class="def-ko">🇰🇷 과적합</div><div class="def-en">Model learns training data noise and fails on new data.</div></div>
+        <div class="vocab-card"><div class="term">Bias</div><div class="ipa">/ˈbaɪ.əs/</div><div class="def-ko">🇰🇷 편향</div><div class="def-en">Error from overly simplified model assumptions.</div></div>
+        <div class="vocab-card"><div class="term">Variance</div><div class="ipa">/ˈveər.i.əns/</div><div class="def-ko">🇰🇷 분산</div><div class="def-en">Sensitivity to small fluctuations in training data.</div></div>
+        <div class="vocab-card"><div class="term">Generalization</div><div class="ipa">/ˌdʒen.ər.əl.aɪˈzeɪ.ʃən/</div><div class="def-ko">🇰🇷 일반화</div><div class="def-en">Model ability to perform well on unseen data.</div></div>
       </div>
-      <div style="text-align:center;margin-top:20px">
-        <button class="btn-primary" onclick="showPage('today')">전체 학습 시작하기 →</button>
-      </div>
+      <div style="text-align:center;margin-top:20px"><button class="btn-primary" onclick="showPage('today')">전체 학습 시작하기 →</button></div>
     </div>
   </div>
 
-  <!-- TODAY PAGE -->
+  <!-- TODAY -->
   <div class="page" id="page-today">
     <div class="section-title">오늘의 학습 <span style="font-size:15px;color:var(--muted);font-weight:500">Daily Practice</span></div>
     <div class="day-strip" id="day-strip"></div>
     <div id="practice-view"></div>
   </div>
 
-  <!-- PROGRESS PAGE -->
+  <!-- PROGRESS -->
   <div class="page" id="page-progress">
     <div class="section-title">학습 진행현황 <span style="font-size:15px;color:var(--muted);font-weight:500">Progress</span></div>
     <div class="progress-header" id="stat-cards"></div>
@@ -339,86 +246,28 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 16px 24px; display: 
     <div class="curriculum-grid" id="curriculum-grid"></div>
   </div>
 
-  <!-- TELEGRAM PAGE -->
+  <!-- TELEGRAM -->
   <div class="page" id="page-telegram">
     <div class="section-title">텔레그램 매일 알림 설정 <span style="font-size:15px;color:var(--muted);font-weight:500">Telegram Daily Bot</span></div>
-
-    <div class="tg-note">
-      <strong>📬 매일 아침 8시</strong>에 오늘의 학습 내용(질문 + 핵심 어휘 + 발음 팁)을 텔레그램으로 자동 전송합니다.<br>
-      아래 Python 봇을 서버(또는 PC)에서 실행하면 구독자 전체에게 자동 발송됩니다.
-    </div>
-
+    <div class="tg-note"><strong>📬 매일 아침 8시</strong>에 오늘의 학습 내용을 텔레그램으로 자동 전송합니다.<br>아래 Python 봇을 서버(또는 PC)에서 실행하면 구독자 전체에게 자동 발송됩니다.</div>
     <div class="tg-setup">
-      <div class="tg-step">
-        <div class="tg-num">1</div>
-        <div>
-          <h3>텔레그램 봇 만들기</h3>
-          <ul>
-            <li>텔레그램에서 <strong>@BotFather</strong>를 검색하세요</li>
-            <li><code>/newbot</code> 명령어를 입력하고 봇 이름과 username 설정</li>
-            <li>발급받은 <strong>Bot Token</strong>을 복사해두세요</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tg-step">
-        <div class="tg-num">2</div>
-        <div>
-          <h3>Python 패키지 설치</h3>
-          <div class="code-block">pip install python-telegram-bot apscheduler pytz</div>
-          <button class="copy-btn" onclick="copyCode(this, 'pip install python-telegram-bot apscheduler pytz')">복사</button>
-        </div>
-      </div>
-
-      <div class="tg-step">
-        <div class="tg-num">3</div>
-        <div>
-          <h3>telegram_bot.py 실행</h3>
-          <ul>
-            <li>다운로드한 <code>telegram_bot.py</code> 파일을 열고</li>
-            <li><code>BOT_TOKEN = "YOUR_TOKEN_HERE"</code> 부분에 1단계에서 받은 토큰을 입력</li>
-          </ul>
-          <div class="code-block">python telegram_bot.py</div>
-          <button class="copy-btn" onclick="copyCode(this, 'python telegram_bot.py')">복사</button>
-        </div>
-      </div>
-
-      <div class="tg-step">
-        <div class="tg-num">4</div>
-        <div>
-          <h3>봇 구독하기</h3>
-          <ul>
-            <li>텔레그램에서 본인의 봇을 검색해서 시작</li>
-            <li><strong>/start</strong> — 구독 시작 (매일 8시 자동 발송)</li>
-            <li><strong>/today</strong> — 오늘의 학습 즉시 받기</li>
-            <li><strong>/day 3</strong> — 특정 날 학습 내용 요청</li>
-            <li><strong>/stop</strong> — 구독 취소</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tg-step">
-        <div class="tg-num">5</div>
-        <div>
-          <h3>24시간 운영 (선택)</h3>
-          <p>PC를 항상 켜두거나, AWS EC2 / Railway / Fly.io 같은 무료 서버에 배포하면 안정적으로 운영할 수 있습니다.</p>
-        </div>
-      </div>
+      <div class="tg-step"><div class="tg-num">1</div><div><h3>텔레그램 봇 만들기</h3><ul><li>텔레그램에서 <strong>@BotFather</strong>를 검색하세요</li><li><code>/newbot</code> 명령어 입력 후 이름과 username 설정</li><li>발급받은 <strong>Bot Token</strong>을 복사해두세요</li></ul></div></div>
+      <div class="tg-step"><div class="tg-num">2</div><div><h3>패키지 설치</h3><div class="code-block">pip install python-telegram-bot apscheduler pytz</div><button class="copy-btn" onclick="copyCode(this,'pip install python-telegram-bot apscheduler pytz')">복사</button></div></div>
+      <div class="tg-step"><div class="tg-num">3</div><div><h3>telegram_bot.py 실행</h3><ul><li><code>BOT_TOKEN = "YOUR_TOKEN_HERE"</code> 부분에 토큰 입력</li></ul><div class="code-block">python telegram_bot.py</div><button class="copy-btn" onclick="copyCode(this,'python telegram_bot.py')">복사</button></div></div>
+      <div class="tg-step"><div class="tg-num">4</div><div><h3>봇 명령어</h3><ul><li><strong>/start</strong> — 구독 시작 (매일 8시 자동 발송)</li><li><strong>/today</strong> — 오늘의 학습 즉시 받기</li><li><strong>/day 3</strong> — 특정 날 학습 요청</li><li><strong>/stop</strong> — 구독 취소</li></ul></div></div>
     </div>
   </div>
-
 </main>
 
-<!-- ── FOOTER ── -->
 <footer>
   <div class="inner">
     <span>© 2026 Daily English Practice · 매일 10분 영어 인터뷰 준비</span>
-    <span>데이터 브라우저에 자동 저장 · 인터넷 불필요</span>
+    <span>데이터 브라우저에 자동 저장</span>
   </div>
 </footer>
 
 <script>
-// ── DATA ────────────────────────────────────────────────
+// ── DATA (template literals = 아포스트로피 이슈 없음) ───
 const DAYS = [
   {
     day: 1,
@@ -427,21 +276,21 @@ const DAYS = [
     question: "Explain the Bias-Variance Tradeoff.",
     questionKo: "편향-분산 트레이드오프를 설명해 주세요.",
     answer: [
-      { type: 'p', html: 'The <strong>Bias-Variance Tradeoff</strong> is a fundamental concept describing the relationship between model complexity and its ability to generalize to new data.' },
-      { type: 'p', html: '<strong>Bias (편향)</strong> is the error from overly simplistic assumptions. A high-bias model <em>underfits</em> — it fails to capture underlying patterns and performs poorly on both training and test data.' },
-      { type: 'p', html: '<strong>Variance (분산)</strong> is the model\'s sensitivity to fluctuations in training data. A high-variance model <em>overfits</em> — it memorizes the training set (including noise) and performs poorly on unseen data.' },
-      { type: 'p', html: 'The tradeoff: reducing bias tends to increase variance, and vice versa. Our goal is to find the <strong>sweet spot</strong> where total error — bias² + variance + irreducible noise — is minimized.' }
+      { h: `The <strong>Bias-Variance Tradeoff</strong> describes the relationship between model complexity and its ability to generalize to new, unseen data.` },
+      { h: `<strong>Bias (편향)</strong> is error from overly simplistic assumptions. A high-bias model <em>underfits</em> — it fails to capture underlying patterns and performs poorly on both training and test data.` },
+      { h: `<strong>Variance (분산)</strong> is the model's sensitivity to fluctuations in training data. A high-variance model <em>overfits</em> — it memorizes noise and performs poorly on unseen data.` },
+      { h: `The tradeoff: reducing bias tends to increase variance. The goal is to find the <strong>sweet spot</strong> where total error (bias² + variance + irreducible noise) is minimized.` }
     ],
     vocab: [
-      { term: "Bias", ipa: "/ˈbaɪ.əs/", ko: "편향", def: "Error from overly simplified model assumptions." },
-      { term: "Variance", ipa: "/ˈveər.i.əns/", ko: "분산", def: "Sensitivity to small changes in training data." },
-      { term: "Underfitting", ipa: "/ˌʌndərˈfɪtɪŋ/", ko: "과소적합", def: "Model too simple to capture data patterns." },
-      { term: "Overfitting", ipa: "/ˌoʊvərˈfɪtɪŋ/", ko: "과적합", def: "Model memorizes training data including noise." },
-      { term: "Generalization", ipa: "/ˌdʒen.ər.əl.aɪˈzeɪ.ʃən/", ko: "일반화", def: "Model's ability to perform well on new data." },
+      { term:"Bias", ipa:"/ˈbaɪ.əs/", ko:"편향", def:"Error from overly simplified model assumptions." },
+      { term:"Variance", ipa:"/ˈveər.i.əns/", ko:"분산", def:"Sensitivity to small changes in training data." },
+      { term:"Underfitting", ipa:"/ˌʌndərˈfɪtɪŋ/", ko:"과소적합", def:"Model too simple to capture data patterns." },
+      { term:"Overfitting", ipa:"/ˌoʊvərˈfɪtɪŋ/", ko:"과적합", def:"Model memorizes training data including noise." },
+      { term:"Generalization", ipa:"/ˌdʒen.ər.əl.aɪˈzeɪ.ʃən/", ko:"일반화", def:"Model's ability to perform well on new data." },
     ],
-    pronunciation: 'Stress patterns to practice:\n• <strong>"bias"</strong> → BY-uhs (2 syllables, stress on first)\n• <strong>"variance"</strong> → VAIR-ee-uhns (3 syllables, stress on first)\n• <strong>"tradeoff"</strong> → TRAYD-awf (1 stress unit — say it as one word)\n\n💡 In interviews, clearly separate "bias" and "variance" — they are often confused by non-native speakers.',
-    prompt: 'Explain the Bias-Variance Tradeoff as if talking to a hiring manager who understands ML basics. Include a concrete example (e.g., decision tree depth) and mention how you handle it in practice. Aim for 60–90 seconds.',
-    promptKo: '면접관에게 설명하듯 실제 예시(예: 결정 트리 깊이)와 함께 편향-분산 트레이드오프를 말해보세요. 60~90초를 목표로 하세요.'
+    pron: `• <strong>"bias"</strong> → BY-uhs (2 syllables, stress on first)\n• <strong>"variance"</strong> → VAIR-ee-uhns (3 syllables, stress on first)\n• <strong>"tradeoff"</strong> → TRAYD-awf (say it as one word)\n\n💡 Clearly separate "bias" and "variance" — they are often confused by non-native speakers.`,
+    prompt: `Explain the Bias-Variance Tradeoff to a hiring manager who understands ML basics. Include a concrete example (e.g., decision tree depth) and mention how you handle it in practice. Aim for 60–90 seconds.`,
+    promptKo: `면접관에게 설명하듯 실제 예시(결정 트리 깊이)와 함께 말해보세요. 60~90초를 목표로 하세요.`
   },
   {
     day: 2,
@@ -450,21 +299,21 @@ const DAYS = [
     question: "What is the difference between supervised and unsupervised learning?",
     questionKo: "지도 학습과 비지도 학습의 차이는 무엇인가요?",
     answer: [
-      { type: 'p', html: 'The key distinction lies in whether the training data has <strong>labels (정답)</strong>.' },
-      { type: 'p', html: '<strong>Supervised Learning (지도 학습)</strong> trains on labeled data — each input has a known correct output. The model learns to map inputs to outputs. Examples: spam classification, house price prediction. Common algorithms: Linear Regression, Decision Trees, SVM, Neural Networks.' },
-      { type: 'p', html: '<strong>Unsupervised Learning (비지도 학습)</strong> trains on unlabeled data — no predefined answers. The model finds hidden structure or patterns. Examples: customer segmentation, anomaly detection, topic modeling. Common algorithms: K-Means, DBSCAN, PCA, Autoencoders.' },
-      { type: 'p', html: '<strong>When to choose:</strong> Use supervised learning when labeled data is available and you have a clear prediction target. Use unsupervised learning to explore unknown structure, compress data, or when labeling is expensive.' }
+      { h: `The key distinction lies in whether the training data has <strong>labels (정답)</strong>.` },
+      { h: `<strong>Supervised Learning (지도 학습)</strong> trains on labeled data — each input has a known correct output. Examples: spam classification, house price prediction. Common algorithms: Linear Regression, Decision Trees, SVM, Neural Networks.` },
+      { h: `<strong>Unsupervised Learning (비지도 학습)</strong> trains on unlabeled data. The model finds hidden structure. Examples: customer segmentation, anomaly detection. Common algorithms: K-Means, DBSCAN, PCA, Autoencoders.` },
+      { h: `<strong>When to choose:</strong> Supervised when labels exist and you have a clear prediction target. Unsupervised to explore unknown structure or when labeling is expensive.` }
     ],
     vocab: [
-      { term: "Labeled data", ipa: "/ˈleɪ.bəld ˈdeɪ.tə/", ko: "레이블 데이터", def: "Data where each input has a known correct output." },
-      { term: "Classification", ipa: "/ˌklæs.ɪ.fɪˈkeɪ.ʃən/", ko: "분류", def: "Predicting a discrete category from inputs." },
-      { term: "Clustering", ipa: "/ˈklʌs.tər.ɪŋ/", ko: "군집화", def: "Grouping similar data points without labels." },
-      { term: "Anomaly detection", ipa: "/əˈnɒm.ə.li/", ko: "이상 탐지", def: "Identifying unusual patterns that differ from the norm." },
-      { term: "Dimensionality reduction", ipa: "/daɪˌmen.ʃənˈæl.ɪ.ti/", ko: "차원 축소", def: "Reducing features while retaining key information." },
+      { term:"Labeled data", ipa:"/ˈleɪ.bəld ˈdeɪ.tə/", ko:"레이블 데이터", def:"Data where each input has a known correct output." },
+      { term:"Classification", ipa:"/ˌklæs.ɪ.fɪˈkeɪ.ʃən/", ko:"분류", def:"Predicting a discrete category from inputs." },
+      { term:"Clustering", ipa:"/ˈklʌs.tər.ɪŋ/", ko:"군집화", def:"Grouping similar data points without labels." },
+      { term:"Anomaly detection", ipa:"/əˈnɒm.ə.li/", ko:"이상 탐지", def:"Identifying unusual patterns that differ from the norm." },
+      { term:"Dimensionality reduction", ipa:"/daɪˌmen.ʃənˈæl.ɪ.ti/", ko:"차원 축소", def:"Reducing features while retaining key information." },
     ],
-    pronunciation: '• <strong>"supervised"</strong> → SOO-per-vyzd (stress on SOO)\n• <strong>"unsupervised"</strong> → un-SOO-per-vyzd (un- is quick and unstressed)\n• <strong>"algorithm"</strong> → AL-goh-rith-um (stress on AL, never "al-GO-rithm")\n\n💡 Practice saying "machine learning algorithm" 3 times fast — it's a phrase you\'ll use constantly.',
-    prompt: 'An interviewer asks: "Can you walk me through a project where you used supervised learning, and explain why you didn\'t use an unsupervised approach?" Answer in 60–90 seconds using specific algorithm names.',
-    promptKo: '면접관이 지도 학습을 사용한 프로젝트를 설명하고, 비지도 학습을 선택하지 않은 이유를 물어봅니다. 60~90초 안에 구체적인 알고리즘 이름을 언급하며 답해보세요.'
+    pron: `• <strong>"supervised"</strong> → SOO-per-vyzd (stress on SOO; "un-" prefix is quick and unstressed)\n• <strong>"algorithm"</strong> → AL-goh-rith-um (stress on AL, never "al-GO-rithm")\n• <strong>"clustering"</strong> → KLUS-ter-ing\n\n💡 Practice: "machine learning algorithm" — say it 3 times fast.`,
+    prompt: `An interviewer asks: "Walk me through a project where you used supervised learning and explain why you did not use an unsupervised approach." Answer in 60–90 seconds using specific algorithm names.`,
+    promptKo: `지도 학습을 사용한 프로젝트를 설명하고, 비지도 학습을 선택하지 않은 이유를 말해보세요. 60~90초, 알고리즘 이름을 언급하세요.`
   },
   {
     day: 3,
@@ -473,21 +322,21 @@ const DAYS = [
     question: "What is cross-validation, and why is it important?",
     questionKo: "교차 검증이란 무엇이며 왜 중요한가요?",
     answer: [
-      { type: 'p', html: '<strong>Cross-validation</strong> is a technique to evaluate how a model generalizes to an independent dataset by partitioning data into multiple train/test splits.' },
-      { type: 'p', html: '<strong>K-Fold Cross-Validation</strong> (most common): Data is split into k equal folds. The model trains on k-1 folds and tests on the remaining fold — repeated k times. Final performance = average across all k runs.' },
-      { type: 'p', html: '<strong>Why it matters:</strong><br>• <strong>Prevents overfitting</strong> — testing on multiple unseen subsets reveals if the model truly generalizes<br>• <strong>Maximizes data use</strong> — every sample is used for both training and validation<br>• <strong>Reliable comparison</strong> — reduces variance in performance estimates for fair model/hyperparameter selection' },
-      { type: 'p', html: '<strong>Variants:</strong> Stratified K-Fold (preserves class ratios), Leave-One-Out (k=n), Time-Series CV (respects temporal order).' }
+      { h: `<strong>Cross-validation</strong> is a technique to evaluate how a model generalizes to an independent dataset by partitioning data into multiple train/test splits.` },
+      { h: `<strong>K-Fold CV</strong> (most common): Data is split into k equal folds. Train on k-1 folds, test on the remaining fold — repeated k times. Final metric = average across all k runs.` },
+      { h: `<strong>Why it matters:</strong><br>• <strong>Prevents overfitting</strong> — testing on multiple unseen subsets reveals true generalization<br>• <strong>Maximizes data use</strong> — every sample is used for both training and validation<br>• <strong>Reliable comparison</strong> — reduces variance in estimates for fair model selection` },
+      { h: `<strong>Variants:</strong> Stratified K-Fold (preserves class ratios), Leave-One-Out (k=n), Time-Series CV (respects temporal order).` }
     ],
     vocab: [
-      { term: "K-Fold", ipa: "/keɪ foʊld/", ko: "K-겹 교차 검증", def: "Data split into k parts; each serves as test set once." },
-      { term: "Stratified", ipa: "/ˈstræt.ɪ.faɪd/", ko: "층화된", def: "Each fold preserves the same class distribution as the full dataset." },
-      { term: "Generalizability", ipa: "/ˌdʒen.ər.ə.laɪ.zəˈbɪl.ɪ.ti/", ko: "일반화 능력", def: "How well a model performs on unseen data." },
-      { term: "Hyperparameter", ipa: "/ˈhaɪ.pər.pær.ə.mɪ.tər/", ko: "하이퍼파라미터", def: "Model settings set before training (e.g., learning rate, k in KNN)." },
-      { term: "Hold-out set", ipa: "/hoʊld aʊt/", ko: "홀드아웃 세트", def: "Data kept completely separate to evaluate the final model." },
+      { term:"K-Fold", ipa:"/keɪ foʊld/", ko:"K-겹 교차 검증", def:"Data split into k parts; each serves as test set once." },
+      { term:"Stratified", ipa:"/ˈstræt.ɪ.faɪd/", ko:"층화된", def:"Each fold preserves the same class distribution as the full dataset." },
+      { term:"Generalizability", ipa:"/ˌdʒen.ər.ə.laɪ.zəˈbɪl.ɪ.ti/", ko:"일반화 능력", def:"How well a model performs on unseen data." },
+      { term:"Hyperparameter", ipa:"/ˈhaɪ.pər.pær.ə.mɪ.tər/", ko:"하이퍼파라미터", def:"Model settings configured before training (e.g., learning rate)." },
+      { term:"Hold-out set", ipa:"/hoʊld aʊt/", ko:"홀드아웃 세트", def:"Data reserved only for final model evaluation." },
     ],
-    pronunciation: '• <strong>"cross-validation"</strong> → KRAWS-val-ih-DAY-shun (stress on DAY)\n• <strong>"stratified"</strong> → STRAT-ih-fyd (stress on STRAT)\n• <strong>"hyperparameter"</strong> → HY-per-PAIR-uh-mee-ter (two stresses: HY and PAIR)\n\n💡 Say "five-fold cross-validation" not "5-fold" in interviews — spell out the number for clarity.',
-    prompt: 'Describe your model evaluation strategy for a classification task with imbalanced classes. Explain which cross-validation method you\'d choose and why. Mention at least two potential pitfalls of a simple train-test split.',
-    promptKo: '불균형 클래스 분류 작업에서 모델 평가 전략을 설명해보세요. 어떤 교차 검증 방법을 선택할지와 이유를 말하고, 단순 train-test split의 함정 두 가지를 언급해보세요.'
+    pron: `• <strong>"cross-validation"</strong> → KRAWS-val-ih-DAY-shun (primary stress on DAY)\n• <strong>"stratified"</strong> → STRAT-ih-fyd (stress on STRAT)\n• <strong>"hyperparameter"</strong> → HY-per-PAIR-uh-mee-ter\n\n💡 Say "five-fold cross-validation" — spell out the number for clarity in interviews.`,
+    prompt: `Describe your model evaluation strategy for a classification task with imbalanced classes. Which cross-validation method would you choose and why? Mention at least two pitfalls of a simple train-test split.`,
+    promptKo: `불균형 클래스 분류 작업에서 평가 전략을 설명해보세요. 교차 검증 방법 선택 이유와 단순 분할의 함정 두 가지를 언급하세요.`
   },
   {
     day: 4,
@@ -496,169 +345,403 @@ const DAYS = [
     question: "How does a Random Forest work?",
     questionKo: "랜덤 포레스트는 어떻게 동작하나요?",
     answer: [
-      { type: 'p', html: 'A <strong>Random Forest</strong> is an ensemble learning method that builds many decision trees during training and merges their predictions.' },
-      { type: 'p', html: '<strong>Two sources of randomness:</strong><br>1. <strong>Bagging</strong> — each tree trains on a different bootstrap sample (random rows, with replacement)<br>2. <strong>Feature randomness</strong> — at each split, only a random subset of features is considered (typically √p for classification, p/3 for regression)' },
-      { type: 'p', html: '<strong>Prediction:</strong> Classification → <strong>majority vote</strong> across all trees. Regression → <strong>average</strong> of all tree predictions.' },
-      { type: 'p', html: '<strong>Why it works:</strong> Diverse, decorrelated trees reduce variance without increasing bias — the ensemble is more robust than any individual tree. Bonus: provides <strong>feature importance</strong> scores for free.' }
+      { h: `A <strong>Random Forest</strong> is an ensemble learning method that builds many decision trees during training and merges their predictions.` },
+      { h: `<strong>Two sources of randomness:</strong><br>1. <strong>Bagging</strong> — each tree trains on a different bootstrap sample (random rows, with replacement)<br>2. <strong>Feature randomness</strong> — at each split, only a random subset of features is considered (typically √p for classification)` },
+      { h: `<strong>Prediction:</strong> Classification → <strong>majority vote</strong> across all trees. Regression → <strong>average</strong> of all tree predictions.` },
+      { h: `<strong>Why it works:</strong> Diverse, decorrelated trees reduce variance without increasing bias. Bonus: provides <strong>feature importance</strong> scores automatically.` }
     ],
     vocab: [
-      { term: "Ensemble", ipa: "/ɒnˈsɒm.bəl/", ko: "앙상블", def: "Combining multiple models to improve performance." },
-      { term: "Bagging", ipa: "/ˈbæɡ.ɪŋ/", ko: "배깅", def: "Bootstrap aggregating — training on random subsets with replacement." },
-      { term: "Bootstrap sampling", ipa: "/ˈbuːt.stræp/", ko: "부트스트랩 샘플링", def: "Randomly sampling data with replacement to create training subsets." },
-      { term: "Feature importance", ipa: "/ˈfiː.tʃər ɪmˈpɔː.təns/", ko: "특성 중요도", def: "Score indicating how much each feature contributes to predictions." },
-      { term: "Decorrelated", ipa: "/diːˈkɒr.ə.leɪ.tɪd/", ko: "비상관화된", def: "Trees that make errors independently, improving the ensemble." },
+      { term:"Ensemble", ipa:"/ɒnˈsɒm.bəl/", ko:"앙상블", def:"Combining multiple models to improve performance." },
+      { term:"Bagging", ipa:"/ˈbæɡ.ɪŋ/", ko:"배깅", def:"Bootstrap aggregating — training on random subsets with replacement." },
+      { term:"Bootstrap sampling", ipa:"/ˈbuːt.stræp/", ko:"부트스트랩 샘플링", def:"Randomly sampling data with replacement." },
+      { term:"Feature importance", ipa:"/ˈfiː.tʃər ɪmˈpɔː.təns/", ko:"특성 중요도", def:"Score showing each feature's contribution to predictions." },
+      { term:"Decorrelated", ipa:"/diːˈkɒr.ə.leɪ.tɪd/", ko:"비상관화", def:"Trees that make errors independently, improving the ensemble." },
     ],
-    pronunciation: '• <strong>"ensemble"</strong> → ahn-SAHM-bul (French origin; the final -e is silent)\n• <strong>"bagging"</strong> → BAG-ing (not BAY-ging)\n• <strong>"bootstrap"</strong> → BOOT-strap (two equal stresses)\n\n💡 "Ensemble" trips up many candidates. Practice: "We used an ensemble approach — specifically, a Random Forest with 500 estimators."',
-    prompt: 'Compare a single decision tree vs. a Random Forest for a high-stakes fraud detection task. Explain the tradeoffs in interpretability, performance, and computational cost. When would you NOT choose Random Forest?',
-    promptKo: '고위험 사기 탐지 작업에서 단일 결정 트리와 랜덤 포레스트를 비교해 보세요. 해석 가능성, 성능, 계산 비용의 트레이드오프를 설명하고 랜덤 포레스트를 선택하지 않을 경우를 언급해보세요.'
+    pron: `• <strong>"ensemble"</strong> → ahn-SAHM-bul (French origin; the final -e is silent)\n• <strong>"bagging"</strong> → BAG-ing (not BAY-ging)\n• <strong>"bootstrap"</strong> → BOOT-strap\n\n💡 Practice: "We used an ensemble approach — specifically, a Random Forest with 500 estimators."`,
+    prompt: `Compare a single decision tree vs. a Random Forest for a fraud detection task. Discuss tradeoffs in interpretability, performance, and computational cost. When would you NOT choose Random Forest?`,
+    promptKo: `사기 탐지 작업에서 결정 트리와 랜덤 포레스트를 비교하세요. 해석 가능성, 성능, 계산 비용의 트레이드오프와 랜덤 포레스트를 선택하지 않을 경우를 언급하세요.`
   },
-  { day: 5,  topic: "Regularization (L1/L2)", topicKo: "정규화 기법", locked: true },
-  { day: 6,  topic: "Performance Metrics", topicKo: "성능 지표", locked: true },
-  { day: 7,  topic: "Gradient Descent", topicKo: "경사 하강법", locked: true },
-  { day: 8,  topic: "Dimensionality Reduction", topicKo: "차원 축소", locked: true },
-  { day: 9,  topic: "Data Preprocessing", topicKo: "데이터 전처리", locked: true },
-  { day: 10, topic: "Statistical Foundations", topicKo: "통계 기초", locked: true },
-  { day: 11, topic: "Feature Engineering", topicKo: "피처 엔지니어링", locked: true },
-  { day: 12, topic: "Model Evaluation", topicKo: "모델 평가", locked: true },
-  { day: 13, topic: "Neural Networks", topicKo: "신경망 기초", locked: true },
-  { day: 14, topic: "Ensemble Methods", topicKo: "앙상블 기법", locked: true },
-  { day: 15, topic: "Advanced ML Review", topicKo: "ML 종합 복습", locked: true },
+  {
+    day: 5,
+    topic: "Regularization (L1 & L2)",
+    topicKo: "정규화 기법",
+    question: "What is regularization, and what is the difference between L1 and L2?",
+    questionKo: "정규화란 무엇이며 L1과 L2의 차이는 무엇인가요?",
+    answer: [
+      { h: `<strong>Regularization</strong> is a technique that adds a penalty to the loss function to prevent overfitting by discouraging overly complex models.` },
+      { h: `<strong>L1 Regularization (Lasso):</strong> Adds the sum of <em>absolute values</em> of coefficients as a penalty. Produces <strong>sparse models</strong> — it drives some coefficients to exactly zero, effectively performing <strong>feature selection</strong>.` },
+      { h: `<strong>L2 Regularization (Ridge):</strong> Adds the sum of <em>squared values</em> of coefficients. Shrinks all coefficients toward zero but rarely to exactly zero — better when all features contribute.` },
+      { h: `<strong>Elastic Net</strong> combines both L1 and L2. Use L1 when you suspect many irrelevant features, L2 when all features are likely relevant, Elastic Net when both conditions apply.` }
+    ],
+    vocab: [
+      { term:"Regularization", ipa:"/ˌreɡ.jʊ.ləˈraɪ.zeɪ.ʃən/", ko:"정규화", def:"Penalty added to loss function to reduce overfitting." },
+      { term:"Lasso", ipa:"/ˈlæs.oʊ/", ko:"라쏘", def:"L1 regularization — can zero out coefficients for feature selection." },
+      { term:"Ridge", ipa:"/rɪdʒ/", ko:"릿지", def:"L2 regularization — shrinks coefficients toward zero without zeroing." },
+      { term:"Sparsity", ipa:"/ˈspɑːr.sɪ.ti/", ko:"희소성", def:"Many coefficients are exactly zero — fewer active features." },
+      { term:"Elastic Net", ipa:"/ɪˈlæs.tɪk nɛt/", ko:"엘라스틱 넷", def:"Combines L1 and L2 penalties for balanced regularization." },
+    ],
+    pron: `• <strong>"regularization"</strong> → REG-yoo-luh-rye-ZAY-shun (stress on ZAY)\n• <strong>"Lasso"</strong> → LAS-oh (short A sound)\n• <strong>"Elastic Net"</strong> → ih-LAS-tik NET\n\n💡 Say "L-one" and "L-two" not "L-one regularization" — interviewers expect the abbreviated form.`,
+    prompt: `You are building a linear regression model with 500 features, many of which may be irrelevant. Which regularization approach would you use and why? How do you choose the regularization strength (lambda)?`,
+    promptKo: `500개 피처가 있는 선형 회귀 모델에서 어떤 정규화를 선택할지와 이유, 그리고 lambda 값 선택 방법을 설명해보세요.`
+  },
+  {
+    day: 6,
+    topic: "Performance Metrics",
+    topicKo: "모델 성능 지표",
+    question: "What metrics do you use to evaluate a classification model?",
+    questionKo: "분류 모델을 평가할 때 어떤 지표를 사용하나요?",
+    answer: [
+      { h: `Accuracy alone is misleading for imbalanced datasets. The right metric depends on the business problem.` },
+      { h: `<strong>Precision:</strong> Of all predicted positives, how many are actually positive? (TP / (TP + FP)) — Important when <em>false positives are costly</em> (e.g., spam filter blocking important emails).` },
+      { h: `<strong>Recall (Sensitivity):</strong> Of all actual positives, how many did we catch? (TP / (TP + FN)) — Important when <em>false negatives are costly</em> (e.g., missing cancer diagnosis).` },
+      { h: `<strong>F1-Score:</strong> Harmonic mean of Precision and Recall. Use when you need a single balanced metric.<br><strong>AUC-ROC:</strong> Measures the model's ability to distinguish between classes across all thresholds. Threshold-independent and useful for comparing models.` }
+    ],
+    vocab: [
+      { term:"Precision", ipa:"/ˈpreʃ.ən/", ko:"정밀도", def:"Fraction of positive predictions that are actually correct." },
+      { term:"Recall", ipa:"/rɪˈkɔːl/", ko:"재현율", def:"Fraction of actual positives correctly identified." },
+      { term:"F1-Score", ipa:"/ɛf wʌn skɔːr/", ko:"F1 점수", def:"Harmonic mean of precision and recall." },
+      { term:"AUC-ROC", ipa:"/eɪ juː siː rɒk/", ko:"AUC-ROC", def:"Area under the ROC curve — model discrimination ability." },
+      { term:"Confusion matrix", ipa:"/kənˈfjuː.ʒən ˈmeɪ.trɪks/", ko:"혼동 행렬", def:"Table showing TP, TN, FP, FN counts." },
+    ],
+    pron: `• <strong>"precision"</strong> → preh-SIH-zhun (stress on SI)\n• <strong>"recall"</strong> → rih-KAWL (stress on KAWL)\n• <strong>"AUC-ROC"</strong> → AY-you-see ROCK (say each letter, then "rock")\n\n💡 Never say just "accuracy" — immediately add "but since the dataset is imbalanced, I also looked at..."`,
+    prompt: `Your fraud detection model catches 95% of fraud cases but also flags 40% of legitimate transactions as fraud. How would you describe this in terms of precision and recall? What would you adjust and why?`,
+    promptKo: `사기 탐지 모델이 사기의 95%를 잡지만 정상 거래의 40%를 사기로 표시한다면, 정밀도와 재현율 관점에서 설명하고 어떻게 조정할지 말해보세요.`
+  },
+  {
+    day: 7,
+    topic: "Gradient Descent",
+    topicKo: "경사 하강법",
+    question: "Explain gradient descent and its variants.",
+    questionKo: "경사 하강법과 그 변형들을 설명해 주세요.",
+    answer: [
+      { h: `<strong>Gradient Descent</strong> is an optimization algorithm that minimizes a loss function by iteratively moving in the direction of the <em>negative gradient</em> — the direction of steepest descent.` },
+      { h: `<strong>Batch Gradient Descent:</strong> Uses the entire dataset to compute the gradient at each step. Very stable but extremely slow for large datasets.` },
+      { h: `<strong>Stochastic Gradient Descent (SGD):</strong> Uses a single random sample per step. Much faster, but the updates are noisy and may not converge smoothly.` },
+      { h: `<strong>Mini-Batch Gradient Descent:</strong> Uses a small batch (e.g., 32 or 64 samples) per step. Best of both — efficient and relatively stable. This is the standard in deep learning.<br><strong>Learning rate</strong> controls step size: too large → diverge; too small → slow convergence.` }
+    ],
+    vocab: [
+      { term:"Gradient", ipa:"/ˈɡreɪ.di.ənt/", ko:"기울기", def:"Direction and rate of the steepest increase of the loss function." },
+      { term:"Learning rate", ipa:"/ˈlɜːr.nɪŋ reɪt/", ko:"학습률", def:"Step size for each parameter update in gradient descent." },
+      { term:"Convergence", ipa:"/kənˈvɜːr.dʒəns/", ko:"수렴", def:"When the loss function reaches a stable minimum." },
+      { term:"Mini-batch", ipa:"/ˈmɪn.i bætʃ/", ko:"미니 배치", def:"Small subset of data used for each gradient update." },
+      { term:"Local minimum", ipa:"/ˈloʊ.kəl ˈmɪn.ɪ.məm/", ko:"지역 최솟값", def:"A point where loss is lower than nearby points but not globally lowest." },
+    ],
+    pron: `• <strong>"gradient"</strong> → GRAY-dee-unt (3 syllables, stress on GRAY)\n• <strong>"stochastic"</strong> → stoh-KAS-tik (stress on KAS)\n• <strong>"convergence"</strong> → kun-VER-juns (stress on VER)\n\n💡 Practice: "We used mini-batch gradient descent with a learning rate scheduler to ensure stable convergence."`,
+    prompt: `Explain why you would choose Adam optimizer over vanilla SGD for training a neural network. What problems does Adam solve, and are there any downsides?`,
+    promptKo: `신경망 훈련에서 vanilla SGD 대신 Adam 옵티마이저를 선택하는 이유를 설명하고, Adam이 해결하는 문제와 단점을 말해보세요.`
+  },
+  {
+    day: 8,
+    topic: "PCA & Dimensionality Reduction",
+    topicKo: "주성분 분석 & 차원 축소",
+    question: "What is PCA and when would you use it?",
+    questionKo: "PCA란 무엇이며 언제 사용하나요?",
+    answer: [
+      { h: `<strong>Principal Component Analysis (PCA)</strong> is an unsupervised technique that reduces the number of features while retaining as much variance (information) as possible.` },
+      { h: `<strong>How it works:</strong> PCA finds new axes (principal components) that are linear combinations of the original features, ordered by the amount of variance they explain. The first PC explains the most variance, the second explains the next most, and so on.` },
+      { h: `<strong>When to use PCA:</strong><br>• <strong>Curse of dimensionality</strong> — too many features for available data<br>• <strong>Visualization</strong> — reduce to 2D or 3D for plotting<br>• <strong>Noise reduction</strong> — discard low-variance components<br>• <strong>Speed up training</strong> — fewer features = faster computation` },
+      { h: `<strong>Caveat:</strong> PCA components are harder to interpret (not original features). For interpretability-critical tasks, consider feature selection instead.` }
+    ],
+    vocab: [
+      { term:"PCA", ipa:"/piː siː eɪ/", ko:"주성분 분석", def:"Unsupervised technique to reduce dimensions by maximizing variance." },
+      { term:"Principal component", ipa:"/ˈprɪn.sɪ.pəl kəmˈpoʊ.nənt/", ko:"주성분", def:"New axis that maximizes variance in the projected data." },
+      { term:"Variance explained", ipa:"/ˈveər.i.əns ɪkˈspleɪnd/", ko:"설명된 분산", def:"Proportion of total variance captured by a component." },
+      { term:"Eigenvalue", ipa:"/ˈaɪ.ɡən.væl.juː/", ko:"고유값", def:"Magnitude of variance explained by each principal component." },
+      { term:"Curse of dimensionality", ipa:"/kɜːrs əv dɪˌmen.ʃəˈnæl.ɪ.ti/", ko:"차원의 저주", def:"Exponential growth of space making data sparse in high dimensions." },
+    ],
+    pron: `• <strong>"principal"</strong> → PRIN-sih-pul (not "principle")\n• <strong>"eigenvalue"</strong> → EYE-gen-val-yoo ("eigen" is German, stress on EYE)\n• <strong>"dimensionality"</strong> → dih-MEN-shuh-NAL-ih-tee\n\n💡 Say "the first two principal components explain 85% of the variance" — this kind of specific phrasing impresses interviewers.`,
+    prompt: `You have a dataset with 200 features and 1,000 samples. Describe your approach: would you use PCA, feature selection, or both? Walk through your decision-making process step by step.`,
+    promptKo: `200개 피처, 1,000개 샘플의 데이터셋이 있습니다. PCA, 피처 선택, 또는 둘 다 사용할지 단계별 의사결정 과정을 설명해보세요.`
+  },
+  {
+    day: 9,
+    topic: "Data Preprocessing",
+    topicKo: "데이터 전처리",
+    question: "What steps do you take to preprocess data before training a model?",
+    questionKo: "모델 훈련 전 데이터 전처리 단계를 설명해 주세요.",
+    answer: [
+      { h: `Data preprocessing is often 80% of the work. A clean, well-prepared dataset is more valuable than a sophisticated model on messy data.` },
+      { h: `<strong>1. Handle Missing Values:</strong> Impute with mean/median/mode, use model-based imputation (KNN, MICE), or drop if the missing rate is very high (>50%).` },
+      { h: `<strong>2. Encode Categorical Variables:</strong> One-hot encoding for nominal categories, ordinal encoding for ordered categories, target encoding for high-cardinality features.` },
+      { h: `<strong>3. Scale Features:</strong> <strong>StandardScaler</strong> (z-score) for normally distributed features; <strong>MinMaxScaler</strong> for bounded ranges; <strong>RobustScaler</strong> for data with outliers. Tree-based models do not require scaling.` },
+      { h: `<strong>4. Handle Outliers:</strong> IQR method, Z-score clipping, or domain-based thresholds. <strong>5. Feature Engineering:</strong> Create new features, bin continuous variables, extract date parts.` }
+    ],
+    vocab: [
+      { term:"Imputation", ipa:"/ˌɪm.pjʊˈteɪ.ʃən/", ko:"대체", def:"Filling missing values with estimated values." },
+      { term:"One-hot encoding", ipa:"/wʌn hɒt ɪnˈkoʊ.dɪŋ/", ko:"원-핫 인코딩", def:"Representing categories as binary vectors." },
+      { term:"Standardization", ipa:"/ˌstæn.dər.daɪˈzeɪ.ʃən/", ko:"표준화", def:"Transforming features to have mean=0, std=1." },
+      { term:"Normalization", ipa:"/ˌnɔːr.mə.laɪˈzeɪ.ʃən/", ko:"정규화(스케일)", def:"Scaling features to a fixed range, typically [0, 1]." },
+      { term:"Outlier", ipa:"/ˈaʊt.laɪ.ər/", ko:"이상값", def:"Data point significantly different from the rest of the dataset." },
+    ],
+    pron: `• <strong>"imputation"</strong> → im-pyoo-TAY-shun (stress on TAY)\n• <strong>"standardization"</strong> → STAN-der-dih-ZAY-shun (stress on ZAY)\n• <strong>"categorical"</strong> → kat-uh-GOR-ih-kul (stress on GOR)\n\n💡 Always mention: "I apply all preprocessing steps inside a pipeline to prevent data leakage."`,
+    prompt: `You discover that 15% of values in a key feature are missing, and the feature is highly correlated with the target. Walk through your missing value strategy and justify your choice.`,
+    promptKo: `핵심 피처의 15% 값이 누락되고, 해당 피처가 타겟과 높은 상관관계를 가집니다. 결측값 처리 전략과 선택 이유를 단계별로 설명해보세요.`
+  },
+  {
+    day: 10,
+    topic: "Neural Networks",
+    topicKo: "신경망 기초",
+    question: "Explain how a neural network learns.",
+    questionKo: "신경망이 어떻게 학습하는지 설명해 주세요.",
+    answer: [
+      { h: `A <strong>neural network</strong> is a computational model inspired by the brain, consisting of layers of interconnected nodes (neurons) that transform inputs into outputs.` },
+      { h: `<strong>Forward Pass:</strong> Input data flows through each layer. Each neuron computes a weighted sum of its inputs plus a bias, then applies an <strong>activation function</strong> (ReLU, sigmoid, softmax) to introduce non-linearity.` },
+      { h: `<strong>Loss Calculation:</strong> The output is compared to the true label using a <strong>loss function</strong> (e.g., cross-entropy for classification, MSE for regression).` },
+      { h: `<strong>Backpropagation:</strong> The loss is propagated backward through the network using the chain rule of calculus. Each weight is updated by its contribution to the loss via <strong>gradient descent</strong>.` },
+      { h: `This cycle (forward pass → loss → backprop → weight update) repeats over many <strong>epochs</strong> until the model converges.` }
+    ],
+    vocab: [
+      { term:"Activation function", ipa:"/ˌæk.tɪˈveɪ.ʃən ˈfʌŋk.ʃən/", ko:"활성화 함수", def:"Non-linear function applied to neuron output (e.g., ReLU, sigmoid)." },
+      { term:"Backpropagation", ipa:"/ˌbæk.prɒp.əˈɡeɪ.ʃən/", ko:"역전파", def:"Algorithm to compute gradients by propagating errors backward." },
+      { term:"Epoch", ipa:"/ˈiː.pɒk/", ko:"에포크", def:"One complete pass through the entire training dataset." },
+      { term:"Hidden layer", ipa:"/ˈhɪd.ən ˈleɪ.ər/", ko:"은닉층", def:"Intermediate layers between input and output layers." },
+      { term:"Dropout", ipa:"/ˈdrɒp.aʊt/", ko:"드롭아웃", def:"Regularization technique that randomly disables neurons during training." },
+    ],
+    pron: `• <strong>"backpropagation"</strong> → BACK-prop-uh-GAY-shun (often shortened to "backprop" in conversation)\n• <strong>"epoch"</strong> → EE-pok (not EP-ock)\n• <strong>"neuron"</strong> → NYOO-ron (stress on NYOO)\n\n💡 In interviews say "backprop" — "backpropagation" is a mouthful. Interviewers use the shorthand.`,
+    prompt: `Explain the vanishing gradient problem: what causes it, which architectures suffer most, and what solutions exist? Answer as if explaining to a junior data scientist.`,
+    promptKo: `기울기 소실 문제가 무엇인지, 어떤 아키텍처에서 주로 발생하는지, 해결 방법은 무엇인지 주니어 데이터 사이언티스트에게 설명하듯 말해보세요.`
+  },
+  {
+    day: 11,
+    topic: "Feature Engineering",
+    topicKo: "피처 엔지니어링",
+    question: "What is feature engineering and why does it matter?",
+    questionKo: "피처 엔지니어링이란 무엇이며 왜 중요한가요?",
+    answer: [
+      { h: `<strong>Feature engineering</strong> is the process of using domain knowledge to create, transform, or select input features that make machine learning algorithms work better.` },
+      { h: `<strong>Common techniques:</strong><br>• <strong>Interaction features:</strong> Multiply two features (e.g., price × quantity = revenue)<br>• <strong>Polynomial features:</strong> Add x² or x³ to capture non-linear relationships<br>• <strong>Binning:</strong> Convert continuous to categorical (e.g., age → age group)<br>• <strong>Log transform:</strong> Reduce skewness in heavily skewed distributions` },
+      { h: `<strong>Domain-specific examples:</strong><br>• Time series: extract hour, day of week, lag features, rolling averages<br>• Text: TF-IDF, word counts, character n-grams<br>• Geospatial: distance to city center, cluster assignment` },
+      { h: `Good feature engineering can turn a mediocre model into an excellent one. It requires deep understanding of the data and business context.` }
+    ],
+    vocab: [
+      { term:"Feature engineering", ipa:"/ˈfiː.tʃər ˌen.dʒɪˈnɪər.ɪŋ/", ko:"피처 엔지니어링", def:"Creating or transforming features to improve model performance." },
+      { term:"Interaction feature", ipa:"/ˌɪn.tərˈæk.ʃən/", ko:"상호작용 피처", def:"New feature created by combining two or more existing features." },
+      { term:"Log transform", ipa:"/lɒɡ trænsˈfɔːrm/", ko:"로그 변환", def:"Applying logarithm to reduce skewness in a distribution." },
+      { term:"Binning", ipa:"/ˈbɪn.ɪŋ/", ko:"구간화", def:"Grouping continuous values into discrete buckets or bins." },
+      { term:"TF-IDF", ipa:"/tiː ef aɪ diː ef/", ko:"TF-IDF", def:"Text weighting scheme balancing term frequency and rarity." },
+    ],
+    pron: `• <strong>"feature"</strong> → FEE-cher (not "fee-CHUR")\n• <strong>"engineering"</strong> → en-jih-NEER-ing (stress on NEER)\n• <strong>"polynomial"</strong> → pol-ih-NOH-mee-ul (stress on NOH)\n\n💡 Interviewers love this: "Feature engineering was the single biggest driver of model improvement in that project."`,
+    prompt: `You are working on a customer churn prediction model. What features would you engineer from raw transaction data (purchase date, amount, product category, customer age)? Walk through your reasoning.`,
+    promptKo: `고객 이탈 예측 모델에서 원시 거래 데이터(구매일, 금액, 제품 카테고리, 고객 나이)로부터 어떤 피처를 엔지니어링할지와 그 이유를 설명해보세요.`
+  },
+  {
+    day: 12,
+    topic: "Handling Imbalanced Data",
+    topicKo: "불균형 데이터 처리",
+    question: "How do you handle imbalanced datasets in machine learning?",
+    questionKo: "불균형 데이터셋을 어떻게 처리하나요?",
+    answer: [
+      { h: `Imbalanced data (e.g., 99% negative, 1% positive) causes models to predict the majority class almost always — achieving high accuracy but poor utility.` },
+      { h: `<strong>Resampling techniques:</strong><br>• <strong>Oversampling:</strong> Generate synthetic minority samples (SMOTE — Synthetic Minority Oversampling Technique)<br>• <strong>Undersampling:</strong> Randomly remove majority class samples<br>• <strong>Combined:</strong> SMOTE + Tomek Links` },
+      { h: `<strong>Algorithm-level approaches:</strong><br>• <strong>Class weights:</strong> Penalize misclassifying minority class more (class_weight="balanced" in sklearn)<br>• <strong>Threshold tuning:</strong> Lower the classification threshold to increase recall for the minority class` },
+      { h: `<strong>Evaluation:</strong> Never use accuracy — use Precision, Recall, F1, AUC-ROC. Use stratified cross-validation to preserve class distribution in each fold.` }
+    ],
+    vocab: [
+      { term:"SMOTE", ipa:"/smoʊt/", ko:"스모트", def:"Synthetic Minority Oversampling Technique — creates artificial minority samples." },
+      { term:"Oversampling", ipa:"/ˈoʊ.vər.sæm.plɪŋ/", ko:"오버샘플링", def:"Increasing minority class by duplicating or generating new samples." },
+      { term:"Undersampling", ipa:"/ˈʌn.dər.sæm.plɪŋ/", ko:"언더샘플링", def:"Reducing majority class by removing samples." },
+      { term:"Class weight", ipa:"/klæs weɪt/", ko:"클래스 가중치", def:"Penalty multiplier for misclassifying a particular class." },
+      { term:"Stratified split", ipa:"/ˈstræt.ɪ.faɪd splɪt/", ko:"층화 분할", def:"Train/test split that preserves the original class distribution." },
+    ],
+    pron: `• <strong>"imbalanced"</strong> → im-BAL-unst (stress on BAL)\n• <strong>"SMOTE"</strong> → SMOHT (rhymes with "note") — one syllable\n• <strong>"synthetic"</strong> → sin-THET-ik (stress on THET)\n\n💡 Always start with: "First I check the class distribution, then choose the evaluation metric before touching the data."`,
+    prompt: `Your training data has 98% class 0 (normal) and 2% class 1 (fraud). A naive model predicts 0 for everything and gets 98% accuracy. Describe your complete strategy to build a useful model.`,
+    promptKo: `훈련 데이터가 98% 정상, 2% 사기입니다. 나이브 모델이 항상 0을 예측해 98% 정확도를 달성합니다. 유용한 모델을 만들기 위한 완전한 전략을 설명해보세요.`
+  },
+  {
+    day: 13,
+    topic: "A/B Testing",
+    topicKo: "A/B 테스트",
+    question: "Explain how you would design and analyze an A/B test.",
+    questionKo: "A/B 테스트를 어떻게 설계하고 분석하나요?",
+    answer: [
+      { h: `<strong>A/B testing</strong> is a randomized controlled experiment that compares two versions (A = control, B = treatment) of a product to determine which performs better on a defined metric.` },
+      { h: `<strong>Design steps:</strong><br>1. Define the <strong>hypothesis</strong> and primary metric (e.g., click-through rate)<br>2. Calculate required <strong>sample size</strong> using power analysis (typically 80% power, alpha=0.05)<br>3. <strong>Randomly assign</strong> users to control or treatment<br>4. Run the test for a pre-determined duration (avoid peeking)` },
+      { h: `<strong>Analysis:</strong> Use a statistical test (t-test for continuous metrics, chi-square for rates) to compute the p-value. If p < 0.05 (alpha), reject the null hypothesis.` },
+      { h: `<strong>Common pitfalls:</strong> Network effects (SUTVA violation), novelty effects, multiple testing without correction, stopping early (p-hacking), and Simpson's paradox in segmented analysis.` }
+    ],
+    vocab: [
+      { term:"Hypothesis", ipa:"/haɪˈpɒθ.ə.sɪs/", ko:"가설", def:"Testable statement about the expected outcome of an experiment." },
+      { term:"p-value", ipa:"/piː ˈvæl.juː/", ko:"p값", def:"Probability of observing results at least as extreme if null is true." },
+      { term:"Statistical power", ipa:"/ˌstæt.ɪˈstɪk.əl ˈpaʊ.ər/", ko:"통계적 검정력", def:"Probability of correctly detecting a true effect." },
+      { term:"Sample size", ipa:"/ˈsæm.pəl saɪz/", ko:"샘플 크기", def:"Number of observations needed to detect an effect reliably." },
+      { term:"Novelty effect", ipa:"/ˈnɒv.əl.ti ɪˈfekt/", ko:"새로움 효과", def:"Short-term boost from users reacting to change, not real improvement." },
+    ],
+    pron: `• <strong>"hypothesis"</strong> → hy-POTH-uh-sis (stress on POTH; plural: hy-POTH-uh-seez)\n• <strong>"statistical"</strong> → stuh-TIS-tih-kul (stress on TIS)\n• <strong>"significance"</strong> → sig-NIF-ih-kuns (stress on NIF)\n\n💡 Say: "We ran the test for two full business cycles to account for weekly seasonality and avoid novelty effects."`,
+    prompt: `Your team ran an A/B test for 3 days and got p=0.03. Your manager wants to ship the feature immediately. What concerns would you raise and what would you recommend?`,
+    promptKo: `팀이 3일간 A/B 테스트를 실행해 p=0.03을 얻었습니다. 매니저가 즉시 기능을 배포하려 합니다. 어떤 우려사항을 제기하고 어떻게 권고하겠습니까?`
+  },
+  {
+    day: 14,
+    topic: "Model Deployment & MLOps",
+    topicKo: "모델 배포 & MLOps",
+    question: "How do you deploy a machine learning model to production?",
+    questionKo: "머신러닝 모델을 프로덕션에 어떻게 배포하나요?",
+    answer: [
+      { h: `Deploying a model is not the end — it is the beginning of maintaining it in a live environment where data, behavior, and requirements constantly change.` },
+      { h: `<strong>Deployment patterns:</strong><br>• <strong>REST API:</strong> Wrap model in Flask/FastAPI, containerize with Docker, deploy to cloud (AWS SageMaker, GCP Vertex AI)<br>• <strong>Batch inference:</strong> Run predictions on scheduled batches (Airflow, Spark)<br>• <strong>Edge deployment:</strong> Export to ONNX or TensorFlow Lite for on-device inference` },
+      { h: `<strong>Monitoring (critical):</strong><br>• <strong>Data drift:</strong> Input feature distribution changes over time<br>• <strong>Concept drift:</strong> Relationship between features and target changes<br>• <strong>Performance monitoring:</strong> Track latency, throughput, model accuracy in production` },
+      { h: `<strong>MLOps practices:</strong> Version control for models (MLflow, DVC), automated retraining pipelines, shadow deployment (A/B testing new models), rollback strategy.` }
+    ],
+    vocab: [
+      { term:"Data drift", ipa:"/ˈdeɪ.tə drɪft/", ko:"데이터 드리프트", def:"Statistical change in input feature distributions over time." },
+      { term:"Concept drift", ipa:"/ˈkɒn.sept drɪft/", ko:"개념 드리프트", def:"Change in the relationship between features and the target variable." },
+      { term:"Containerization", ipa:"/kənˌteɪ.nər.aɪˈzeɪ.ʃən/", ko:"컨테이너화", def:"Packaging app and dependencies into portable containers (Docker)." },
+      { term:"Shadow deployment", ipa:"/ˈʃæd.oʊ dɪˈplɔɪ.mənt/", ko:"섀도 배포", def:"Running new model in parallel without serving its predictions yet." },
+      { term:"MLOps", ipa:"/ɛm ɛl ɒps/", ko:"MLOps", def:"Practices combining ML and DevOps for reliable model deployment." },
+    ],
+    pron: `• <strong>"deployment"</strong> → dih-PLOY-munt (stress on PLOY)\n• <strong>"inference"</strong> → IN-fer-ents (stress on IN; not "in-FER-ence")\n• <strong>"containerization"</strong> → kun-TAY-ner-ih-ZAY-shun\n\n💡 Say: "We monitor for both data drift and concept drift using statistical tests on a rolling window of production data."`,
+    prompt: `Six months after deploying your model, you notice accuracy has dropped from 92% to 78%. Walk through your systematic approach to diagnosing and fixing this issue.`,
+    promptKo: `모델 배포 6개월 후 정확도가 92%에서 78%로 떨어졌습니다. 이 문제를 진단하고 해결하는 체계적인 접근 방법을 단계별로 설명해보세요.`
+  },
+  {
+    day: 15,
+    topic: "Statistics for ML Interviews",
+    topicKo: "ML 인터뷰 통계 기초",
+    question: "Explain the Central Limit Theorem and why it matters for data science.",
+    questionKo: "중심 극한 정리를 설명하고 데이터 사이언스에서 왜 중요한지 말해보세요.",
+    answer: [
+      { h: `The <strong>Central Limit Theorem (CLT)</strong> states that the sampling distribution of the sample mean approaches a <strong>normal distribution</strong> as the sample size increases, regardless of the underlying population distribution.` },
+      { h: `<strong>Why it matters in data science:</strong><br>• Justifies using <strong>z-tests and t-tests</strong> even when the underlying data is not normally distributed<br>• Foundation for <strong>confidence intervals</strong> and <strong>hypothesis testing</strong> (including A/B tests)<br>• Explains why many real-world averaged metrics tend to be normally distributed` },
+      { h: `<strong>Key statistical concepts to also know:</strong><br>• <strong>Law of Large Numbers:</strong> Sample mean converges to population mean as n → ∞<br>• <strong>Confidence interval:</strong> Range where the true parameter lies with a given probability<br>• <strong>Type I error (α):</strong> False positive — rejecting a true null. <strong>Type II error (β):</strong> False negative — failing to reject a false null` },
+      { h: `<strong>Bayesian vs Frequentist:</strong> Frequentist uses p-values and confidence intervals. Bayesian incorporates prior beliefs and updates with data using Bayes' theorem. Bayesian thinking is increasingly common in modern ML.` }
+    ],
+    vocab: [
+      { term:"Central Limit Theorem", ipa:"/ˈsen.trəl ˈlɪm.ɪt ˈθɪə.rəm/", ko:"중심 극한 정리", def:"Sample means approach normal distribution as sample size grows." },
+      { term:"Confidence interval", ipa:"/ˈkɒn.fɪ.dəns ˈɪn.tər.vəl/", ko:"신뢰 구간", def:"Range of values likely to contain the true population parameter." },
+      { term:"Type I error", ipa:"/taɪp wʌn ˈer.ər/", ko:"1종 오류", def:"False positive — rejecting a null hypothesis that is actually true." },
+      { term:"Type II error", ipa:"/taɪp tuː ˈer.ər/", ko:"2종 오류", def:"False negative — failing to reject a false null hypothesis." },
+      { term:"Bayes' theorem", ipa:"/beɪz ˈθɪə.rəm/", ko:"베이즈 정리", def:"P(A|B) = P(B|A) * P(A) / P(B) — updating beliefs with evidence." },
+    ],
+    pron: `• <strong>"theorem"</strong> → THEE-uh-rum (not "THEER-um"; 3 syllables)\n• <strong>"frequentist"</strong> → FREE-kwun-tist (stress on FREE)\n• <strong>"Bayesian"</strong> → BAY-zhun (stress on BAY; the -sian sounds like "-zhun")\n\n💡 End strong: "Understanding the CLT lets me justify statistical tests in A/B experiments regardless of the underlying data distribution."`,
+    prompt: `An interviewer asks: "What is the difference between a confidence interval and a prediction interval?" Answer in under 90 seconds with a concrete example.`,
+    promptKo: `"신뢰 구간과 예측 구간의 차이가 무엇인가요?" 구체적인 예시를 들어 90초 이내에 답해보세요.`
+  }
 ];
 
-// ── STATE ────────────────────────────────────────────────
+// ── STATE ─────────────────────────────────────────────
 let currentDay = 1;
-let timerSec = 0;
-let timerRunning = false;
-let timerInterval = null;
+let timerSec = 0, timerRunning = false, timerInterval = null;
 
 function getCompleted() {
-  try { return JSON.parse(localStorage.getItem('dep_completed') || '[]'); }
-  catch { return []; }
+  try { return JSON.parse(localStorage.getItem('dep_done') || '[]'); } catch { return []; }
 }
-function setCompleted(arr) { localStorage.setItem('dep_completed', JSON.stringify(arr)); }
+function setCompleted(arr) { localStorage.setItem('dep_done', JSON.stringify(arr)); }
 
-// ── THEME ────────────────────────────────────────────────
+// ── THEME ─────────────────────────────────────────────
 function toggleTheme() {
   const html = document.documentElement;
-  const isDark = html.getAttribute('data-theme') === 'dark';
-  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  document.getElementById('theme-icon').textContent = isDark ? '🌙' : '☀️';
-  localStorage.setItem('dep_theme', isDark ? 'light' : 'dark');
+  const dark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', dark ? 'light' : 'dark');
+  document.getElementById('theme-icon').textContent = dark ? '🌙' : '☀️';
+  localStorage.setItem('dep_theme', dark ? 'light' : 'dark');
 }
-(function() {
+(function initTheme() {
   const t = localStorage.getItem('dep_theme') || 'light';
   document.documentElement.setAttribute('data-theme', t);
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('theme-icon').textContent = t === 'dark' ? '☀️' : '🌙';
+  window.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('theme-icon');
+    if (btn) btn.textContent = t === 'dark' ? '☀️' : '🌙';
   });
 })();
 
-// ── NAV ──────────────────────────────────────────────────
+// ── NAV ───────────────────────────────────────────────
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   document.getElementById('nav-' + id).classList.add('active');
+  stopTimer();
   if (id === 'today') renderTodayPage();
   if (id === 'progress') renderProgressPage();
-  stopTimer();
 }
 
-// ── TODAY PAGE ───────────────────────────────────────────
+// ── TODAY ─────────────────────────────────────────────
 function renderTodayPage() {
   renderDayStrip();
   renderPractice(currentDay);
 }
 
 function renderDayStrip() {
-  const completed = getCompleted();
+  const done = getCompleted();
   const strip = document.getElementById('day-strip');
   strip.innerHTML = '';
   DAYS.forEach(d => {
     const btn = document.createElement('button');
-    const isDone = completed.includes(d.day);
+    const isDone = done.includes(d.day);
     const isActive = d.day === currentDay;
-    btn.className = `day-chip${d.locked ? ' locked' : ''}${isDone ? ' done' : ''}${isActive ? ' active' : ''}`;
+    btn.className = ['day-chip', isDone ? 'done' : '', isActive ? 'active' : ''].filter(Boolean).join(' ');
     btn.textContent = `Day ${d.day}`;
-    if (!d.locked) btn.onclick = () => { currentDay = d.day; stopTimer(); renderTodayPage(); };
+    btn.addEventListener('click', () => { currentDay = d.day; stopTimer(); renderTodayPage(); });
     strip.appendChild(btn);
   });
 }
 
 function renderPractice(dayNum) {
   const d = DAYS.find(x => x.day === dayNum);
-  if (!d || d.locked) return;
-  const completed = getCompleted();
-  const isDone = completed.includes(dayNum);
-  const hasNext = DAYS.find(x => x.day === dayNum + 1 && !x.locked);
+  if (!d) return;
+  const done = getCompleted();
+  const isDone = done.includes(dayNum);
   const hasPrev = dayNum > 1;
+  const hasNext = dayNum < DAYS.length;
 
-  const answerHtml = d.answer.map(a => `<${a.type} class="answer-body">${a.html}</${a.type}>`).join('');
-  const vocabHtml = d.vocab.map(v => `
-    <div class="vocab-card">
-      <div class="term">${v.term}</div>
-      <div class="ipa">${v.ipa}</div>
-      <div class="def-ko">🇰🇷 ${v.ko}</div>
-      <div class="def-en">${v.def}</div>
-    </div>`).join('');
+  const answerHtml = d.answer.map(a => `<p class="answer-body">${a.h}</p>`).join('');
+  const vocabHtml = d.vocab.map(v =>
+    `<div class="vocab-card"><div class="term">${v.term}</div><div class="ipa">${v.ipa}</div><div class="def-ko">🇰🇷 ${v.ko}</div><div class="def-en">${v.def}</div></div>`
+  ).join('');
 
   document.getElementById('practice-view').innerHTML = `
     <div class="practice-topbar">
-      <div class="info">
-        <h2>Day ${d.day}: ${d.topic}</h2>
-        <p>${d.topicKo} · 오늘의 면접 질문</p>
-      </div>
+      <div class="info"><h2>Day ${d.day}: ${d.topic}</h2><p>${d.topicKo} · 면접 질문</p></div>
       <div class="topbar-right">
-        <button class="nav-arrow" onclick="goDay(-1)" ${!hasPrev ? 'disabled' : ''}>← 이전</button>
-        <button class="nav-arrow" onclick="goDay(1)" ${!hasNext ? 'disabled' : ''}>다음 →</button>
-        <button class="done-btn ${isDone ? 'done' : 'pending'}" id="done-btn" onclick="toggleDone(${dayNum})">
-          ${isDone ? '✓ 완료' : '완료 체크'}
-        </button>
+        <button class="nav-arrow" id="btn-prev" ${!hasPrev ? 'disabled' : ''}>← 이전</button>
+        <button class="nav-arrow" id="btn-next" ${!hasNext ? 'disabled' : ''}>다음 →</button>
+        <button class="done-btn ${isDone ? 'done' : 'pending'}" id="done-btn">${isDone ? '✓ 완료' : '완료 체크'}</button>
       </div>
     </div>
 
-    <div class="practice-layout">
-
-      <div class="card question-card">
-        <div class="card-label">Interview Question · 면접 질문</div>
-        <div class="question-text">${d.question}</div>
-        <div class="question-ko">${d.questionKo}</div>
-      </div>
-
-      <div class="card">
-        <div class="card-label">Model Answer · 모범 답변</div>
-        ${answerHtml}
-      </div>
-
-      <div class="card">
-        <div class="card-label">Key Vocabulary · 핵심 어휘 (IPA 발음 포함)</div>
-        <div class="vocab-grid">${vocabHtml}</div>
-      </div>
-
-      <div class="card pronunc-card">
-        <div class="card-label">🔊 Pronunciation Tips · 발음 포인트</div>
-        <div class="answer-body" style="white-space:pre-line;">${d.pronunciation}</div>
-      </div>
-
-      <div class="card prompt-card">
-        <div class="card-label">🎤 Speaking Practice · 스피킹 연습</div>
-        <div class="answer-body" style="margin-bottom:6px;">${d.prompt}</div>
-        <div style="font-size:13px;color:var(--muted);margin-bottom:12px;">${d.promptKo}</div>
-        <div class="timer-row">
-          <div class="timer-display" id="timer-display">0:00</div>
-          <button class="timer-start" id="timer-btn" onclick="toggleTimer()">시작</button>
-          <button class="timer-reset" onclick="resetTimer()">초기화</button>
-        </div>
-      </div>
-
+    <div class="card question-card">
+      <div class="card-label">Interview Question · 면접 질문</div>
+      <div class="question-text">${d.question}</div>
+      <div class="question-ko">${d.questionKo}</div>
     </div>
-  `;
+
+    <div class="card">
+      <div class="card-label">Model Answer · 모범 답변</div>
+      ${answerHtml}
+    </div>
+
+    <div class="card">
+      <div class="card-label">Key Vocabulary · 핵심 어휘 (IPA 발음 포함)</div>
+      <div class="vocab-grid">${vocabHtml}</div>
+    </div>
+
+    <div class="card pronunc-card">
+      <div class="card-label">🔊 Pronunciation Tips · 발음 포인트</div>
+      <div class="answer-body" style="white-space:pre-line">${d.pron}</div>
+    </div>
+
+    <div class="card prompt-card">
+      <div class="card-label">🎤 Speaking Practice · 스피킹 연습</div>
+      <div class="answer-body">${d.prompt}</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:6px">${d.promptKo}</div>
+      <div class="timer-row">
+        <div class="timer-display" id="timer-disp">0:00</div>
+        <button class="timer-start" id="timer-btn">시작</button>
+        <button class="timer-reset">초기화</button>
+      </div>
+    </div>`;
+
+  // Wire events after innerHTML
+  document.getElementById('btn-prev').addEventListener('click', () => goDay(-1));
+  document.getElementById('btn-next').addEventListener('click', () => goDay(1));
+  document.getElementById('done-btn').addEventListener('click', () => toggleDone(dayNum));
+  document.getElementById('timer-btn').addEventListener('click', toggleTimer);
+  document.querySelector('.timer-reset').addEventListener('click', resetTimer);
 }
 
 function goDay(delta) {
   const next = currentDay + delta;
-  const d = DAYS.find(x => x.day === next);
-  if (d && !d.locked) { currentDay = next; stopTimer(); renderTodayPage(); }
+  if (next >= 1 && next <= DAYS.length) { currentDay = next; stopTimer(); renderTodayPage(); }
 }
 
 function toggleDone(dayNum) {
@@ -672,7 +755,7 @@ function toggleDone(dayNum) {
   if (btn) { btn.className = `done-btn ${isDone ? 'done' : 'pending'}`; btn.textContent = isDone ? '✓ 완료' : '완료 체크'; }
 }
 
-// ── TIMER ────────────────────────────────────────────────
+// ── TIMER ─────────────────────────────────────────────
 function toggleTimer() {
   if (timerRunning) {
     clearInterval(timerInterval); timerRunning = false;
@@ -684,7 +767,7 @@ function toggleTimer() {
     if (btn) btn.textContent = '일시정지';
     timerInterval = setInterval(() => {
       timerSec++;
-      const el = document.getElementById('timer-display');
+      const el = document.getElementById('timer-disp');
       if (el) el.textContent = `${Math.floor(timerSec/60)}:${(timerSec%60).toString().padStart(2,'0')}`;
     }, 1000);
   }
@@ -692,62 +775,67 @@ function toggleTimer() {
 function stopTimer() { clearInterval(timerInterval); timerRunning = false; timerSec = 0; }
 function resetTimer() {
   stopTimer();
-  const el = document.getElementById('timer-display');
+  const el = document.getElementById('timer-disp');
   if (el) el.textContent = '0:00';
   const btn = document.getElementById('timer-btn');
   if (btn) btn.textContent = '시작';
 }
 
-// ── PROGRESS PAGE ────────────────────────────────────────
+// ── PROGRESS ──────────────────────────────────────────
 function renderProgressPage() {
-  const completed = getCompleted();
-  const done = completed.length;
-  const pct = Math.round((done / 15) * 100);
-  const streak = calcStreak();
+  const done = getCompleted();
+  const count = done.length;
+  const pct = Math.round((count / DAYS.length) * 100);
+  const streak = calcStreak(done);
 
   document.getElementById('stat-cards').innerHTML = `
-    <div class="stat-card"><div class="stat-num">${done}</div><div class="stat-label">완료한 날 / Days Done</div></div>
-    <div class="stat-card"><div class="stat-num">${15 - done}</div><div class="stat-label">남은 날 / Remaining</div></div>
+    <div class="stat-card"><div class="stat-num">${count}</div><div class="stat-label">완료한 날 / Days Done</div></div>
+    <div class="stat-card"><div class="stat-num">${DAYS.length - count}</div><div class="stat-label">남은 날 / Remaining</div></div>
     <div class="stat-card"><div class="stat-num">${pct}%</div><div class="stat-label">전체 진행률 / Progress</div></div>
-    <div class="stat-card"><div class="stat-num">${streak}</div><div class="stat-label">최장 연속 / Best Streak</div></div>
-  `;
-  document.getElementById('prog-fill').style.width = pct + '%';
-  document.getElementById('pct-label').textContent = `${done} / 15 완료`;
+    <div class="stat-card"><div class="stat-num">${streak}</div><div class="stat-label">최장 연속 / Best Streak</div></div>`;
 
-  const grid = document.getElementById('curriculum-grid');
-  grid.innerHTML = DAYS.map(d => {
-    const isDone = completed.includes(d.day);
-    return `
-      <div class="curriculum-card${d.locked ? ' locked' : ''}${isDone ? ' done' : ''}"
-           ${!d.locked ? `onclick="currentDay=${d.day};showPage('today')"` : ''}>
-        <div class="badge">${isDone ? '✓' : d.day}</div>
-        <div class="c-info">
-          <div class="c-day">Day ${d.day} ${d.locked ? '· 준비 중' : ''}</div>
-          <div class="c-title">${d.topic}</div>
-          <div style="font-size:11px;color:var(--muted)">${d.topicKo}</div>
-        </div>
-      </div>`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('pct-label').textContent = `${count} / ${DAYS.length} 완료`;
+
+  document.getElementById('curriculum-grid').innerHTML = DAYS.map(d => {
+    const isDone = done.includes(d.day);
+    return `<div class="curriculum-card${isDone ? ' done' : ''}" data-day="${d.day}">
+      <div class="badge">${isDone ? '✓' : d.day}</div>
+      <div class="c-info">
+        <div class="c-day">Day ${d.day}</div>
+        <div class="c-title">${d.topic}</div>
+        <div style="font-size:11px;color:var(--muted)">${d.topicKo}</div>
+      </div>
+    </div>`;
   }).join('');
+
+  document.querySelectorAll('.curriculum-card').forEach(card => {
+    card.addEventListener('click', () => {
+      currentDay = parseInt(card.dataset.day);
+      showPage('today');
+    });
+  });
 }
 
-function calcStreak() {
-  const c = getCompleted().sort((a,b) => a-b);
-  if (!c.length) return 0;
+function calcStreak(done) {
+  const s = [...done].sort((a,b) => a-b);
+  if (!s.length) return 0;
   let streak = 1, max = 1;
-  for (let i = 1; i < c.length; i++) {
-    if (c[i] === c[i-1] + 1) { streak++; max = Math.max(max, streak); } else streak = 1;
+  for (let i = 1; i < s.length; i++) {
+    if (s[i] === s[i-1]+1) { streak++; max = Math.max(max, streak); } else streak = 1;
   }
   return max;
 }
 
-// ── COPY ────────────────────────────────────────────────
+// ── COPY ──────────────────────────────────────────────
 function copyCode(btn, text) {
   navigator.clipboard.writeText(text).then(() => {
-    btn.textContent = '복사됨 ✓'; setTimeout(() => btn.textContent = '복사', 2000);
+    btn.textContent = '복사됨 ✓';
+    setTimeout(() => { btn.textContent = '복사'; }, 2000);
   });
 }
 
-// ── INIT ─────────────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────
 renderTodayPage();
 </script>
 </body>
