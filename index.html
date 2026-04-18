@@ -835,6 +835,226 @@ const DAYS = [
     pron: `• <strong>"dynamic"</strong> → dy-NAM-ik (stress on NAM)\n• <strong>"memoization"</strong> → mem-oh-eye-ZAY-shun (stress on ZAY; not "mem-or-ize-AY-shun")\n• <strong>"Kadane"</strong> → kuh-DAHN (named after Joseph Kadane)\n\n💡 DP interview template: (1) define subproblem, (2) write recurrence, (3) identify base cases, (4) choose bottom-up or top-down, (5) optimize space.`,
     prompt: `Explain Kadane's algorithm to an interviewer from scratch: what problem it solves, the key decision at each step, and why it's O(n). Walk through a small example array like [-2, 1, -3, 4, -1, 2, 1, -5, 4].`,
     promptKo: `Kadane 알고리즘을 처음부터 설명해 보세요: 어떤 문제를 풀고, 각 단계의 핵심 결정이 무엇이며, 왜 O(n)인지. [-2, 1, -3, 4, -1, 2, 1, -5, 4] 예시 배열을 사용하세요.`
+  },
+  {
+    day: 26,
+    topic: "Convolutional Neural Networks (CNNs)",
+    topicKo: "합성곱 신경망 (CNN)",
+    question: "How do CNNs work, and why are they well-suited for image data?",
+    questionKo: "CNN의 작동 원리와 이미지 데이터에 적합한 이유를 설명해 주세요.",
+    answer: [
+      { h: `A <strong>Convolutional Neural Network (CNN)</strong> applies learnable <strong>filters (kernels)</strong> that slide across the input image computing element-wise dot products. Each filter detects a specific local pattern (edge, texture, shape). Stacking many layers lets the network learn hierarchical features: edges → shapes → objects.` },
+      { h: `<strong>Key layers:</strong><br>• <strong>Conv layer:</strong> filter of size k×k with stride s and padding p. Output size = (W−k+2p)/s + 1<br>• <strong>ReLU:</strong> non-linearity after each conv — discards negatives, keeps sparse activations<br>• <strong>Pooling (MaxPool/AvgPool):</strong> downsamples spatial dimensions, adds translation invariance<br>• <strong>Fully connected:</strong> final classification head after flattening` },
+      { h: `<strong>Why CNNs beat fully connected nets on images:</strong><br>• <strong>Parameter sharing:</strong> one filter scans the whole image → far fewer params than a dense layer<br>• <strong>Local connectivity:</strong> each neuron sees only a local receptive field — captures spatial structure<br>• <strong>Translation invariance:</strong> pooling makes detection robust to slight position shifts` },
+      { h: `<strong>Landmark architectures to know:</strong><br>• <strong>LeNet-5</strong> (1998): first practical CNN<br>• <strong>AlexNet</strong> (2012): ImageNet breakthrough, introduced ReLU + Dropout<br>• <strong>VGG-16:</strong> deep 3×3 conv stacks<br>• <strong>ResNet:</strong> skip connections solve vanishing gradient — you can train 100+ layer networks<br>• <strong>EfficientNet:</strong> compound scaling of depth/width/resolution` }
+    ],
+    vocab: [
+      { term:"Kernel / Filter", ipa:"/ˈkɜr.nəl/ /ˈfɪl.tər/", ko:"커널 / 필터", def:"Small learnable weight matrix slid across input to detect local features." },
+      { term:"Receptive field", ipa:"/rɪˈsep.tɪv fiːld/", ko:"수용 영역", def:"Region of input a neuron can see; grows with depth in the network." },
+      { term:"Stride", ipa:"/straɪd/", ko:"스트라이드", def:"Step size the filter moves; larger stride → smaller output spatial size." },
+      { term:"Skip connection", ipa:"/skɪp kəˈnek.ʃən/", ko:"스킵 연결", def:"ResNet technique adding input directly to output, enabling very deep training." },
+    ],
+    pron: `• <strong>"convolutional"</strong> → kon-vuh-LOO-shun-ul (stress on LOO; 5 syllables)\n• <strong>"receptive"</strong> → reh-SEP-tiv (stress on SEP)\n• <strong>"hierarchical"</strong> → hy-uh-RAR-kih-kul (stress on RAR)\n\n💡 Key phrase: "CNNs exploit the spatial structure of images through parameter sharing and local connectivity, making them dramatically more efficient than dense networks."`,
+    prompt: `Explain to an interviewer why a ResNet with skip connections can be trained much deeper than a plain CNN. What problem do skip connections solve?`,
+    promptKo: `스킵 연결이 있는 ResNet이 일반 CNN보다 훨씬 깊게 훈련될 수 있는 이유를 설명해 주세요. 스킵 연결이 해결하는 문제가 무엇인가요?`
+  },
+  {
+    day: 27,
+    topic: "RNNs, LSTMs & Sequence Modeling",
+    topicKo: "RNN, LSTM과 시퀀스 모델링",
+    question: "How do RNNs work, what is the vanishing gradient problem, and how does LSTM solve it?",
+    questionKo: "RNN의 작동 원리, 기울기 소실 문제, 그리고 LSTM이 이를 어떻게 해결하는지 설명해 주세요.",
+    answer: [
+      { h: `A <strong>Recurrent Neural Network (RNN)</strong> processes sequences by maintaining a <strong>hidden state</strong> h_t that carries information across time steps: <code>h_t = tanh(W_h · h_{t-1} + W_x · x_t + b)</code>. The same weights are applied at every step — this is weight sharing across time.` },
+      { h: `<strong>Vanishing gradient problem:</strong> During backpropagation through time (BPTT), gradients are multiplied by the weight matrix at each step. If the largest singular value of W is < 1, gradients shrink exponentially → the network forgets long-range dependencies. If > 1, gradients <em>explode</em> (clip them with gradient clipping).` },
+      { h: `<strong>LSTM solution — gating mechanism:</strong><br>• <strong>Forget gate (f):</strong> how much of the previous cell state to keep<br>• <strong>Input gate (i):</strong> how much new information to write to the cell state<br>• <strong>Output gate (o):</strong> what to expose from cell state as hidden state<br>The <strong>cell state C_t</strong> is a linear "highway" — gradients flow without repeated multiplication, solving vanishing gradients.` },
+      { h: `<strong>GRU</strong> (Gated Recurrent Unit) is a simplified LSTM with two gates (reset, update) and no separate cell state — fewer parameters, often comparable performance. Both are largely replaced by <strong>Transformers</strong> for long sequences, but RNNs/LSTMs are still used in streaming, low-latency, and on-device settings.` }
+    ],
+    vocab: [
+      { term:"Hidden state", ipa:"/ˈhɪd.ən steɪt/", ko:"은닉 상태", def:"Vector summarizing sequence history passed from one RNN timestep to the next." },
+      { term:"Vanishing gradient", ipa:"/ˈvæn.ɪ.ʃɪŋ ˈɡreɪ.di.ənt/", ko:"기울기 소실", def:"Gradients shrink to near-zero during backprop, preventing learning of long-range patterns." },
+      { term:"LSTM", ipa:"/el es tiː em/", ko:"장단기 메모리", def:"Long Short-Term Memory — RNN variant with gating to retain long-range dependencies." },
+      { term:"Gradient clipping", ipa:"/ˈɡreɪ.di.ənt ˈklɪp.ɪŋ/", ko:"기울기 클리핑", def:"Capping gradient norm to prevent exploding gradients during training." },
+    ],
+    pron: `• <strong>"recurrent"</strong> → reh-KUR-ent (stress on KUR; 3 syllables)\n• <strong>"vanishing"</strong> → VAN-ish-ing (stress on VAN)\n• <strong>"sequential"</strong> → sih-KWEN-shul (stress on KWEN)\n\n💡 Interview tip: "LSTMs use a cell state as a gradient highway — additions instead of multiplications allow gradients to flow across hundreds of time steps."`,
+    prompt: `An interviewer asks why you'd use an LSTM over a plain RNN for processing month-long time-series data. Explain the technical reason in under 60 seconds.`,
+    promptKo: `월 단위 시계열 데이터 처리에 일반 RNN 대신 LSTM을 사용하는 이유를 기술적으로 60초 이내에 설명해 보세요.`
+  },
+  {
+    day: 28,
+    topic: "Optimization Algorithms & Learning Rate Schedules",
+    topicKo: "최적화 알고리즘과 학습률 스케줄",
+    question: "Compare SGD, Momentum, RMSProp, and Adam. When would you use each?",
+    questionKo: "SGD, Momentum, RMSProp, Adam을 비교하고 각각의 사용 시점을 설명해 주세요.",
+    answer: [
+      { h: `<strong>Gradient Descent variants:</strong><br>• <strong>Batch GD:</strong> uses all data — accurate but slow and memory-heavy<br>• <strong>Stochastic GD (SGD):</strong> one sample per update — noisy but fast; noise can help escape local minima<br>• <strong>Mini-batch GD:</strong> batch size 32–256 — best of both; standard in practice` },
+      { h: `<strong>SGD with Momentum:</strong> Accumulates a velocity vector in the direction of persistent gradient. Dampens oscillations in steep dimensions, accelerates in flat ones. <code>v = β·v − η·∇L; θ = θ + v</code>. Typical β = 0.9.` },
+      { h: `<strong>RMSProp:</strong> Adapts learning rate per-parameter by dividing by a running average of squared gradients. Great for non-stationary problems (RNNs, noisy gradients). <code>θ = θ − η / sqrt(E[g²] + ε) · g</code>` },
+      { h: `<strong>Adam</strong> (Adaptive Moment Estimation): combines Momentum (1st moment) + RMSProp (2nd moment) with bias correction. Default choice for most deep learning. Default: η=0.001, β1=0.9, β2=0.999, ε=1e-8.<br><br><strong>Learning rate schedules:</strong> Step decay, cosine annealing, warm-up + decay. Warmup prevents instability at training start. Cosine annealing allows escape from sharp minima near the end.` }
+    ],
+    vocab: [
+      { term:"Learning rate", ipa:"/ˈlɜr.nɪŋ reɪt/", ko:"학습률", def:"Step size for each gradient update; too high diverges, too low converges slowly." },
+      { term:"Momentum", ipa:"/moʊˈmen.təm/", ko:"모멘텀", def:"Accumulates past gradient directions to smooth and accelerate updates." },
+      { term:"Adaptive learning rate", ipa:"/əˈdæp.tɪv/", ko:"적응형 학습률", def:"Per-parameter learning rate that adjusts based on historical gradient magnitudes." },
+      { term:"Warm-up", ipa:"/wɔrm ʌp/", ko:"웜업", def:"Starting with a low learning rate and ramping it up to prevent early instability." },
+    ],
+    pron: `• <strong>"stochastic"</strong> → stuh-KAS-tik (stress on KAS; not "sto-CHASS-tic")\n• <strong>"adaptive"</strong> → uh-DAP-tiv (stress on DAP)\n• <strong>"annealing"</strong> → uh-NEEL-ing (stress on NEEL)\n\n💡 Rule of thumb: "I default to Adam for fast prototyping. For final production training I often switch to SGD with momentum and cosine annealing — it generalizes better."`,
+    prompt: `Explain to an interviewer why Adam might generalize worse than SGD with momentum on some tasks, despite converging faster.`,
+    promptKo: `Adam이 더 빠르게 수렴하지만 일부 과제에서 SGD+Momentum보다 일반화가 나쁠 수 있는 이유를 면접관에게 설명해 보세요.`
+  },
+  {
+    day: 29,
+    topic: "Loss Functions & Activation Functions",
+    topicKo: "손실 함수와 활성화 함수",
+    question: "When do you use cross-entropy vs MSE? Compare ReLU, sigmoid, tanh, and GELU.",
+    questionKo: "크로스 엔트로피와 MSE는 각각 언제 사용하나요? ReLU, sigmoid, tanh, GELU를 비교해 주세요.",
+    answer: [
+      { h: `<strong>Loss functions by task:</strong><br>• <strong>MSE (Mean Squared Error):</strong> regression — penalizes large errors quadratically; sensitive to outliers<br>• <strong>MAE:</strong> regression with outliers — more robust than MSE<br>• <strong>Cross-Entropy:</strong> classification — measures divergence between predicted probability distribution and true labels; works with softmax output<br>• <strong>Binary Cross-Entropy:</strong> binary classification with sigmoid output<br>• <strong>Huber loss:</strong> regression — MSE for small errors, MAE for large; best of both` },
+      { h: `<strong>Activation functions:</strong><br>• <strong>Sigmoid:</strong> output (0,1) — used in binary output layers; vanishes gradient for |x|>>0<br>• <strong>Tanh:</strong> output (−1,1) — zero-centered, better than sigmoid in hidden layers; still vanishes<br>• <strong>ReLU:</strong> max(0,x) — no vanishing for x>0, sparse activations, fast; suffers "dying ReLU" (neurons stuck at 0)<br>• <strong>Leaky ReLU / ELU:</strong> fixes dying ReLU with small negative slope` },
+      { h: `<strong>GELU</strong> (Gaussian Error Linear Unit): <code>x · Φ(x)</code> where Φ is the standard normal CDF. Smooth, non-monotonic — used in BERT, GPT, and most modern Transformers. Outperforms ReLU in deep language models.` },
+      { h: `<strong>Softmax:</strong> converts a vector of logits to a probability distribution (sum = 1). Used in final layer of multi-class classifiers. Numerically stable form: subtract max(z) before exponentiation to prevent overflow.` }
+    ],
+    vocab: [
+      { term:"Cross-entropy", ipa:"/krɒs ˈen.trə.pi/", ko:"크로스 엔트로피", def:"Loss measuring divergence between predicted probabilities and true label distribution." },
+      { term:"ReLU", ipa:"/ˈrel.juː/", ko:"렐루 (정류 선형 유닛)", def:"Rectified Linear Unit: max(0, x) — fast and sparse, most common hidden activation." },
+      { term:"GELU", ipa:"/ˈdʒel.juː/", ko:"가우시안 오차 선형 유닛", def:"Smooth activation used in Transformers; outperforms ReLU in language models." },
+      { term:"Logits", ipa:"/ˈloʊ.dʒɪts/", ko:"로짓", def:"Raw unnormalized scores output by the final layer before softmax." },
+    ],
+    pron: `• <strong>"entropy"</strong> → EN-truh-pee (stress on EN; 3 syllables)\n• <strong>"sigmoid"</strong> → SIG-moyd (stress on SIG; rhymes with "big void")\n• <strong>"logits"</strong> → LOH-jits (stress on LOH; commonly mispronounced as "loh-JITS")\n\n💡 Interview line: "I choose the loss function based on the output space: cross-entropy for probabilities, MSE for continuous values, and Huber when I expect outliers."`,
+    prompt: `An interviewer asks: "Why don't we use MSE loss for classification?" Explain the statistical and gradient-flow reasons in under 90 seconds.`,
+    promptKo: `"분류에 MSE 손실을 사용하지 않는 이유는 무엇인가요?" 통계적 이유와 기울기 흐름 관점에서 90초 이내에 설명해 보세요.`
+  },
+  {
+    day: 30,
+    topic: "Regularization — Batch Norm, Dropout & Weight Decay",
+    topicKo: "정규화 — 배치 정규화, 드롭아웃, 가중치 감쇠",
+    question: "Explain Batch Normalization and Dropout. How do they prevent overfitting?",
+    questionKo: "배치 정규화와 드롭아웃을 설명하고 과적합을 어떻게 방지하는지 설명해 주세요.",
+    answer: [
+      { h: `<strong>Batch Normalization (BatchNorm):</strong> Normalizes activations within a mini-batch to zero mean and unit variance, then applies learnable scale (γ) and shift (β). <br>Benefits: (1) reduces internal covariate shift, (2) allows higher learning rates, (3) acts as mild regularizer. Applied before or after activation (debate exists; pre-activation ResNets use before).` },
+      { h: `<strong>Dropout:</strong> During training, randomly zeroes each neuron output with probability p (typically 0.1–0.5). At inference, all neurons are active and outputs are scaled by (1−p). <br>Effect: forces the network to learn redundant representations — no single neuron can be relied upon. Equivalent to training an ensemble of 2^n sub-networks.` },
+      { h: `<strong>Weight Decay (L2 regularization):</strong> Adds λ·||W||² to the loss, penalizing large weights. In gradient descent this shrinks weights each step: <code>W ← W(1−λη) − η∇L</code>. Prevents weights from growing unboundedly.` },
+      { h: `<strong>When to use what:</strong><br>• BatchNorm: almost always in deep nets (CNNs, Transformers with LayerNorm variant)<br>• Dropout: dense/FC layers, Transformers; not usually between conv layers in ResNets<br>• Weight decay: always (AdamW uses decoupled weight decay — preferred over L2 with Adam)<br>• <strong>Layer Normalization:</strong> normalizes across features (not batch) — standard in Transformers where batch size is small` }
+    ],
+    vocab: [
+      { term:"Batch Normalization", ipa:"/bætʃ ˌnɔr.mə.lɪˈzeɪ.ʃən/", ko:"배치 정규화", def:"Normalizing activations per mini-batch to stabilize and accelerate training." },
+      { term:"Dropout", ipa:"/ˈdrɒp.aʊt/", ko:"드롭아웃", def:"Randomly zeroing neurons during training to prevent co-adaptation." },
+      { term:"Weight decay", ipa:"/weɪt dɪˈkeɪ/", ko:"가중치 감쇠", def:"L2 penalty on weights to prevent overfitting by discouraging large values." },
+      { term:"Internal covariate shift", ipa:"/ɪnˈtɜr.nəl ˈkoʊ.veɪ.ri.ɪt ʃɪft/", ko:"내부 공변량 변화", def:"Change in distribution of layer inputs during training that slows convergence." },
+    ],
+    pron: `• <strong>"normalization"</strong> → nor-muh-lih-ZAY-shun (stress on ZAY)\n• <strong>"covariate"</strong> → koh-VAIR-ee-it (stress on VAIR; 4 syllables)\n• <strong>"regularization"</strong> → reg-yuh-luh-rih-ZAY-shun (stress on ZAY)\n\n💡 Quick answer: "BatchNorm stabilizes training and speeds convergence; Dropout prevents co-adaptation; weight decay prevents large weights — I use all three together."`,
+    prompt: `Explain why Dropout is turned off at inference time, and what happens numerically if you forget to scale the outputs. Give the formula.`,
+    promptKo: `드롭아웃이 추론 시 꺼지는 이유와 출력을 스케일링하지 않으면 수치적으로 어떤 일이 발생하는지 공식과 함께 설명해 보세요.`
+  },
+  {
+    day: 31,
+    topic: "Transfer Learning & Fine-Tuning",
+    topicKo: "전이 학습과 파인튜닝",
+    question: "Explain transfer learning strategies: feature extraction vs fine-tuning vs domain adaptation.",
+    questionKo: "전이 학습 전략인 특징 추출, 파인튜닝, 도메인 적응을 설명해 주세요.",
+    answer: [
+      { h: `<strong>Transfer learning</strong> reuses a model trained on a large source dataset (ImageNet, Wikipedia) as a starting point for a smaller target task. Key insight: early layers learn universal features (edges, grammar) while later layers learn task-specific features.` },
+      { h: `<strong>Strategy 1 — Feature Extraction:</strong> Freeze all pretrained weights. Remove the final head. Pass data through frozen backbone to extract feature vectors. Train a new classifier on top (e.g., linear SVM or shallow FC). Best when: very small dataset (<1000 samples) and source/target domains are similar.` },
+      { h: `<strong>Strategy 2 — Fine-Tuning:</strong> Load pretrained weights. Replace/reinitialize the final head. Unfreeze some or all layers and train end-to-end with a <em>small</em> learning rate (1e-4 or less). Use <strong>discriminative learning rates</strong>: lower LR for early layers, higher for final layers. Best when: moderate dataset size and domains differ somewhat.` },
+      { h: `<strong>Strategy 3 — Domain Adaptation:</strong> When source and target distributions differ significantly (e.g., synthetic → real images). Techniques: adversarial domain adaptation (GAN-based), CORAL (aligning second-order statistics), self-supervised pre-training on target domain.<br><br><strong>PEFT (Parameter-Efficient Fine-Tuning) for LLMs:</strong> LoRA, Adapters, Prefix Tuning — add small trainable modules while keeping the base model frozen. Fine-tune <1% of parameters.` }
+    ],
+    vocab: [
+      { term:"Transfer learning", ipa:"/ˈtræns.fɜr ˈlɜr.nɪŋ/", ko:"전이 학습", def:"Reusing a model trained on one task to accelerate learning on a related task." },
+      { term:"Fine-tuning", ipa:"/faɪn ˈtjuː.nɪŋ/", ko:"파인튜닝", def:"Updating pretrained weights on a new task with a small learning rate." },
+      { term:"LoRA", ipa:"/ˈloʊ.rə/", ko:"로라 (저랭크 적응)", def:"Low-Rank Adaptation — PEFT method adding trainable low-rank matrices to frozen LLM layers." },
+      { term:"Domain adaptation", ipa:"/doʊˈmeɪn ˌæd.æpˈteɪ.ʃən/", ko:"도메인 적응", def:"Bridging the gap between source training distribution and a different target distribution." },
+    ],
+    pron: `• <strong>"discriminative"</strong> → dis-KRIM-ih-nuh-tiv (stress on KRIM; 5 syllables)\n• <strong>"adaptation"</strong> → ad-ap-TAY-shun (stress on TAY)\n• <strong>"LoRA"</strong> → LOH-ruh (not "lor-AH")\n\n💡 Decision rule: small data + similar domain → feature extraction; medium data + somewhat different domain → fine-tune last few layers; large data → fine-tune all.`,
+    prompt: `You have 500 labeled medical X-ray images and an ImageNet-pretrained ResNet. Describe your exact transfer learning strategy: which layers to freeze, learning rates, and why.`,
+    promptKo: `레이블된 흉부 X선 이미지 500장과 ImageNet 사전 훈련된 ResNet이 있습니다. 동결할 레이어, 학습률, 이유를 포함한 전이 학습 전략을 설명해 보세요.`
+  },
+  {
+    day: 32,
+    topic: "Generative Models — GANs & VAEs",
+    topicKo: "생성 모델 — GAN과 VAE",
+    question: "How do GANs and Variational Autoencoders work? What are their failure modes?",
+    questionKo: "GAN과 변분 오토인코더(VAE)의 작동 원리와 실패 유형을 설명해 주세요.",
+    answer: [
+      { h: `<strong>Generative Adversarial Network (GAN):</strong> Two networks compete. The <strong>Generator G</strong> maps random noise z → fake samples. The <strong>Discriminator D</strong> classifies real vs fake. Trained with a minimax objective: G minimizes, D maximizes <code>E[log D(x)] + E[log(1−D(G(z)))]</code>. At equilibrium, G produces indistinguishable fakes.` },
+      { h: `<strong>GAN failure modes:</strong><br>• <strong>Mode collapse:</strong> G learns to produce only a few output types, ignoring diversity<br>• <strong>Training instability:</strong> D outpaces G → G gets no useful gradient signal<br>• <strong>No explicit likelihood:</strong> can't evaluate P(x) directly<br>Fixes: Wasserstein GAN (WGAN), spectral normalization, minibatch discrimination` },
+      { h: `<strong>Variational Autoencoder (VAE):</strong> Encoder maps input → distribution parameters (μ, σ) in latent space. Decoder reconstructs input from sampled z ~ N(μ, σ²). Loss = reconstruction loss + KL divergence (forces latent space to be smooth/structured). Enables interpolation between points in latent space.` },
+      { h: `<strong>GAN vs VAE comparison:</strong><br>• <strong>Sample quality:</strong> GANs produce sharper images; VAEs tend to be blurry<br>• <strong>Diversity:</strong> VAEs handle mode coverage better<br>• <strong>Latent space:</strong> VAE has structured, continuous latent space — better for interpolation<br>• <strong>Training:</strong> VAEs are more stable; GANs are harder to train<br>• <strong>Modern hybrid:</strong> Diffusion models (DDPM, Stable Diffusion) now dominate image generation` }
+    ],
+    vocab: [
+      { term:"Generator", ipa:"/ˈdʒen.ər.eɪ.tər/", ko:"생성자", def:"GAN component that creates fake samples from random noise vectors." },
+      { term:"Discriminator", ipa:"/dɪˈskrɪm.ɪ.neɪ.tər/", ko:"판별자", def:"GAN component that distinguishes real data from generated fakes." },
+      { term:"Mode collapse", ipa:"/moʊd kəˈlæps/", ko:"모드 붕괴", def:"GAN failure where the generator produces only a few types of outputs." },
+      { term:"KL divergence", ipa:"/keɪ el daɪˈvɜr.dʒəns/", ko:"KL 발산", def:"Measure of how much one probability distribution differs from another." },
+    ],
+    pron: `• <strong>"adversarial"</strong> → ad-ver-SAIR-ee-ul (stress on SAIR; 5 syllables)\n• <strong>"variational"</strong> → vair-ee-AY-shun-ul (stress on AY)\n• <strong>"discriminator"</strong> → dis-KRIM-ih-nay-ter (stress on KRIM)\n\n💡 Modern answer: "GANs produce sharp samples but are unstable; VAEs are stable with structured latent spaces but blurry. Diffusion models now outperform both for image generation."`,
+    prompt: `Explain mode collapse in GANs to an interviewer and describe two techniques to prevent it. Keep it under 90 seconds.`,
+    promptKo: `GAN의 모드 붕괴를 면접관에게 설명하고 이를 방지하는 두 가지 기법을 설명해 보세요. 90초 이내로 답해 주세요.`
+  },
+  {
+    day: 33,
+    topic: "Reinforcement Learning Fundamentals",
+    topicKo: "강화 학습 기초",
+    question: "Explain the RL framework: MDP, Q-learning, policy gradient, and actor-critic.",
+    questionKo: "RL 프레임워크인 MDP, Q-러닝, 정책 경사, 액터-크리틱을 설명해 주세요.",
+    answer: [
+      { h: `<strong>Markov Decision Process (MDP):</strong> The RL framework. An agent in state s takes action a, receives reward r, transitions to state s'. Goal: learn a policy π(a|s) that maximizes cumulative discounted reward G_t = Σ γ^k · r_{t+k}. Discount factor γ ∈ [0,1] controls importance of future rewards.` },
+      { h: `<strong>Q-Learning (value-based):</strong> Learns action-value function Q(s,a) — expected return from state s taking action a then following optimal policy. Update rule (Bellman equation): <code>Q(s,a) ← Q(s,a) + α[r + γ·max_a' Q(s',a') − Q(s,a)]</code>. <strong>DQN</strong> approximates Q with a neural net + experience replay + target network.` },
+      { h: `<strong>Policy Gradient (REINFORCE):</strong> Directly learns policy π_θ(a|s). Update: <code>∇_θ J = E[∇_θ log π_θ(a|s) · G_t]</code>. High variance — use baseline (average return) subtraction to reduce variance. Works with continuous action spaces.` },
+      { h: `<strong>Actor-Critic:</strong> Combines both. <strong>Actor</strong> = policy π_θ (what action to take). <strong>Critic</strong> = value function V_w (how good is this state). Critic provides a lower-variance baseline. Modern variants: A3C, PPO (Proximal Policy Optimization — most widely used today), SAC (Soft Actor-Critic for continuous actions).` }
+    ],
+    vocab: [
+      { term:"Markov Decision Process", ipa:"/ˈmɑːr.kɒf dɪˈsɪʒ.ən ˈproʊ.ses/", ko:"마르코프 결정 과정", def:"Mathematical framework for sequential decision-making under uncertainty." },
+      { term:"Q-value", ipa:"/kjuː ˈvæl.juː/", ko:"Q 값 (행동 가치)", def:"Expected cumulative reward from state s, taking action a, then acting optimally." },
+      { term:"Policy gradient", ipa:"/ˈpɒl.ɪ.si ˈɡreɪ.di.ənt/", ko:"정책 경사", def:"RL method that directly optimizes the policy by gradient ascent on expected return." },
+      { term:"PPO", ipa:"/piː piː oʊ/", ko:"근위 정책 최적화", def:"Proximal Policy Optimization — stable, widely-used actor-critic algorithm." },
+    ],
+    pron: `• <strong>"Markov"</strong> → MAR-kov (stress on MAR; named after Andrei Markov)\n• <strong>"discount"</strong> → DIS-kount (stress on DIS in RL context)\n• <strong>"stochastic"</strong> → stuh-KAS-tik (stress on KAS)\n\n💡 Show breadth: "I know Q-learning for discrete actions, PPO for continuous control, and SAC when sample efficiency matters — the right choice depends on action space and environment complexity."`,
+    prompt: `An interviewer asks you to compare model-based and model-free RL. Explain the tradeoff in sample efficiency vs planning, with a real-world example of each.`,
+    promptKo: `모델 기반 RL과 모델 프리 RL을 비교해 주세요. 샘플 효율성과 계획 능력의 트레이드오프를 실제 예시와 함께 설명해 보세요.`
+  },
+  {
+    day: 34,
+    topic: "Attention Mechanism & Transformer Deep Dive",
+    topicKo: "어텐션 메커니즘과 트랜스포머 심화",
+    question: "Explain scaled dot-product attention, multi-head attention, and positional encoding in detail.",
+    questionKo: "스케일드 닷-프로덕트 어텐션, 멀티헤드 어텐션, 위치 인코딩을 상세히 설명해 주세요.",
+    answer: [
+      { h: `<strong>Scaled Dot-Product Attention:</strong> <code>Attention(Q,K,V) = softmax(QKᵀ / √d_k) · V</code><br>• Q (Query): what we're looking for<br>• K (Key): what each token offers as a label<br>• V (Value): what each token actually contains<br>Scaling by √d_k prevents dot products from growing too large, which would push softmax into saturation (near-zero gradients).` },
+      { h: `<strong>Multi-Head Attention:</strong> Run h parallel attention heads, each with separate Q/K/V projection matrices. Concatenate outputs and project: <code>MultiHead = Concat(head_1,...,head_h) · W^O</code>. Each head can attend to different relationship types (syntax, coreference, position). h=8 or h=12 typical.` },
+      { h: `<strong>Positional Encoding:</strong> Transformers have no built-in sequence order (unlike RNNs). Solution: add positional information to embeddings. <br>• <strong>Sinusoidal (original):</strong> PE(pos,2i) = sin(pos/10000^(2i/d)); encodes absolute position; can extrapolate<br>• <strong>Learned (BERT, GPT):</strong> trainable position embedding table — simpler but fixed max length<br>• <strong>RoPE (Rotary):</strong> encodes relative position via rotation — used in LLaMA, Mistral; better extrapolation` },
+      { h: `<strong>Encoder vs Decoder attention:</strong><br>• <strong>Encoder self-attention:</strong> bidirectional — each token sees all others (BERT)<br>• <strong>Decoder self-attention:</strong> causal/masked — each token only sees past tokens (GPT)<br>• <strong>Cross-attention (encoder-decoder):</strong> decoder queries attend to encoder keys/values (T5, translation)<br><strong>Flash Attention:</strong> IO-aware exact attention using tiling — 2-4× faster, O(n) memory vs O(n²).` }
+    ],
+    vocab: [
+      { term:"Query / Key / Value", ipa:"/ˈkwɪər.i / kiː / ˈvæl.juː/", ko:"쿼리 / 키 / 값", def:"Three projections in attention: Q selects, K matches, V contributes content." },
+      { term:"Causal masking", ipa:"/ˈkɔː.zəl ˈmɑːs.kɪŋ/", ko:"인과적 마스킹", def:"Masking future positions in decoder so each token only attends to past tokens." },
+      { term:"RoPE", ipa:"/roʊp/", ko:"회전 위치 임베딩", def:"Rotary Position Embedding encoding relative position via rotation in attention." },
+      { term:"Flash Attention", ipa:"/flæʃ əˈten.ʃən/", ko:"플래시 어텐션", def:"IO-aware attention algorithm that reduces memory from O(n²) to O(n)." },
+    ],
+    pron: `• <strong>"attention"</strong> → uh-TEN-shun (stress on TEN)\n• <strong>"sinusoidal"</strong> → sy-nyuh-SOY-dul (stress on SOY; 4 syllables)\n• <strong>"concatenate"</strong> → kon-KAT-uh-nayt (stress on KAT)\n\n💡 Impress: "Scaling by √d_k is critical — without it, for large d_k the softmax saturates into a one-hot distribution and gradients vanish."`,
+    prompt: `Explain to an interviewer why the Transformer replaced RNNs for long sequences, covering parallelism, attention complexity, and positional encoding in under 2 minutes.`,
+    promptKo: `트랜스포머가 RNN을 대체한 이유를 병렬성, 어텐션 복잡도, 위치 인코딩 관점에서 2분 이내에 설명해 보세요.`
+  },
+  {
+    day: 35,
+    topic: "Graph Neural Networks & Diffusion Models",
+    topicKo: "그래프 신경망과 디퓨전 모델",
+    question: "How do Graph Neural Networks work? Also explain how Diffusion Models generate images.",
+    questionKo: "GNN의 작동 원리와 디퓨전 모델의 이미지 생성 방식을 설명해 주세요.",
+    answer: [
+      { h: `<strong>Graph Neural Networks (GNNs):</strong> Operate on graph-structured data G=(V,E). Each node aggregates feature vectors from its neighbors, then updates its own representation. Core operation — <strong>Message Passing:</strong><br><code>h_v^(l+1) = UPDATE(h_v^l, AGGREGATE({h_u^l : u ∈ N(v)}))</code><br>After L layers, each node sees its L-hop neighborhood.` },
+      { h: `<strong>GNN variants:</strong><br>• <strong>GCN (Graph Convolutional Network):</strong> averages neighbor features with normalization<br>• <strong>GraphSAGE:</strong> samples fixed-size neighborhoods — scalable to large graphs<br>• <strong>GAT (Graph Attention Network):</strong> learns attention weights over neighbors<br>• <strong>GIN (Graph Isomorphism Network):</strong> most expressive variant — theoretically as powerful as the Weisfeiler-Leman test<br>Applications: molecular property prediction, social networks, knowledge graphs, fraud detection` },
+      { h: `<strong>Diffusion Models (DDPM):</strong> Two processes:<br>1. <strong>Forward (noising):</strong> Gradually add Gaussian noise over T steps until the image becomes pure noise: q(x_t|x_{t-1}) = N(x_t; √(1-β_t)·x_{t-1}, β_t·I)<br>2. <strong>Reverse (denoising):</strong> Train a neural net (U-Net) to predict the noise ε added at each step. At inference, start from Gaussian noise and iteratively denoise.` },
+      { h: `<strong>Why diffusion models beat GANs:</strong><br>• No mode collapse (no adversarial training)<br>• Better sample diversity and quality<br>• Stable training<br>• Flexible conditioning (text prompts via CLIP embeddings in Stable Diffusion)<br><strong>Latent Diffusion:</strong> Run diffusion in a compressed latent space (VAE encoder/decoder) — much faster than pixel-space diffusion. This is how Stable Diffusion works.` }
+    ],
+    vocab: [
+      { term:"Message passing", ipa:"/ˈmes.ɪdʒ ˈpɑː.sɪŋ/", ko:"메시지 전달", def:"GNN operation where nodes aggregate information from their graph neighbors." },
+      { term:"Diffusion model", ipa:"/dɪˈfjuː.ʒən ˈmɒd.əl/", ko:"디퓨전 모델", def:"Generative model that learns to reverse a gradual noise-adding process." },
+      { term:"Denoising", ipa:"/diːˈnɔɪ.zɪŋ/", ko:"노이즈 제거", def:"Predicting and removing noise at each step of the reverse diffusion process." },
+      { term:"Latent space", ipa:"/ˈleɪ.tənt speɪs/", ko:"잠재 공간", def:"Compressed representation space; Stable Diffusion runs diffusion here for efficiency." },
+    ],
+    pron: `• <strong>"diffusion"</strong> → dih-FYOO-zhun (stress on FYOO; 3 syllables)\n• <strong>"denoising"</strong> → dee-NOY-zing (stress on NOY)\n• <strong>"isomorphism"</strong> → eye-suh-MOR-fiz-um (stress on MOR)\n\n💡 Current affairs: "Diffusion models — specifically latent diffusion — are now the dominant paradigm for image generation, outperforming GANs on both quality and diversity."`,
+    prompt: `Explain latent diffusion models (how Stable Diffusion works) to an interviewer: why run diffusion in latent space, and how does the text prompt control the output?`,
+    promptKo: `잠재 디퓨전 모델(Stable Diffusion 작동 방식)을 면접관에게 설명해 보세요: 잠재 공간에서 디퓨전을 실행하는 이유와 텍스트 프롬프트가 출력을 제어하는 방법을 설명하세요.`
   }
 ];
 
