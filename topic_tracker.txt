@@ -1,0 +1,15 @@
+Day 1: Bias-Variance Tradeoff (DONE)
+Day 2: Supervised vs. Unsupervised Learning (DONE)
+Day 3: Cross-validation (DONE)
+Day 4: How a Random Forest works (IN PROGRESS)
+Day 5: Regularization (L1/L2)
+Day 6: Precision vs. Recall
+Day 7: Gradient Descent
+Day 8: PCA (Principal Component Analysis)
+Day 9: Handling Missing Data
+Day 10: A/B Testing
+Day 11: Central Limit Theorem
+Day 12: Feature Engineering
+Day 13: Evaluating Classification Models
+Day 14: Neural Networks (high level)
+Day 15: Bagging vs. Boosting
