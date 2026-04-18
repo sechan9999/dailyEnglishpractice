@@ -42,6 +42,16 @@ Live app: **https://daily-english-practice.vercel.app**
 | 23 | Coding — Trees & Graph Traversal |
 | 24 | Coding — Binary Search Patterns |
 | 25 | Coding — Dynamic Programming |
+| 26 | Deep Learning — Convolutional Neural Networks |
+| 27 | Deep Learning — RNNs, LSTMs & Sequence Modeling |
+| 28 | Deep Learning — Optimization Algorithms & LR Schedules |
+| 29 | Deep Learning — Loss Functions & Activation Functions |
+| 30 | Deep Learning — Batch Norm, Dropout & Weight Decay |
+| 31 | AI/ML — Transfer Learning & Fine-Tuning |
+| 32 | AI/ML — Generative Models (GANs & VAEs) |
+| 33 | AI/ML — Reinforcement Learning Fundamentals |
+| 34 | AI/ML — Attention & Transformer Deep Dive |
+| 35 | AI/ML — Graph Neural Networks & Diffusion Models |
 
 ## Project Structure
 
