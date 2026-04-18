@@ -225,28 +225,34 @@ def advance_day(chat_id: int):
 
 # ── 메시지 포매팅 ────────────────────────────────────────
 
+def _md(text: str) -> str:
+    """Convert **bold** (standard Markdown) to Telegram's *bold*."""
+    import re
+    return re.sub(r'\*\*(.+?)\*\*', r'*\1*', text)
+
+
 def format_day_message(day_num: int) -> str:
     d = next((x for x in AVAILABLE_DAYS if x["day"] == day_num), None)
     if not d:
         return f"Day {day_num}의 내용은 아직 준비 중입니다. 🔒"
 
     vocab_lines = "\n".join(
-        f"  • *{v[0]}* — {v[1]}: {v[2]}" for v in d["vocab"]
+        f"  • {v[0]} — {v[1]}: {v[2]}" for v in d["vocab"]
     )
 
     msg = (
         f"🌅 *Daily English Practice — Day {d['day']}*\n"
         f"_{d['topic']} · {d['topic_ko']}_\n"
-        f"{'─' * 30}\n\n"
+        f"{'─' * 28}\n\n"
         f"📌 *Interview Question*\n"
-        f"_{d['question']}_\n"
-        f"({d['question_ko']})\n\n"
-        f"📝 *핵심 정리*\n{d['summary']}\n\n"
+        f"{d['question']}\n"
+        f"_{d['question_ko']}_\n\n"
+        f"📝 *핵심 정리*\n{_md(d['summary'])}\n\n"
         f"📚 *Key Vocabulary*\n{vocab_lines}\n\n"
         f"🔊 *발음 포인트*\n{d['pronunciation']}\n\n"
-        f"{d['prompt']}\n\n"
-        f"{'─' * 30}\n"
-        f"_/today — 오늘 내용 다시 받기 | /day N — 특정 날 요청_"
+        f"{_md(d['prompt'])}\n\n"
+        f"{'─' * 28}\n"
+        f"/today - 오늘 내용 다시 받기  /day N - 특정 날 요청"
     )
     return msg
 

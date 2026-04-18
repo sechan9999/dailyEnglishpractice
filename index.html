@@ -271,7 +271,7 @@ footer .inner { max-width: 1100px; margin: 0 auto; padding: 16px 24px; display: 
   <div class="page active" id="page-home">
     <div class="hero">
       <h1>영어 인터뷰 준비를<br><span>매일 10분</span>으로</h1>
-      <p>데이터 사이언스·AI 직무 영어 면접에 필요한 핵심 표현을 단계별로 학습하세요. 매일 아침 텔레그램으로 오늘의 학습을 받아보세요.</p>
+      <p>영어 인터뷰에 필요한 핵심 표현을 단계별로 학습하세요. 누구나 쉽게 시작할 수 있고, 매일 아침 텔레그램으로 오늘의 학습을 받아보세요.</p>
       <div class="hero-btns">
         <button class="btn-primary" onclick="showPage('today')">오늘의 학습 시작하기</button>
         <button class="btn-outline" onclick="showPage('telegram')">텔레그램 구독하기</button>
@@ -463,7 +463,7 @@ const DAYS = [
       { term: "Dimensionality reduction", ipa: "/daɪˌmen.ʃənˈæl.ɪ.ti/", ko: "차원 축소", def: "Reducing features while retaining key information." },
     ],
     pronunciation: '• <strong>"supervised"</strong> → SOO-per-vyzd (stress on SOO)\n• <strong>"unsupervised"</strong> → un-SOO-per-vyzd (un- is quick and unstressed)\n• <strong>"algorithm"</strong> → AL-goh-rith-um (stress on AL, never "al-GO-rithm")\n\n💡 Practice saying "machine learning algorithm" 3 times fast — it's a phrase you\'ll use constantly.',
-    prompt: 'An interviewer asks: "Can you walk me through a project where you used supervised learning, and explain why you didn't use an unsupervised approach?" Answer in 60–90 seconds using specific algorithm names.',
+    prompt: 'An interviewer asks: "Can you walk me through a project where you used supervised learning, and explain why you didn\'t use an unsupervised approach?" Answer in 60–90 seconds using specific algorithm names.',
     promptKo: '면접관이 지도 학습을 사용한 프로젝트를 설명하고, 비지도 학습을 선택하지 않은 이유를 물어봅니다. 60~90초 안에 구체적인 알고리즘 이름을 언급하며 답해보세요.'
   },
   {
@@ -701,7 +701,6 @@ function resetTimer() {
 // ── PROGRESS PAGE ────────────────────────────────────────
 function renderProgressPage() {
   const completed = getCompleted();
-  const total = DAYS.filter(d => !d.locked).length;
   const done = completed.length;
   const pct = Math.round((done / 15) * 100);
   const streak = calcStreak();
@@ -710,6 +709,7 @@ function renderProgressPage() {
     <div class="stat-card"><div class="stat-num">${done}</div><div class="stat-label">완료한 날 / Days Done</div></div>
     <div class="stat-card"><div class="stat-num">${15 - done}</div><div class="stat-label">남은 날 / Remaining</div></div>
     <div class="stat-card"><div class="stat-num">${pct}%</div><div class="stat-label">전체 진행률 / Progress</div></div>
+    <div class="stat-card"><div class="stat-num">${streak}</div><div class="stat-label">최장 연속 / Best Streak</div></div>
   `;
   document.getElementById('prog-fill').style.width = pct + '%';
   document.getElementById('pct-label').textContent = `${done} / 15 완료`;
