@@ -52,6 +52,14 @@ Live app: **https://daily-english-practice.vercel.app**
 | 33 | AI/ML — Reinforcement Learning Fundamentals |
 | 34 | AI/ML — Attention & Transformer Deep Dive |
 | 35 | AI/ML — Graph Neural Networks & Diffusion Models |
+| 36 | SQL — SELECT, WHERE, GROUP BY, HAVING |
+| 37 | SQL — All JOIN Types (INNER, LEFT, FULL, SELF, CROSS) |
+| 38 | SQL — Window Functions (ROW_NUMBER, RANK, LAG, LEAD) |
+| 39 | SQL — CTEs & Recursive Queries |
+| 40 | SQL — NULL Handling, CASE, String & Date Functions |
+| 41 | SQL — Query Optimization & Indexes |
+| 42 | SQL — Cohort & Funnel Analysis |
+| 43 | SQL — Database Design & Normalization |
 
 ## Project Structure
 
