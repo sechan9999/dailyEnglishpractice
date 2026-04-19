@@ -1055,6 +1055,182 @@ const DAYS = [
     pron: `• <strong>"diffusion"</strong> → dih-FYOO-zhun (stress on FYOO; 3 syllables)\n• <strong>"denoising"</strong> → dee-NOY-zing (stress on NOY)\n• <strong>"isomorphism"</strong> → eye-suh-MOR-fiz-um (stress on MOR)\n\n💡 Current affairs: "Diffusion models — specifically latent diffusion — are now the dominant paradigm for image generation, outperforming GANs on both quality and diversity."`,
     prompt: `Explain latent diffusion models (how Stable Diffusion works) to an interviewer: why run diffusion in latent space, and how does the text prompt control the output?`,
     promptKo: `잠재 디퓨전 모델(Stable Diffusion 작동 방식)을 면접관에게 설명해 보세요: 잠재 공간에서 디퓨전을 실행하는 이유와 텍스트 프롬프트가 출력을 제어하는 방법을 설명하세요.`
+  },
+  {
+    day: 36,
+    topic: "SQL Fundamentals — SELECT, WHERE, GROUP BY, HAVING",
+    topicKo: "SQL 기초 — SELECT, WHERE, GROUP BY, HAVING",
+    question: "Explain the SQL query execution order and the difference between WHERE and HAVING.",
+    questionKo: "SQL 쿼리 실행 순서와 WHERE와 HAVING의 차이를 설명해 주세요.",
+    answer: [
+      { h: `<strong>SQL Logical Execution Order</strong> (not the written order):<br>1. <code>FROM</code> / <code>JOIN</code> — identify tables and join<br>2. <code>WHERE</code> — filter rows before aggregation<br>3. <code>GROUP BY</code> — group filtered rows<br>4. <code>HAVING</code> — filter groups after aggregation<br>5. <code>SELECT</code> — compute output columns<br>6. <code>DISTINCT</code> — remove duplicates<br>7. <code>ORDER BY</code> — sort<br>8. <code>LIMIT</code> / <code>OFFSET</code> — paginate` },
+      { h: `<strong>WHERE vs HAVING:</strong><br>• <code>WHERE</code> filters individual rows <em>before</em> grouping — cannot reference aggregate functions<br>• <code>HAVING</code> filters groups <em>after</em> <code>GROUP BY</code> — can use aggregates like <code>COUNT()</code>, <code>SUM()</code><br><br>Example: find departments with more than 5 employees earning over $50k:<br><code>SELECT dept, COUNT(*) AS cnt FROM employees WHERE salary > 50000 GROUP BY dept HAVING COUNT(*) > 5;</code>` },
+      { h: `<strong>Aggregate functions:</strong><br>• <code>COUNT(*)</code> — all rows including NULLs; <code>COUNT(col)</code> — non-NULL only<br>• <code>SUM()</code>, <code>AVG()</code>, <code>MIN()</code>, <code>MAX()</code> — all ignore NULLs<br>• <code>COUNT(DISTINCT col)</code> — unique non-NULL values<br>• <code>GROUP_CONCAT()</code> / <code>STRING_AGG()</code> — concatenate strings within a group` },
+      { h: `<strong>Common patterns:</strong><br>• <code>SELECT col, COUNT(*) FROM t GROUP BY col ORDER BY COUNT(*) DESC LIMIT 10;</code> — top 10 most frequent values<br>• <code>SELECT DATE_TRUNC('month', created_at), SUM(revenue) FROM orders GROUP BY 1 ORDER BY 1;</code> — monthly revenue rollup<br>• Always alias aggregates: <code>COUNT(*) AS user_count</code> for readable output` }
+    ],
+    vocab: [
+      { term:"Aggregate function", ipa:"/ˈæɡ.rɪ.ɡɪt ˈfʌŋk.ʃən/", ko:"집계 함수", def:"Function that computes a single result from multiple rows (COUNT, SUM, AVG, MIN, MAX)." },
+      { term:"GROUP BY", ipa:"/ɡruːp baɪ/", ko:"그룹화", def:"Clause that groups rows with the same value for aggregate computation." },
+      { term:"HAVING", ipa:"/ˈhæv.ɪŋ/", ko:"그룹 필터", def:"Filters groups after GROUP BY; allows aggregate conditions." },
+      { term:"Predicate", ipa:"/ˈpred.ɪ.kɪt/", ko:"조건절", def:"Boolean expression in WHERE/HAVING that determines which rows are kept." },
+    ],
+    pron: `• <strong>"aggregate"</strong> → AG-ruh-git (noun/adj) or AG-ruh-gayt (verb); stress on AG\n• <strong>"predicate"</strong> → PRED-ih-kit (noun); stress on PRED\n• <strong>"truncate"</strong> → TRUNK-ayt (stress on TRUNK)\n\n💡 Execution order trick: "FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT" — memorize this to reason about any SQL bug.`,
+    prompt: `Write a query to find the top 3 product categories by total revenue this year, only including categories with at least 100 orders. Walk the interviewer through each clause.`,
+    promptKo: `올해 총 매출 기준 상위 3개 제품 카테고리를 찾는 쿼리를 작성하세요. 주문이 100건 이상인 카테고리만 포함합니다. 각 절을 면접관에게 설명하세요.`
+  },
+  {
+    day: 37,
+    topic: "SQL JOINs — INNER, LEFT, RIGHT, FULL, SELF, CROSS",
+    topicKo: "SQL JOIN — INNER, LEFT, RIGHT, FULL, SELF, CROSS",
+    question: "Explain all JOIN types with examples. When does each return different results?",
+    questionKo: "모든 JOIN 유형을 예시와 함께 설명하고 각각이 다른 결과를 반환하는 경우를 말해 주세요.",
+    answer: [
+      { h: `<strong>INNER JOIN:</strong> Only rows where the join condition matches in <em>both</em> tables. Most common join. Unmatched rows from either table are dropped.<br><code>SELECT u.name, o.amount FROM users u INNER JOIN orders o ON u.id = o.user_id;</code>` },
+      { h: `<strong>LEFT (OUTER) JOIN:</strong> All rows from the left table; matching rows from right (NULLs where no match). Use when you want all left-table records regardless of whether they appear in the right table — e.g., all users even if they have no orders.<br><strong>RIGHT JOIN:</strong> Mirror of LEFT. In practice, rewrite as LEFT JOIN by swapping table order — easier to read.` },
+      { h: `<strong>FULL OUTER JOIN:</strong> All rows from both tables; NULLs where there is no match on either side. Useful for finding records that exist in one table but not the other (combine with <code>WHERE … IS NULL</code>).<br><br><strong>CROSS JOIN:</strong> Cartesian product — every row of left × every row of right. N×M rows. Useful for generating combinations (e.g., all user-product pairs for a recommendation matrix).` },
+      { h: `<strong>SELF JOIN:</strong> Join a table to itself using aliases. Classic use case — find employees and their managers from the same table:<br><code>SELECT e.name AS employee, m.name AS manager FROM employees e LEFT JOIN employees m ON e.manager_id = m.id;</code><br><br><strong>Anti-JOIN:</strong> Find rows in left not matched in right: <code>LEFT JOIN … WHERE right.id IS NULL</code> or use <code>NOT EXISTS</code>.` }
+    ],
+    vocab: [
+      { term:"INNER JOIN", ipa:"/ˈɪn.ər dʒɔɪn/", ko:"내부 조인", def:"Returns only rows with matching values in both tables." },
+      { term:"LEFT JOIN", ipa:"/left dʒɔɪn/", ko:"왼쪽 외부 조인", def:"Returns all left-table rows; NULLs where no right-table match." },
+      { term:"Cartesian product", ipa:"/kɑrˈtiː.ziən ˈprɒd.ʌkt/", ko:"카르테시안 곱", def:"Every combination of rows from two tables; result of CROSS JOIN." },
+      { term:"Anti-join", ipa:"/ˈæn.ti dʒɔɪn/", ko:"안티 조인", def:"Pattern returning rows from one table with no match in another (LEFT JOIN … WHERE NULL)." },
+    ],
+    pron: `• <strong>"Cartesian"</strong> → kar-TEE-zhun (stress on TEE; named after Descartes)\n• <strong>"outer"</strong> → OW-ter (stress on OW)\n• <strong>"alias"</strong> → AY-lee-us (stress on AY; 3 syllables)\n\n💡 Interview trick: draw a Venn diagram mentally. INNER = intersection; LEFT = left circle fully; FULL OUTER = both circles; anti-join = left circle minus intersection.`,
+    prompt: `An interviewer gives you two tables: users and purchases. Find all users who have NEVER made a purchase. Write the query two ways — once with LEFT JOIN, once with NOT EXISTS — and explain which is more readable.`,
+    promptKo: `users 테이블과 purchases 테이블이 있습니다. 구매한 적 없는 모든 사용자를 찾는 쿼리를 LEFT JOIN과 NOT EXISTS 두 가지 방법으로 작성하고 어느 쪽이 더 가독성이 좋은지 설명하세요.`
+  },
+  {
+    day: 38,
+    topic: "SQL Window Functions",
+    topicKo: "SQL 윈도우 함수",
+    question: "Explain PARTITION BY, ROW_NUMBER, RANK, DENSE_RANK, LAG, and LEAD with examples.",
+    questionKo: "PARTITION BY, ROW_NUMBER, RANK, DENSE_RANK, LAG, LEAD를 예시와 함께 설명해 주세요.",
+    answer: [
+      { h: `<strong>Window functions</strong> compute a value across a set of rows related to the current row — <em>without collapsing rows</em> like GROUP BY does. Syntax: <code>function() OVER (PARTITION BY col ORDER BY col ROWS BETWEEN …)</code><br><br><strong>PARTITION BY</strong> divides rows into groups (like GROUP BY) but each row keeps its individual identity in the output.` },
+      { h: `<strong>Ranking functions:</strong><br>• <code>ROW_NUMBER()</code> — unique sequential integer per partition; no ties<br>• <code>RANK()</code> — same rank for ties, then skips (1,1,3)<br>• <code>DENSE_RANK()</code> — same rank for ties, no skips (1,1,2)<br>• <code>NTILE(n)</code> — divide rows into n equal buckets<br><br>Classic use: top-N per group: <code>WHERE rn = 1</code> after <code>ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC)</code>` },
+      { h: `<strong>Offset functions:</strong><br>• <code>LAG(col, n, default)</code> — value from n rows <em>before</em> current row<br>• <code>LEAD(col, n, default)</code> — value from n rows <em>after</em> current row<br><br>Use case — month-over-month growth:<br><code>SELECT month, revenue, LAG(revenue) OVER (ORDER BY month) AS prev_revenue, revenue - LAG(revenue) OVER (ORDER BY month) AS delta FROM monthly_sales;</code>` },
+      { h: `<strong>Aggregate window functions:</strong><br>• <code>SUM(revenue) OVER (PARTITION BY user_id ORDER BY date ROWS UNBOUNDED PRECEDING)</code> — running total per user<br>• <code>AVG(score) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)</code> — 7-day rolling average<br>• <code>FIRST_VALUE()</code> / <code>LAST_VALUE()</code> — first/last value in the window frame` }
+    ],
+    vocab: [
+      { term:"Window function", ipa:"/ˈwɪn.doʊ ˈfʌŋk.ʃən/", ko:"윈도우 함수", def:"SQL function operating over a sliding set of rows without collapsing them." },
+      { term:"PARTITION BY", ipa:"/pɑrˈtɪʃ.ən baɪ/", ko:"파티션 기준", def:"Divides rows into groups for window function computation." },
+      { term:"LAG / LEAD", ipa:"/læɡ / liːd/", ko:"이전값 / 다음값", def:"Window functions accessing values from preceding or following rows." },
+      { term:"Running total", ipa:"/ˈrʌn.ɪŋ ˈtoʊ.təl/", ko:"누적 합계", def:"Cumulative sum computed row-by-row using ROWS UNBOUNDED PRECEDING." },
+    ],
+    pron: `• <strong>"partition"</strong> → par-TISH-un (stress on TISH; 3 syllables)\n• <strong>"preceding"</strong> → preh-SEED-ing (stress on SEED)\n• <strong>"dense"</strong> → dens (rhymes with "fence"; one syllable)\n\n💡 Most asked window function pattern: "Find the highest-paid employee per department" → ROW_NUMBER() OVER (PARTITION BY dept ORDER BY salary DESC), then filter WHERE rn = 1.`,
+    prompt: `Write a query to calculate the 7-day rolling average of daily active users. Walk through the OVER clause — PARTITION BY, ORDER BY, and the frame specification — out loud.`,
+    promptKo: `일별 활성 사용자의 7일 이동 평균을 계산하는 쿼리를 작성하세요. OVER 절의 PARTITION BY, ORDER BY, 프레임 지정을 소리 내어 설명해 주세요.`
+  },
+  {
+    day: 39,
+    topic: "SQL CTEs & Subqueries",
+    topicKo: "SQL CTE와 서브쿼리",
+    question: "Compare CTEs, subqueries, and derived tables. When do you use each? What is a recursive CTE?",
+    questionKo: "CTE, 서브쿼리, 파생 테이블을 비교하고 각각의 사용 시점을 설명해 주세요. 재귀 CTE란 무엇인가요?",
+    answer: [
+      { h: `<strong>Subquery (inline):</strong> A query nested inside another. Can appear in SELECT, FROM, WHERE, or HAVING.<br>• <strong>Correlated subquery:</strong> references the outer query — re-runs for each outer row (slow for large tables)<br>• <strong>Non-correlated subquery:</strong> independent; runs once<br><code>SELECT name FROM employees WHERE salary > (SELECT AVG(salary) FROM employees);</code>` },
+      { h: `<strong>Derived table:</strong> A subquery in the FROM clause with an alias. Evaluated once. Useful for multi-step aggregation:<br><code>SELECT dept, avg_sal FROM (SELECT dept, AVG(salary) AS avg_sal FROM employees GROUP BY dept) AS dept_stats WHERE avg_sal > 70000;</code>` },
+      { h: `<strong>CTE (Common Table Expression):</strong> Named subquery defined with <code>WITH</code> before the main query. Benefits: readable, reusable within the query, easier to debug step-by-step. Can define multiple CTEs chained together.<br><code>WITH high_earners AS (SELECT * FROM employees WHERE salary > 100000), dept_counts AS (SELECT dept, COUNT(*) AS cnt FROM high_earners GROUP BY dept) SELECT * FROM dept_counts WHERE cnt > 2;</code>` },
+      { h: `<strong>Recursive CTE:</strong> A CTE that references itself — used to traverse hierarchical data (org charts, file trees, bill-of-materials).<br><code>WITH RECURSIVE hierarchy AS (SELECT id, name, manager_id, 0 AS depth FROM employees WHERE manager_id IS NULL UNION ALL SELECT e.id, e.name, e.manager_id, h.depth+1 FROM employees e JOIN hierarchy h ON e.manager_id = h.id) SELECT * FROM hierarchy ORDER BY depth;</code>` }
+    ],
+    vocab: [
+      { term:"CTE", ipa:"/siː tiː iː/", ko:"공통 테이블 표현식", def:"Common Table Expression — named temporary result set defined with WITH clause." },
+      { term:"Correlated subquery", ipa:"/ˈkɒr.ɪ.leɪ.tɪd ˈsʌb.kwɪər.i/", ko:"상관 서브쿼리", def:"Subquery that references the outer query and re-executes for each outer row." },
+      { term:"Recursive CTE", ipa:"/rɪˈkɜr.sɪv siː tiː iː/", ko:"재귀 CTE", def:"CTE that references itself to traverse hierarchical or graph-structured data." },
+      { term:"Materialized", ipa:"/məˈtɪər.i.ə.laɪzd/", ko:"구체화된", def:"Stored as a temporary result in memory/disk vs re-computed each reference." },
+    ],
+    pron: `• <strong>"correlated"</strong> → KOR-uh-lay-tid (stress on KOR)\n• <strong>"recursive"</strong> → reh-KUR-siv (stress on KUR)\n• <strong>"hierarchical"</strong> → hy-uh-RAR-kih-kul (stress on RAR)\n\n💡 Rule of thumb: prefer CTEs over nested subqueries for anything with more than one step — they are far easier to read, test, and explain in an interview.`,
+    prompt: `Given an employee table with id, name, manager_id, write a recursive CTE that returns each employee along with their depth in the org hierarchy. Explain each part of the UNION ALL.`,
+    promptKo: `id, name, manager_id 컬럼이 있는 employees 테이블에서 각 직원과 조직 내 깊이를 반환하는 재귀 CTE를 작성하세요. UNION ALL의 각 부분을 설명하세요.`
+  },
+  {
+    day: 40,
+    topic: "SQL NULL Handling, CASE, & String/Date Functions",
+    topicKo: "SQL NULL 처리, CASE, 문자열/날짜 함수",
+    question: "How does SQL handle NULLs? Explain CASE statements and key string and date functions.",
+    questionKo: "SQL에서 NULL을 어떻게 처리하나요? CASE 문과 주요 문자열/날짜 함수를 설명해 주세요.",
+    answer: [
+      { h: `<strong>NULL in SQL:</strong> NULL represents an unknown or missing value — NOT zero, NOT an empty string. Any arithmetic or comparison with NULL returns NULL. Use <code>IS NULL</code> / <code>IS NOT NULL</code>, never <code>= NULL</code>.<br>• <code>COALESCE(a, b, c)</code> — returns first non-NULL value<br>• <code>NULLIF(a, b)</code> — returns NULL if a = b, else a (avoids divide-by-zero)<br>• <code>NVL(a, b)</code> — Oracle equivalent of COALESCE(a, b)` },
+      { h: `<strong>CASE expression:</strong> Conditional logic inline in SQL.<br><code>SELECT name, CASE WHEN salary >= 100000 THEN 'Senior' WHEN salary >= 60000 THEN 'Mid' ELSE 'Junior' END AS level FROM employees;</code><br>Use inside SELECT, WHERE, ORDER BY, and even inside aggregate functions:<br><code>SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS paid_total</code>` },
+      { h: `<strong>String functions (standard across DBs):</strong><br>• <code>UPPER()</code> / <code>LOWER()</code>, <code>TRIM()</code> / <code>LTRIM()</code> / <code>RTRIM()</code><br>• <code>LENGTH()</code> / <code>LEN()</code>, <code>SUBSTRING(str, start, len)</code><br>• <code>CONCAT()</code> or <code>||</code>, <code>REPLACE(str, old, new)</code><br>• <code>LIKE '%pattern%'</code> — wildcard search; <code>ILIKE</code> for case-insensitive (PostgreSQL)` },
+      { h: `<strong>Date functions:</strong><br>• <code>NOW()</code> / <code>CURRENT_TIMESTAMP</code> — current datetime<br>• <code>DATE_TRUNC('month', ts)</code> — truncate to month start (PostgreSQL)<br>• <code>DATEDIFF(day, start_date, end_date)</code> — days between (SQL Server / Redshift)<br>• <code>EXTRACT(YEAR FROM date)</code> — extract part<br>• <code>date + INTERVAL '7 days'</code> — date arithmetic<br>• <code>TO_DATE('2024-01-15', 'YYYY-MM-DD')</code> — parse string to date` }
+    ],
+    vocab: [
+      { term:"NULL", ipa:"/nʌl/", ko:"널 (결측값)", def:"SQL's representation of unknown or missing data; not equal to zero or empty string." },
+      { term:"COALESCE", ipa:"/koʊˈæl.es/", ko:"코얼레스 (첫 비널 반환)", def:"Returns the first non-NULL value from a list of expressions." },
+      { term:"CASE expression", ipa:"/keɪs ɪkˈspreʃ.ən/", ko:"CASE 표현식", def:"Conditional logic in SQL that returns different values based on conditions." },
+      { term:"DATE_TRUNC", ipa:"/deɪt trʌŋk/", ko:"날짜 자르기", def:"Truncates a timestamp to a specified unit (hour, day, month, year)." },
+    ],
+    pron: `• <strong>"coalesce"</strong> → koh-uh-LESS (stress on LESS; 3 syllables; the 'ce' is silent-ish)\n• <strong>"truncate"</strong> → TRUNK-ayt (stress on TRUNK)\n• <strong>"concatenate"</strong> → kon-KAT-uh-nayt (stress on KAT)\n\n💡 Gotcha alert: "NULL = NULL is NOT TRUE in SQL — it evaluates to NULL. Always use IS NULL. This trips up almost every candidate."`,
+    prompt: `Write a query that pivots a status column — counting 'paid', 'pending', and 'failed' orders per user in separate columns using CASE inside SUM. Explain why this pattern works.`,
+    promptKo: `CASE를 SUM 안에 사용해 사용자별 'paid', 'pending', 'failed' 주문 수를 별도 컬럼으로 피벗하는 쿼리를 작성하고 이 패턴이 작동하는 이유를 설명하세요.`
+  },
+  {
+    day: 41,
+    topic: "SQL Query Optimization & Indexes",
+    topicKo: "SQL 쿼리 최적화와 인덱스",
+    question: "How do database indexes work? How do you diagnose and optimize a slow SQL query?",
+    questionKo: "데이터베이스 인덱스의 작동 원리와 느린 SQL 쿼리를 진단하고 최적화하는 방법을 설명해 주세요.",
+    answer: [
+      { h: `<strong>Indexes:</strong> Data structures that allow fast row lookup without scanning the entire table.<br>• <strong>B-Tree index:</strong> default; efficient for equality and range queries (<code>=</code>, <code><</code>, <code>BETWEEN</code>, <code>ORDER BY</code>)<br>• <strong>Hash index:</strong> O(1) equality lookup only — no range queries<br>• <strong>Composite index:</strong> index on multiple columns — follows <strong>left-prefix rule</strong> (index on (a,b,c) helps queries filtering on a, or a+b, or a+b+c, but NOT b alone)` },
+      { h: `<strong>When indexes hurt:</strong><br>• High write volume — every INSERT/UPDATE/DELETE must update all indexes<br>• Low-cardinality columns (e.g., boolean, gender) — full scan is often faster<br>• Too many indexes on one table — optimizer confusion and storage overhead<br>• <code>SELECT *</code> on an indexed column but needing other columns — may trigger a table heap fetch` },
+      { h: `<strong>Diagnosing slow queries:</strong><br>1. <code>EXPLAIN</code> / <code>EXPLAIN ANALYZE</code> — shows query plan: Seq Scan (bad for large tables), Index Scan (good), Nested Loop vs Hash Join<br>2. Look for: high row estimates, missing indexes, full table scans, implicit type casts invalidating indexes<br>3. <code>pg_stat_statements</code> (PostgreSQL) — find the slowest queries by total time` },
+      { h: `<strong>Optimization techniques:</strong><br>• Add index on JOIN keys and WHERE/ORDER BY columns<br>• Avoid <code>SELECT *</code> — select only needed columns<br>• Avoid functions on indexed columns in WHERE: <code>WHERE YEAR(created_at)=2024</code> prevents index use → rewrite as <code>WHERE created_at BETWEEN '2024-01-01' AND '2024-12-31'</code><br>• Use <code>EXISTS</code> instead of <code>IN</code> for large subquery result sets<br>• Partition large tables by date for range-query efficiency` }
+    ],
+    vocab: [
+      { term:"B-Tree index", ipa:"/biː triː ˈɪn.deks/", ko:"B-트리 인덱스", def:"Balanced tree structure enabling O(log n) lookup; default index in most databases." },
+      { term:"Query plan", ipa:"/ˈkwɪər.i plæn/", ko:"쿼리 실행 계획", def:"Database's chosen strategy for executing a query; viewed with EXPLAIN." },
+      { term:"Sequential scan", ipa:"/sɪˈkwen.ʃəl skæn/", ko:"순차 스캔", def:"Reading every row in a table; efficient only for very small or very broad queries." },
+      { term:"Cardinality", ipa:"/ˌkɑr.dɪˈnæl.ɪ.ti/", ko:"카디널리티", def:"Number of distinct values in a column; high cardinality = good candidate for indexing." },
+    ],
+    pron: `• <strong>"cardinality"</strong> → kar-dih-NAL-ih-tee (stress on NAL; 5 syllables)\n• <strong>"composite"</strong> → kom-POZ-it (stress on POZ)\n• <strong>"sequential"</strong> → sih-KWEN-shul (stress on KWEN)\n\n💡 Instant credibility: "First I run EXPLAIN ANALYZE to see the query plan, then I check for sequential scans on large tables and missing index coverage on the join and filter columns."`,
+    prompt: `A query joining two 10-million-row tables is taking 30 seconds. Walk the interviewer through your diagnosis process — what you'd check first, second, and what fixes you'd try.`,
+    promptKo: `천만 행 테이블 두 개를 조인하는 쿼리가 30초 걸립니다. 무엇을 먼저, 그 다음에 확인하고 어떤 수정을 시도할지 면접관에게 진단 과정을 설명하세요.`
+  },
+  {
+    day: 42,
+    topic: "SQL for Data Analysis — Cohort & Funnel Analysis",
+    topicKo: "데이터 분석을 위한 SQL — 코호트 및 퍼널 분석",
+    question: "How do you write SQL for cohort retention analysis and funnel conversion analysis?",
+    questionKo: "SQL로 코호트 리텐션 분석과 퍼널 전환 분석을 어떻게 작성하나요?",
+    answer: [
+      { h: `<strong>Cohort Retention Analysis:</strong> Group users by signup month (cohort), then track how many return in each subsequent month.<br>Step 1: <code>MIN(event_date)</code> per user → cohort month<br>Step 2: JOIN activity back to cohort to compute month offset<br>Step 3: <code>COUNT(DISTINCT user_id)</code> per cohort + offset<br>Step 4: divide by cohort size → retention rate` },
+      { h: `<strong>Cohort query pattern:</strong><br><code>WITH cohorts AS (SELECT user_id, DATE_TRUNC('month', MIN(created_at)) AS cohort_month FROM users GROUP BY user_id), activity AS (SELECT user_id, DATE_TRUNC('month', event_date) AS activity_month FROM events) SELECT c.cohort_month, DATEDIFF('month', c.cohort_month, a.activity_month) AS month_num, COUNT(DISTINCT a.user_id) AS retained FROM cohorts c JOIN activity a ON c.user_id = a.user_id GROUP BY 1,2 ORDER BY 1,2;</code>` },
+      { h: `<strong>Funnel Analysis:</strong> Count how many users complete each step of a sequence (e.g., view → add_to_cart → purchase).<br>Use <code>COUNT(DISTINCT CASE WHEN step='view' THEN user_id END)</code> for each funnel stage. Then compute conversion rate = next_stage / current_stage.<br>For ordered funnels: use <code>MIN(event_time)</code> per step and ensure step B happens after step A with a timestamp condition.` },
+      { h: `<strong>Other key analysis patterns:</strong><br>• <strong>Day-N retention:</strong> users active exactly N days after signup<br>• <strong>Rolling retention:</strong> users active within N days (more forgiving)<br>• <strong>LTV (Lifetime Value):</strong> cumulative revenue per cohort over time<br>• <strong>Churn rate:</strong> users active last month but not this month — LEFT JOIN with IS NULL trick or NOT EXISTS` }
+    ],
+    vocab: [
+      { term:"Cohort", ipa:"/ˈkoʊ.hɔrt/", ko:"코호트 (동일 집단)", def:"Group of users sharing a common characteristic — usually their signup or first-purchase period." },
+      { term:"Retention rate", ipa:"/rɪˈten.ʃən reɪt/", ko:"리텐션율", def:"Percentage of users from a cohort who return and are active in a later period." },
+      { term:"Funnel", ipa:"/ˈfʌn.əl/", ko:"퍼널 (전환 깔때기)", def:"Sequential steps users take toward a goal; conversion rate measures drop-off at each step." },
+      { term:"Churn", ipa:"/tʃɜrn/", ko:"이탈", def:"Users who stop engaging with a product within a defined time window." },
+    ],
+    pron: `• <strong>"cohort"</strong> → KOH-hort (stress on KOH; not "kuh-HORT")\n• <strong>"retention"</strong> → reh-TEN-shun (stress on TEN)\n• <strong>"funnel"</strong> → FUN-ul (stress on FUN; 2 syllables)\n\n💡 Show product sense: "I define retention precisely before writing any query — day-N exact vs rolling window vs weekly active — because the business definition changes the SQL completely."`,
+    prompt: `Describe how you'd build a 30-day rolling retention report for a mobile app in SQL. Walk through your CTE structure, the key JOIN condition, and how you'd handle users who skip days.`,
+    promptKo: `모바일 앱의 30일 롤링 리텐션 리포트를 SQL로 구축하는 방법을 설명해 주세요. CTE 구조, 핵심 JOIN 조건, 며칠을 건너뛴 사용자 처리 방법을 설명하세요.`
+  },
+  {
+    day: 43,
+    topic: "SQL Database Design & Normalization",
+    topicKo: "SQL 데이터베이스 설계와 정규화",
+    question: "Explain 1NF, 2NF, 3NF normalization and the tradeoff between normalized and denormalized schemas.",
+    questionKo: "1NF, 2NF, 3NF 정규화를 설명하고 정규화/비정규화 스키마의 트레이드오프를 말해 주세요.",
+    answer: [
+      { h: `<strong>Normal Forms:</strong><br>• <strong>1NF:</strong> Atomic values only — no repeating groups, no arrays in a column. Each column holds one value per row.<br>• <strong>2NF:</strong> Must be 1NF + every non-key column is fully functionally dependent on the <em>entire</em> primary key (eliminates partial dependencies — relevant when PK is composite)<br>• <strong>3NF:</strong> Must be 2NF + no transitive dependencies (non-key columns depend only on the PK, not on other non-key columns)` },
+      { h: `<strong>Example — 3NF violation:</strong><br>Table: orders(order_id, customer_id, customer_city, customer_country)<br>Problem: customer_city → customer_country is a transitive dependency<br>Fix: split into orders(order_id, customer_id) + customers(customer_id, city, country)` },
+      { h: `<strong>Normalized vs Denormalized schemas:</strong><br>• <strong>Normalized (OLTP):</strong> less redundancy, easier updates, smaller storage, but more JOINs for queries<br>• <strong>Denormalized (OLAP / data warehouse):</strong> pre-joined wide tables, fast analytical reads, but data duplication and harder updates<br>• <strong>Star schema</strong> (data warehouse): one large fact table + dimension tables — a controlled denormalization for BI/analytics workloads` },
+      { h: `<strong>Key concepts:</strong><br>• <strong>Primary key:</strong> uniquely identifies a row; can be single column or composite<br>• <strong>Foreign key:</strong> references a PK in another table; enforces referential integrity<br>• <strong>Surrogate key:</strong> system-generated ID (auto-increment, UUID) — preferred over natural keys for stability<br>• <strong>Index strategy:</strong> normalize first for correctness, then add indexes (and denormalize selectively) for performance` }
+    ],
+    vocab: [
+      { term:"Normalization", ipa:"/ˌnɔr.mə.lɪˈzeɪ.ʃən/", ko:"정규화", def:"Process of organizing tables to reduce redundancy and ensure data integrity." },
+      { term:"Transitive dependency", ipa:"/trænsˈɪt.ɪv dɪˈpen.dən.si/", ko:"이행적 종속성", def:"When a non-key column depends on another non-key column rather than directly on the PK." },
+      { term:"Star schema", ipa:"/stɑr ˈskiː.mə/", ko:"스타 스키마", def:"Data warehouse pattern: central fact table surrounded by dimension tables." },
+      { term:"Referential integrity", ipa:"/ˌref.əˈren.ʃəl ɪnˈteɡ.rɪ.ti/", ko:"참조 무결성", def:"Constraint ensuring foreign key values always correspond to existing primary key values." },
+    ],
+    pron: `• <strong>"normalization"</strong> → nor-muh-lih-ZAY-shun (stress on ZAY)\n• <strong>"transitive"</strong> → TRAN-zih-tiv (stress on TRAN)\n• <strong>"referential"</strong> → ref-uh-REN-shul (stress on REN)\n\n💡 Data engineering answer: "In OLTP I normalize to 3NF to ensure write integrity. In OLAP I denormalize into a star schema for fast aggregation — the right choice depends on read vs write workload."`,
+    prompt: `You're designing a schema for an e-commerce platform with users, products, orders, and order items. Draw the tables and relationships out loud, explaining your normalization decisions and key indexes.`,
+    promptKo: `users, products, orders, order_items가 있는 이커머스 플랫폼 스키마를 설계하세요. 테이블과 관계를 소리 내어 설명하고 정규화 결정과 주요 인덱스를 설명하세요.`
   }
 ];
 
