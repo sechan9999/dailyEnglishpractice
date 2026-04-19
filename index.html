@@ -164,6 +164,21 @@ main{flex:1;max-width:1100px;margin:0 auto;width:100%;padding:32px 24px}
 .tg-note{background:var(--blue-bg);border:1px solid var(--blue-b);border-radius:10px;padding:14px 18px;font-size:14px;color:var(--text2);margin-bottom:20px}
 .tg-note strong{color:var(--primary)}
 
+/* Toast */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(90px);background:#1e293b;color:#f1f5f9;padding:10px 22px;border-radius:99px;font-size:13px;font-weight:600;z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+[data-theme="dark"] .toast{background:#e2e8f0;color:#0f172a}
+
+/* Feedback bar */
+.feedback-bar{display:flex;align-items:center;gap:10px;padding:14px 0 0;flex-wrap:wrap}
+.feedback-bar .fb-label{font-size:13px;color:var(--muted);flex:1;min-width:120px}
+.rate-btn{padding:6px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--surface);font-size:13px;font-weight:600;color:var(--muted);transition:all .15s;cursor:pointer}
+.rate-btn:hover{border-color:var(--primary);color:var(--primary)}
+.rate-btn.active-up{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.rate-btn.active-down{background:var(--yellow-bg);border-color:var(--yellow);color:var(--yellow)}
+.share-btn{padding:6px 16px;border-radius:99px;border:1.5px solid var(--border);background:var(--surface);font-size:13px;font-weight:600;color:var(--muted);transition:all .15s;cursor:pointer}
+.share-btn:hover{border-color:var(--primary);color:var(--primary);background:var(--blue-bg)}
+
 /* Footer */
 footer{border-top:1px solid var(--border);background:var(--bg)}
 footer .inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:13px;color:var(--muted)}
@@ -206,10 +221,13 @@ footer .inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;just
         <button class="btn-primary" onclick="showPage('today')">오늘의 학습 시작하기</button>
         <button class="btn-outline" onclick="showPage('telegram')">텔레그램 구독하기</button>
       </div>
+      <div style="margin-top:14px">
+        <button class="share-btn" onclick="shareApp()">🔗 친구에게 공유하기</button>
+      </div>
     </div>
     <div style="margin-bottom:16px"><div class="section-title" style="text-align:center;margin-bottom:24px">주요 기능</div></div>
     <div class="features">
-      <div class="feature-card"><div class="feature-icon">📖</div><h3>15일 체계적 커리큘럼</h3><p>기초부터 심화까지 단계별 학습. 모범 답변과 핵심 어휘를 함께 제공합니다.</p></div>
+      <div class="feature-card"><div class="feature-icon">📖</div><h3>43일 체계적 커리큘럼</h3><p>ML 이론 · Python · AI/DL · SQL · 코딩 알고리즘까지. 모범 답변과 핵심 어휘를 함께 제공합니다.</p></div>
       <div class="feature-card"><div class="feature-icon">🗣️</div><h3>발음 &amp; 스피킹 연습</h3><p>전문 용어의 정확한 발음 기호(IPA)와 강세 표시. 타이머로 실제 면접처럼 연습하세요.</p></div>
       <div class="feature-card"><div class="feature-icon">📱</div><h3>텔레그램 매일 알림</h3><p>매일 아침 8시, 오늘의 학습 내용을 텔레그램으로 받아보세요.</p></div>
       <div class="feature-card"><div class="feature-icon">✅</div><h3>학습 진행 추적</h3><p>완료한 날을 체크하며 나의 진행률을 확인하세요. 브라우저에 자동 저장됩니다.</p></div>
@@ -254,15 +272,17 @@ footer .inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;just
       <div class="tg-step"><div class="tg-num">1</div><div><h3>텔레그램 봇 만들기</h3><ul><li>텔레그램에서 <strong>@BotFather</strong>를 검색하세요</li><li><code>/newbot</code> 명령어 입력 후 이름과 username 설정</li><li>발급받은 <strong>Bot Token</strong>을 복사해두세요</li></ul></div></div>
       <div class="tg-step"><div class="tg-num">2</div><div><h3>패키지 설치</h3><div class="code-block">pip install python-telegram-bot apscheduler pytz</div><button class="copy-btn" onclick="copyCode(this,'pip install python-telegram-bot apscheduler pytz')">복사</button></div></div>
       <div class="tg-step"><div class="tg-num">3</div><div><h3>telegram_bot.py 실행</h3><ul><li><code>BOT_TOKEN = "YOUR_TOKEN_HERE"</code> 부분에 토큰 입력</li></ul><div class="code-block">python telegram_bot.py</div><button class="copy-btn" onclick="copyCode(this,'python telegram_bot.py')">복사</button></div></div>
-      <div class="tg-step"><div class="tg-num">4</div><div><h3>봇 명령어</h3><ul><li><strong>/start</strong> — 구독 시작 (매일 8시 자동 발송)</li><li><strong>/today</strong> — 오늘의 학습 즉시 받기</li><li><strong>/day 3</strong> — 특정 날 학습 요청</li><li><strong>/stop</strong> — 구독 취소</li></ul></div></div>
+      <div class="tg-step"><div class="tg-num">4</div><div><h3>봇 명령어</h3><ul><li><strong>/start</strong> — 구독 시작 (매일 8시 자동 발송)</li><li><strong>/today</strong> — 오늘의 학습 즉시 받기</li><li><strong>/day 3</strong> — 특정 날 학습 요청 (Day 1–43)</li><li><strong>/list</strong> — 전체 43일 커리큘럼 보기</li><li><strong>/stats</strong> — 구독자 현황 보기</li><li><strong>/share</strong> — 친구에게 공유할 텍스트 받기</li><li><strong>/feedback</strong> — 피드백 남기기</li><li><strong>/stop</strong> — 구독 취소</li></ul></div></div>
     </div>
   </div>
 </main>
 
+<div class="toast" id="toast"></div>
+
 <footer>
   <div class="inner">
     <span>© 2026 Daily English Practice · 매일 10분 영어 인터뷰 준비</span>
-    <span>데이터 브라우저에 자동 저장</span>
+    <span><button class="share-btn" style="font-size:12px;padding:4px 12px" onclick="shareApp()">🔗 앱 공유</button></span>
   </div>
 </footer>
 
@@ -1299,6 +1319,7 @@ function renderPractice(dayNum) {
   const isDone = done.includes(dayNum);
   const hasPrev = dayNum > 1;
   const hasNext = dayNum < DAYS.length;
+  const currentRating = getRating(dayNum);
 
   const answerHtml = d.answer.map(a => `<p class="answer-body">${a.h}</p>`).join('');
   const vocabHtml = d.vocab.map(v =>
@@ -1345,6 +1366,15 @@ function renderPractice(dayNum) {
         <button class="timer-start" id="timer-btn">시작</button>
         <button class="timer-reset">초기화</button>
       </div>
+    </div>
+
+    <div class="card" style="padding:14px 22px">
+      <div class="feedback-bar">
+        <span class="fb-label">이 학습이 도움이 되었나요? / Helpful?</span>
+        <button class="rate-btn${currentRating === 'up' ? ' active-up' : ''}" id="rate-up">👍 도움됨</button>
+        <button class="rate-btn${currentRating === 'down' ? ' active-down' : ''}" id="rate-down">👎 별로</button>
+        <button class="share-btn" id="share-day-btn">🔗 공유</button>
+      </div>
     </div>`;
 
   // Wire events after innerHTML
@@ -1353,6 +1383,9 @@ function renderPractice(dayNum) {
   document.getElementById('done-btn').addEventListener('click', () => toggleDone(dayNum));
   document.getElementById('timer-btn').addEventListener('click', toggleTimer);
   document.querySelector('.timer-reset').addEventListener('click', resetTimer);
+  document.getElementById('rate-up').addEventListener('click', () => toggleRating(dayNum, 'up'));
+  document.getElementById('rate-down').addEventListener('click', () => toggleRating(dayNum, 'down'));
+  document.getElementById('share-day-btn').addEventListener('click', () => shareDay(dayNum));
 }
 
 function goDay(delta) {
@@ -1403,12 +1436,17 @@ function renderProgressPage() {
   const count = done.length;
   const pct = Math.round((count / DAYS.length) * 100);
   const streak = calcStreak(done);
+  const ratings = getRatings();
+  const ratedCount = Object.keys(ratings).length;
+  const helpfulCount = Object.values(ratings).filter(v => v === 'up').length;
+  const helpfulPct = ratedCount > 0 ? Math.round((helpfulCount / ratedCount) * 100) + '%' : '--';
 
   document.getElementById('stat-cards').innerHTML = `
     <div class="stat-card"><div class="stat-num">${count}</div><div class="stat-label">완료한 날 / Days Done</div></div>
     <div class="stat-card"><div class="stat-num">${DAYS.length - count}</div><div class="stat-label">남은 날 / Remaining</div></div>
     <div class="stat-card"><div class="stat-num">${pct}%</div><div class="stat-label">전체 진행률 / Progress</div></div>
-    <div class="stat-card"><div class="stat-num">${streak}</div><div class="stat-label">최장 연속 / Best Streak</div></div>`;
+    <div class="stat-card"><div class="stat-num">${streak}</div><div class="stat-label">최장 연속 / Best Streak</div></div>
+    <div class="stat-card"><div class="stat-num">${helpfulPct}</div><div class="stat-label">학습 만족도 / Helpful Rate</div></div>`;
 
   document.getElementById('prog-fill').style.width = pct + '%';
   document.getElementById('pct-label').textContent = `${count} / ${DAYS.length} 완료`;
@@ -1441,6 +1479,52 @@ function calcStreak(done) {
     if (s[i] === s[i-1]+1) { streak++; max = Math.max(max, streak); } else streak = 1;
   }
   return max;
+}
+
+// ── FEEDBACK ──────────────────────────────────────────
+function getRatings() {
+  try { return JSON.parse(localStorage.getItem('dep_ratings') || '{}'); } catch { return {}; }
+}
+function setRatings(obj) { localStorage.setItem('dep_ratings', JSON.stringify(obj)); }
+function getRating(dayNum) { return getRatings()[dayNum] || null; }
+
+function toggleRating(dayNum, val) {
+  const r = getRatings();
+  if (r[dayNum] === val) { delete r[dayNum]; } else { r[dayNum] = val; }
+  setRatings(r);
+  const newVal = r[dayNum] || null;
+  const up = document.getElementById('rate-up');
+  const down = document.getElementById('rate-down');
+  if (up) up.className = `rate-btn${newVal === 'up' ? ' active-up' : ''}`;
+  if (down) down.className = `rate-btn${newVal === 'down' ? ' active-down' : ''}`;
+  if (val === 'up' && newVal === 'up') showToast('피드백 감사합니다! 도움이 되었군요');
+  if (val === 'down' && newVal === 'down') showToast('피드백 감사합니다! 개선하겠습니다');
+}
+
+// ── TOAST ─────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+// ── SHARE ─────────────────────────────────────────────
+function shareApp() {
+  const url = 'https://daily-english-practice.vercel.app';
+  navigator.clipboard.writeText(url).then(
+    () => showToast('링크 복사됨! 친구에게 공유해보세요'),
+    () => showToast(url)
+  );
+}
+
+function shareDay(dayNum) {
+  const d = DAYS.find(x => x.day === dayNum);
+  const text = `[Daily English Practice] Day ${dayNum}: ${d.topic} (${d.topicKo})\n영어 DS/ML/코딩 인터뷰 준비 → https://daily-english-practice.vercel.app`;
+  navigator.clipboard.writeText(text).then(
+    () => showToast('공유 텍스트가 복사되었습니다!'),
+    () => showToast('공유: https://daily-english-practice.vercel.app')
+  );
 }
 
 // ── COPY ──────────────────────────────────────────────
