@@ -255,6 +255,56 @@ footer .inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;just
   .practice-topbar{flex-direction:column}
   nav .nav-link span{display:none}
 }
+
+/* Word-level STT */
+.stt-word{display:inline-block;padding:1px 5px;border-radius:4px;margin:1px 2px;font-size:13px;font-weight:600}
+.stt-word-hit{background:var(--green-bg);color:var(--green);border:1px solid var(--green-b)}
+.stt-word-miss{background:var(--yellow-bg);color:var(--yellow);border:1px solid var(--yellow-b);text-decoration:line-through}
+.stt-legend{font-size:11px;color:var(--muted);margin-top:6px}
+
+/* Badges */
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:24px}
+.badge-item{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 12px;text-align:center;box-shadow:var(--shadow);transition:transform .15s}
+.badge-item.unlocked{border-color:var(--primary)}
+.badge-item.unlocked:hover{transform:translateY(-2px)}
+.badge-item.locked{opacity:.35;filter:grayscale(1)}
+.badge-icon{font-size:30px;margin-bottom:6px}
+.badge-name{font-size:12px;font-weight:700;color:var(--text)}
+.badge-desc{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4}
+
+/* Recommendations */
+.rec-section{margin-top:20px;padding-top:18px;border-top:1px solid var(--border)}
+.rec-cards{display:grid;gap:10px;margin-top:12px}
+.rec-card{background:var(--yellow-bg);border:1px solid var(--yellow-b);border-radius:10px;padding:12px 16px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:transform .1s}
+.rec-card:hover{transform:translateY(-1px)}
+.rec-badge{width:34px;height:34px;border-radius:50%;background:var(--yellow);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rec-reason{font-size:11px;color:var(--yellow);margin-top:2px}
+
+/* Mock interview modal */
+.mock-modal{max-width:600px}
+.mock-progress{height:4px;background:var(--muted-bg);border-radius:99px;margin-bottom:20px;overflow:hidden}
+.mock-progress-fill{height:100%;background:var(--primary);border-radius:99px;transition:width .3s}
+.mock-q-num{font-size:12px;color:var(--muted);margin-bottom:8px}
+.mock-q{font-size:18px;font-weight:700;line-height:1.4;margin-bottom:6px}
+.mock-ko{font-size:13px;color:var(--muted);margin-bottom:16px}
+.mock-copy-box{background:var(--muted-bg);border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-size:12px;font-family:monospace;white-space:pre-wrap;color:var(--text2);margin-bottom:12px;max-height:120px;overflow-y:auto}
+.mock-nav{display:flex;gap:8px;justify-content:space-between;margin-top:4px;flex-wrap:wrap}
+
+/* Onboarding tour */
+.tour-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:500}
+.tour-overlay.active{display:block}
+.tour-box{position:fixed;background:var(--surface);border-radius:var(--radius);padding:24px 26px;width:300px;z-index:501;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.tour-step-label{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--primary);margin-bottom:6px}
+.tour-box h3{font-size:16px;font-weight:800;margin-bottom:8px}
+.tour-box p{font-size:13px;color:var(--text2);line-height:1.65;margin-bottom:16px}
+.tour-btns{display:flex;gap:8px}
+.tour-dots{display:flex;gap:4px;align-items:center;margin-right:auto}
+.tour-dot{width:6px;height:6px;border-radius:50%;background:var(--border)}
+.tour-dot.active{background:var(--primary);width:14px;border-radius:99px}
+
+/* Lang toggle */
+.lang-btn{padding:5px 10px;border-radius:7px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:11px;font-weight:700;cursor:pointer;transition:background .15s;margin-left:4px}
+.lang-btn:hover{background:var(--muted-bg)}
 </style>
 </head>
 <body>
@@ -268,6 +318,7 @@ footer .inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;just
       <button class="nav-link" id="nav-progress" onclick="showPage('progress')"><span>진행현황</span></button>
       <button class="nav-link" id="nav-telegram" onclick="showPage('telegram')"><span>텔레그램</span></button>
       <button class="nav-link" id="nav-community" onclick="showPage('community')"><span>커뮤니티</span></button>
+      <button class="lang-btn" id="lang-btn" onclick="toggleLang()">EN</button>
       <button class="theme-btn" id="theme-icon" onclick="toggleTheme()" title="테마 변경">🌙</button>
     </nav>
   </div>
@@ -322,6 +373,9 @@ footer .inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;just
       <div class="progress-bar-labels"><span>전체 진행률</span><span id="pct-label">0%</span></div>
       <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
     </div>
+    <div class="section-title" style="font-size:17px;margin-bottom:10px">🏅 획득 뱃지 / Badges</div>
+    <div class="badges-grid" id="badges-grid"></div>
+    <div id="rec-section"></div>
     <div class="section-title" style="font-size:17px;margin-bottom:14px">전체 커리큘럼</div>
     <div class="curriculum-grid" id="curriculum-grid"></div>
     <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:10px;flex-wrap:wrap;align-items:center">
@@ -333,34 +387,30 @@ footer .inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;just
 
   <!-- COMMUNITY -->
   <div class="page" id="page-community">
-    <div class="section-title">커뮤니티 <span style="font-size:15px;color:var(--muted);font-weight:500">Community Discussion</span></div>
+    <div class="section-title">커뮤니티 <span style="font-size:15px;color:var(--muted);font-weight:500">Community & Mock Interview</span></div>
     <div class="community-wrap">
       <div class="community-info">
-        <strong>학습 내용에 대해 질문하거나 토론해보세요!</strong><br>
-        GitHub 계정으로 로그인하여 댓글을 남길 수 있습니다. 오답 노트, 추가 예시, 어려운 발음 등 자유롭게 공유해 주세요.
+        <strong>질문, 토론, 모의 면접까지!</strong><br>
+        학습 중 궁금한 점을 GitHub Issues에 남기거나, 이메일로 피드백을 보내주세요. AI 모의 면접 기능도 사용해보세요.
       </div>
-      <script src="https://giscus.app/client.js"
-        data-repo="sechan9999/dailyEnglishpractice"
-        data-repo-id="R_kgDONJQKAA"
-        data-category="General"
-        data-category-id="DIC_kwDONJQKAM4CkKoF"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="top"
-        data-theme="preferred_color_scheme"
-        data-lang="ko"
-        crossorigin="anonymous"
-        async>
-      </script>
-      <noscript>
-        <div class="tg-note" style="margin-top:16px">
-          <strong>커뮤니티 활성화 방법:</strong><br>
-          GitHub 저장소에서 Discussions를 활성화하고 <a href="https://giscus.app" target="_blank">giscus.app</a>에서 설정 코드를 생성하세요.
-          그전까지 이메일로 피드백을 보내주세요: <strong>tcgyver@gmail.com</strong>
-        </div>
-      </noscript>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-label">💬 GitHub 토론 / Discussions</div>
+        <p style="font-size:14px;color:var(--text2);margin-bottom:14px;line-height:1.6">오답 노트, 추가 예시, 어려운 발음, 면접 후기 등을 자유롭게 공유하세요. GitHub 계정으로 누구나 참여할 수 있습니다.</p>
+        <a href="https://github.com/sechan9999/dailyEnglishpractice/issues/new?title=Question+or+Discussion&labels=discussion" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block;text-decoration:none">GitHub에서 토론 시작하기 →</a>
+        <a href="https://github.com/sechan9999/dailyEnglishpractice/issues" target="_blank" rel="noopener" class="btn-outline" style="display:inline-block;text-decoration:none;margin-left:10px">기존 토론 보기</a>
+      </div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-label">🤖 AI 모의 면접 / Mock Interview</div>
+        <p style="font-size:14px;color:var(--text2);margin-bottom:6px;line-height:1.6">43개 면접 질문을 하나씩 연습하세요. 각 질문에 대한 Claude/ChatGPT 프롬프트를 복사해서 AI와 함께 모의 면접을 진행할 수 있습니다.</p>
+        <p style="font-size:12px;color:var(--muted);margin-bottom:14px">내가 선택한 날부터 시작하거나, 랜덤으로 질문을 받을 수 있습니다.</p>
+        <button class="btn-primary" onclick="openMockInterview(currentDay)">현재 Day에서 시작</button>
+        <button class="btn-outline" style="margin-left:10px" onclick="openMockInterview(Math.ceil(Math.random()*43))">랜덤 질문</button>
+      </div>
+      <div class="card">
+        <div class="card-label">📧 이메일 피드백 / Email Feedback</div>
+        <p style="font-size:14px;color:var(--text2);margin-bottom:14px;line-height:1.6">앱 개선 제안이나 콘텐츠 오류를 알려주시면 적극 반영하겠습니다.</p>
+        <a href="mailto:tcgyver@gmail.com?subject=Daily%20English%20Practice%20Feedback" class="btn-outline" style="display:inline-block;text-decoration:none">tcgyver@gmail.com 메일 보내기</a>
+      </div>
     </div>
   </div>
 
@@ -396,6 +446,37 @@ footer .inner{max-width:1100px;margin:0 auto;padding:16px 24px;display:flex;just
       <button class="btn-primary" id="sync-action-btn">복사하기</button>
       <button class="btn-outline" onclick="closeSyncModal()">닫기</button>
     </div>
+  </div>
+</div>
+
+<!-- MOCK INTERVIEW MODAL -->
+<div class="modal-overlay" id="mock-modal">
+  <div class="modal mock-modal">
+    <div class="mock-progress"><div class="mock-progress-fill" id="mock-fill" style="width:0%"></div></div>
+    <div class="mock-q-num" id="mock-qnum">Question 1 / 43</div>
+    <div class="mock-q" id="mock-q"></div>
+    <div class="mock-ko" id="mock-ko"></div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Claude / ChatGPT 프롬프트 (복사해서 사용):</div>
+    <div class="mock-copy-box" id="mock-prompt"></div>
+    <div class="mock-nav">
+      <button class="btn-outline" style="font-size:13px;padding:8px 16px" id="mock-prev">← 이전</button>
+      <button class="btn-outline" style="font-size:13px;padding:8px 16px" onclick="closeMockModal()">닫기</button>
+      <button class="btn-primary" style="font-size:13px;padding:8px 16px" id="mock-copy">복사</button>
+      <button class="btn-primary" style="font-size:13px;padding:8px 16px" id="mock-next">다음 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ONBOARDING TOUR -->
+<div class="tour-overlay" id="tour-overlay"></div>
+<div class="tour-box" id="tour-box" style="display:none">
+  <div class="tour-step-label" id="tour-step-label">Step 1 / 5</div>
+  <h3 id="tour-title"></h3>
+  <p id="tour-desc"></p>
+  <div class="tour-btns">
+    <div class="tour-dots" id="tour-dots"></div>
+    <button class="btn-outline" style="font-size:13px;padding:7px 14px" onclick="endTour()">건너뛰기</button>
+    <button class="btn-primary" style="font-size:13px;padding:7px 16px" id="tour-next-btn" onclick="nextTourStep()">다음</button>
   </div>
 </div>
 
@@ -1637,6 +1718,54 @@ function renderProgressPage() {
       showPage('today');
     });
   });
+
+  // Badges
+  const quizScores = getQuizScores();
+  const perfectQuizzes = Object.values(quizScores).filter(s => s.correct === s.total && s.total > 0).length;
+  const BADGES = [
+    { icon:'🌱', name:'First Step', desc:'Day 1 완료', unlocked: done.includes(1) },
+    { icon:'📅', name:'Week Warrior', desc:'7일 완료', unlocked: count >= 7 },
+    { icon:'🏃', name:'Halfway', desc:'21일 완료', unlocked: count >= 21 },
+    { icon:'🏆', name:'Champion', desc:'43일 전부 완료!', unlocked: count >= 43 },
+    { icon:'🧠', name:'Quiz Master', desc:'퀴즈 5회 만점', unlocked: perfectQuizzes >= 5 },
+    { icon:'❤️', name:'Enthusiast', desc:'👍 10개 이상', unlocked: Object.values(ratings).filter(v=>v==='up').length >= 10 },
+    { icon:'🤖', name:'ML Expert', desc:'Day 1–10 완료', unlocked: [1,2,3,4,5,6,7,8,9,10].every(d=>done.includes(d)) },
+    { icon:'💻', name:'Code Wizard', desc:'Day 21–25 완료', unlocked: [21,22,23,24,25].every(d=>done.includes(d)) },
+  ];
+  document.getElementById('badges-grid').innerHTML = BADGES.map(b =>
+    `<div class="badge-item ${b.unlocked ? 'unlocked' : 'locked'}" title="${b.unlocked ? '획득!' : '잠금'}">
+      <div class="badge-icon">${b.icon}</div>
+      <div class="badge-name">${b.name}</div>
+      <div class="badge-desc">${b.desc}</div>
+    </div>`
+  ).join('');
+
+  // Recommendations
+  const recDays = DAYS.filter(d => {
+    const qs = quizScores[d.day];
+    const lowQuiz = qs && qs.total > 0 && (qs.correct / qs.total) < 0.67;
+    const thumbDown = ratings[d.day] === 'down';
+    return (lowQuiz || thumbDown) && !done.includes(d.day);
+  }).slice(0, 3);
+  const recEl = document.getElementById('rec-section');
+  if (recDays.length > 0) {
+    recEl.innerHTML = `<div class="rec-section">
+      <div class="section-title" style="font-size:17px;margin-bottom:10px">📌 복습 추천 / Recommended Review</div>
+      <div class="rec-cards">${recDays.map(d => {
+        const qs = quizScores[d.day];
+        const reason = qs && (qs.correct/qs.total) < 0.67 ? `퀴즈 점수: ${qs.correct}/${qs.total}` : '복습 필요';
+        return `<div class="rec-card" data-day="${d.day}">
+          <div class="rec-badge">${d.day}</div>
+          <div><div style="font-size:14px;font-weight:700">${d.topic}</div><div class="rec-reason">${reason}</div></div>
+        </div>`;
+      }).join('')}</div>
+    </div>`;
+    recEl.querySelectorAll('.rec-card').forEach(c => c.addEventListener('click', () => {
+      currentDay = parseInt(c.dataset.day); showPage('today');
+    }));
+  } else {
+    recEl.innerHTML = '';
+  }
 }
 
 function calcStreak(done) {
@@ -1749,20 +1878,23 @@ function toggleSTT(expectedPrompt) {
 function showSTTFeedback(transcript, expected, el) {
   const normalize = s => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
   const got = new Set(normalize(transcript));
-  const exp = normalize(expected);
-  const matched = exp.filter(w => got.has(w)).length;
-  const pct = exp.length > 0 ? Math.round((matched / exp.length) * 100) : 0;
+  // Only use meaningful keywords (length >= 4, skip filler words)
+  const stopwords = new Set(['that','this','with','have','from','they','will','been','were','when','what','your','into','their','there','about','which','these','would','could','should']);
+  const keywords = normalize(expected).filter(w => w.length >= 4 && !stopwords.has(w));
+  const matched = keywords.filter(w => got.has(w));
+  const missed = keywords.filter(w => !got.has(w));
+  const pct = keywords.length > 0 ? Math.round((matched.length / keywords.length) * 100) : 0;
+
+  const wordHtml = [
+    ...matched.map(w => `<span class="stt-word stt-word-hit">${w}</span>`),
+    ...missed.map(w => `<span class="stt-word stt-word-miss">${w}</span>`)
+  ].join('');
+
   el.classList.add('show');
-  if (pct >= 70) {
-    el.className = 'stt-feedback show good';
-    el.innerHTML = `훌륭합니다! 핵심 단어 ${pct}% 일치 — 발음이 잘 인식되었어요!`;
-  } else if (pct >= 40) {
-    el.className = 'stt-feedback show ok';
-    el.innerHTML = `좋아요! ${pct}% 일치 — 좀 더 천천히, 또렷하게 말해보세요.`;
-  } else {
-    el.className = 'stt-feedback show retry';
-    el.innerHTML = `다시 도전! ${pct}% 일치 — 핵심 키워드를 포함해서 말해보세요.`;
-  }
+  const level = pct >= 70 ? 'good' : pct >= 40 ? 'ok' : 'retry';
+  const msg = pct >= 70 ? `훌륭합니다! ${pct}% 키워드 인식됨` : pct >= 40 ? `좋아요! ${pct}% 인식 — 더 또렷하게` : `다시 도전! ${pct}% 인식`;
+  el.className = `stt-feedback show ${level}`;
+  el.innerHTML = `<strong>${msg}</strong><br><div style="margin-top:6px">${wordHtml}</div><div class="stt-legend">🟢 인식됨 &nbsp; 🟡 누락됨</div>`;
 }
 
 // ── QUIZ ──────────────────────────────────────────────
@@ -1888,9 +2020,102 @@ function copyCode(btn, text) {
   });
 }
 
+// ── LANGUAGE TOGGLE ───────────────────────────────────
+const I18N = {
+  ko: { home:'홈', today:'오늘의 학습', progress:'진행현황', telegram:'텔레그램', community:'커뮤니티' },
+  en: { home:'Home', today:"Today's Study", progress:'Progress', telegram:'Telegram', community:'Community' }
+};
+let currentLang = localStorage.getItem('dep_lang') || 'ko';
+function applyLang() {
+  const t = I18N[currentLang];
+  const btn = document.getElementById('lang-btn');
+  if (btn) btn.textContent = currentLang === 'ko' ? 'EN' : 'KO';
+  const map = { 'nav-home': t.home, 'nav-today': t.today, 'nav-progress': t.progress, 'nav-telegram': t.telegram, 'nav-community': t.community };
+  Object.entries(map).forEach(([id, label]) => {
+    const el = document.getElementById(id);
+    if (el) { const sp = el.querySelector('span'); if (sp) sp.textContent = label; }
+  });
+}
+function toggleLang() {
+  currentLang = currentLang === 'ko' ? 'en' : 'ko';
+  localStorage.setItem('dep_lang', currentLang);
+  applyLang();
+}
+
+// ── MOCK INTERVIEW ────────────────────────────────────
+let mockIdx = 0;
+function openMockInterview(startDay) {
+  mockIdx = DAYS.findIndex(d => d.day === startDay);
+  if (mockIdx < 0) mockIdx = 0;
+  renderMockQuestion();
+  document.getElementById('mock-modal').classList.add('open');
+  document.getElementById('mock-prev').onclick = () => { if (mockIdx > 0) { mockIdx--; renderMockQuestion(); } };
+  document.getElementById('mock-next').onclick = () => { if (mockIdx < DAYS.length - 1) { mockIdx++; renderMockQuestion(); } };
+  document.getElementById('mock-copy').onclick = () => {
+    navigator.clipboard.writeText(document.getElementById('mock-prompt').textContent).then(() => showToast('프롬프트 복사됨!'));
+  };
+  document.getElementById('mock-modal').addEventListener('click', e => { if (e.target === document.getElementById('mock-modal')) closeMockModal(); }, { once: true });
+}
+function renderMockQuestion() {
+  const d = DAYS[mockIdx];
+  const pct = Math.round(((mockIdx + 1) / DAYS.length) * 100);
+  document.getElementById('mock-fill').style.width = pct + '%';
+  document.getElementById('mock-qnum').textContent = `Question ${mockIdx + 1} / ${DAYS.length}  ·  Day ${d.day}: ${d.topic}`;
+  document.getElementById('mock-q').textContent = d.question;
+  document.getElementById('mock-ko').textContent = d.questionKo;
+  const aiPrompt = `You are my English interview coach. Please conduct a mock interview for the following question:\n\n"${d.question}"\n\nFirst ask me to answer in English for 60–90 seconds. Then give me detailed feedback on: (1) content accuracy, (2) vocabulary, (3) fluency, and (4) areas to improve. Topic context: ${d.topic}.`;
+  document.getElementById('mock-prompt').textContent = aiPrompt;
+  document.getElementById('mock-prev').disabled = mockIdx === 0;
+  document.getElementById('mock-next').disabled = mockIdx === DAYS.length - 1;
+}
+function closeMockModal() { document.getElementById('mock-modal').classList.remove('open'); }
+
+// ── ONBOARDING TOUR ───────────────────────────────────
+const TOUR_STEPS = [
+  { title:'Daily English Practice에 오신 것을 환영합니다!', desc:'매일 10분으로 DS/ML/코딩 영어 인터뷰를 준비하는 43일 프로그램입니다. 주요 기능을 빠르게 소개해드릴게요.' },
+  { title:'🔊 TTS — 발음 듣기', desc:'어휘 카드나 면접 질문 옆 🔊 버튼을 누르면 원어민 발음을 들을 수 있습니다. 따라 말하며 연습해보세요!' },
+  { title:'🎙️ STT — 음성 인식', desc:'스피킹 연습 섹션에서 "녹음 시작"을 누르면 내 발음을 인식합니다. 핵심 키워드를 얼마나 말했는지 색깔로 피드백을 드립니다.' },
+  { title:'📝 퀴즈 & 진행현황', desc:`오늘의 퀴즈로 어휘를 확인하고, "진행현황" 탭에서 뱃지와 복습 추천을 확인하세요. 완료한 날을 체크하면 스트릭이 쌓입니다!` },
+  { title:'🤖 AI 모의 면접', desc:'"커뮤니티" 탭에서 AI 모의 면접을 시작할 수 있습니다. Claude나 ChatGPT 프롬프트를 복사해서 실제 면접처럼 연습하세요. 행운을 빕니다! 🎉' },
+];
+let tourStep = 0;
+function startTour() {
+  tourStep = 0;
+  document.getElementById('tour-overlay').classList.add('active');
+  document.getElementById('tour-box').style.display = 'block';
+  renderTourStep();
+  positionTourBox();
+}
+function renderTourStep() {
+  const s = TOUR_STEPS[tourStep];
+  document.getElementById('tour-step-label').textContent = `Step ${tourStep + 1} / ${TOUR_STEPS.length}`;
+  document.getElementById('tour-title').textContent = s.title;
+  document.getElementById('tour-desc').textContent = s.desc;
+  document.getElementById('tour-next-btn').textContent = tourStep === TOUR_STEPS.length - 1 ? '시작하기 🚀' : '다음';
+  const dots = document.getElementById('tour-dots');
+  dots.innerHTML = TOUR_STEPS.map((_, i) => `<div class="tour-dot ${i === tourStep ? 'active' : ''}"></div>`).join('');
+}
+function positionTourBox() {
+  const box = document.getElementById('tour-box');
+  box.style.top = '50%'; box.style.left = '50%';
+  box.style.transform = 'translate(-50%, -50%)';
+}
+function nextTourStep() {
+  tourStep++;
+  if (tourStep >= TOUR_STEPS.length) { endTour(); return; }
+  renderTourStep();
+}
+function endTour() {
+  document.getElementById('tour-overlay').classList.remove('active');
+  document.getElementById('tour-box').style.display = 'none';
+  localStorage.setItem('dep_toured', '1');
+}
+
 // ── INIT ──────────────────────────────────────────────
 renderTodayPage();
+applyLang();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+if (!localStorage.getItem('dep_toured')) setTimeout(startTour, 800);
 </script>
 </body>
 </html>
